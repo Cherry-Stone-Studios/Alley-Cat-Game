@@ -40,6 +40,7 @@ const createUser = async ({
       const plainTextPassword = password;
       const saltRounds = 10;
       const hashedPassword = await bcrypt.hash(plainTextPassword, saltRounds);
+      const dob = date_of_birth.toISOString();
 
       const newUser = await prisma.user.create({
         data: {
@@ -47,7 +48,7 @@ const createUser = async ({
           username,
           email,
           password: hashedPassword,
-          date_of_birth: date_of_birth.toISOString(),
+          date_of_birth: dob,
         },
       });
 
