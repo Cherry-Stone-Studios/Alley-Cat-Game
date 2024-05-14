@@ -13,6 +13,19 @@ const getAge = (date_of_birth) => {
   return age;
 };
 
+const getDOB = (date_of_birth) => {
+  let dob = new Date(date_of_birth);
+  let dobISO = dob.toISOString();
+  return dobISO;
+};
+
+const event = new Date("05 October 2011 14:48 UTC");
+console.log(event.toString());
+// Expected output: "Wed Oct 05 2011 16:48:00 GMT+0200 (CEST)"
+// Note: your timezone may vary
+
+console.log();
+
 // Create/POST
 
 const createUser = async ({
@@ -40,7 +53,7 @@ const createUser = async ({
       const plainTextPassword = password;
       const saltRounds = 10;
       const hashedPassword = await bcrypt.hash(plainTextPassword, saltRounds);
-      const dob = date_of_birth.toISOString();
+      const dob = getDOB(date_of_birth);
 
       const newUser = await prisma.user.create({
         data: {
