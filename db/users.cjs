@@ -4,14 +4,26 @@ const bcrypt = require("bcrypt");
 
 // Create/POST
 
-const createUser = async ({ firstAndLastName, email, username, password }) => {
+const createUser = async ({
+  name,
+  username,
+  email,
+  password,
+  date_of_birth,
+}) => {
   try {
     const plainTextPassword = password;
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(plainTextPassword, saltRounds);
 
     const newUser = await prisma.user.create({
-      data: { firstAndLastName, email, username, password: hashedPassword },
+      data: {
+        name,
+        username,
+        email,
+        password: hashedPassword,
+        date_of_birth,
+      },
     });
 
     return newUser;
@@ -62,15 +74,28 @@ const getUserById = async (userId) => {
 };
 
 // Update/PATCH
-const adminUpdatesUser = async (username, isAdmin) => {
+const adminUpdatesUser = async (
+  name,
+  username,
+  email,
+  password,
+  date_of_birth,
+  is_admin,
+  nyan_unlocked
+) => {
   try {
     const updatedUser = await prisma.user.update({
       where: {
-        isAdmin: true,
+        is_admin: true,
       },
       data: {
+        name,
         username,
-        isAdmin,
+        email,
+        password,
+        date_of_birth,
+        is_admin,
+        nyan_unlocked,
       },
     });
 
@@ -80,7 +105,7 @@ const adminUpdatesUser = async (username, isAdmin) => {
   }
 };
 
-const userUpdatesUser = async (username, password, userId) => {
+const userUpdatesUser = async (id, name, username, email, password) => {
   try {
     const plainTextPassword = password;
     const saltRounds = 10;
@@ -88,10 +113,12 @@ const userUpdatesUser = async (username, password, userId) => {
 
     const updatedUser = await prisma.user.update({
       where: {
-        userId,
+        id,
       },
       data: {
+        name,
         username,
+        email,
         password: hashedPassword,
       },
     });

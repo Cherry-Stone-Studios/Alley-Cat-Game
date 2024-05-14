@@ -22,8 +22,8 @@ model user {
   date_of_birth DateTime
   is_admin      Boolean  @default(false)
   nyan_unlocked Boolean  @default(false)
-  friends       user[]   @relation("friends")
-  friendsof     user[]   @relation("friends")
+  friends       user[]   @relation("Friends")
+  friendsof     user[]   @relation("Friends")
   scores        scores[]
 }
 
