@@ -3,10 +3,10 @@ const prisma = require("../client.cjs");
 const bcrypt = require("bcrypt");
 
 const getAge = (date_of_birth) => {
-  const today = new Date();
-  const birthDate = new Date(date_of_birth);
-  const age = today.getFullYear() - birthDate.getFullYear();
-  const m = today.getMonth() - birthDate.getMonth();
+  let today = new Date();
+  let birthDate = new Date(date_of_birth);
+  let age = today.getFullYear() - birthDate.getFullYear();
+  let m = today.getMonth() - birthDate.getMonth();
   if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
     age--;
   }
