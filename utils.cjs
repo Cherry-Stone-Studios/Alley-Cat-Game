@@ -9,7 +9,7 @@ const requireUser = (req, res, next) => {
 	
 // if user is admin -> grant access
 const requireAdmin = (req, res, next) => {
-	if (req.user?.is_admin) {
+	if (req.body.is_admin === true) {
 		next();
 	} else {
 		res.sendStatus(401);
