@@ -38,7 +38,8 @@ const createUser = async ({
   try {
     const age = getAge(date_of_birth);
 
-    if (username.length > 50) {
+    if (name.length > 50) {
+      throw Error(`We don't have enough room for your name!`);
     } else if (username.length > 25) {
       throw Error(`Your username is too long!`);
     } else if (email.length > 75) {
