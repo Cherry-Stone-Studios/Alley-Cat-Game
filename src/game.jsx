@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import '../game_module/style.css';
-import playerImage from '../game_module/Walk.png'
-import backgroundImage from '../game_module/background1.jpeg'
+import playerImage from '../game_module/Walk.png';
+import backgroundImage from '../game_module/background1.jpeg';
+import enemyImage from '../game_module/Dog_Black.png'
 
 const Game = () => {
   useEffect(() => {
@@ -9,6 +10,7 @@ const Game = () => {
     const ctx = canvas.getContext('2d');
     canvas.width = 800;
     canvas.height = 720;
+    const enemies = [];
 
     class InputHandler {
       constructor() {
@@ -111,23 +113,50 @@ const Game = () => {
         this.height = 720;
         this.speed = 10;
       }
-        draw(context){
-          context.drawImage(this.image, this.x, this.y, this.width, this.height);
-          context.drawImage(this.image, this.x + this.width - this.speed, this.y, this.width, this.height);
-        }
-        update(){
-          this.x -= this.speed;
-          if (this.x < 0 - this.width) this.x = 0;
-        }
+      draw(context) {
+        context.drawImage(this.image, this.x, this.y, this.width, this.height);
+        context.drawImage(this.image, this.x + this.width - this.speed, this.y, this.width, this.height);
       }
-    
-
-    class Enemy {
-
+      update() {
+        this.x -= this.speed;
+        if (this.x < 0 - this.width) this.x = 0;
+      }
     }
 
-    function handleEnemies() {
 
+    class Enemy {
+      constructor(gameWidth, gameHeight) {
+        this.gameWidth = gameWidth;
+        this.gameHeight = gameHeight;
+        this.width = 160;
+        this.height = 119;
+        this.image = new Image();
+        this.image.src = enemyImage;
+        this.x = this.gameWidth;
+        this.y = this.gameHeight - this.height;
+        this.frameX = 0;
+        this.speed = 8;
+      }
+      draw(context) {
+        context.drawImage(this.image, 0 * this.width, 0 * this.height, this.width, this.height, this.x, this.y, this.width, this.height);
+      }
+      update() {
+        this.x -= this.speed;
+      }
+    }
+
+    function handleEnemies(deltaTime) {
+      if (enemyTimer > enemyInterval + randomEnemyInterval) {
+        enemies.push(new Enemy(canvas.width, canvas.height));
+        randomEnemyInterval = Math.random() * 1000 + 500;
+        enemyTimer = 0;
+      } else {
+        enemyTimer += deltaTime;
+      }
+      enemies.forEach(enemy => {
+        enemy.draw(ctx);
+        enemy.update();
+      });
     }
 
     function displayStatusText() {
@@ -138,13 +167,20 @@ const Game = () => {
     const player = new Player(canvas.width, canvas.height);
     const background = new Background(canvas.width, canvas.height);
 
+    let lastTime = 0;
+    let enemyTimer = 0;
+    const enemyInterval = 1000;
+    let randomEnemyInterval = Math.random() * 1000 + 500;
 
-    function animate() {
+    function animate(timeStamp) {
+      const deltaTime = timeStamp - lastTime;
+      lastTime = timeStamp;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       background.draw(ctx);
       background.update();
       player.draw(ctx);
       player.update(input);
+      handleEnemies(deltaTime);
       requestAnimationFrame(animate);
     }
     animate();
