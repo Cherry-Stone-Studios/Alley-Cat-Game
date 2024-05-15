@@ -183,7 +183,7 @@ const Game = () => {
       handleEnemies(deltaTime);
       requestAnimationFrame(animate);
     }
-    animate();
+    animate(0);
 
     return () => {
       input.removeEventListeners();
