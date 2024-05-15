@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import '../game_module/style.css';
 import playerImage from '../game_module/Walk.png'
+import backgroundImage from '../game_module/background1.jpeg'
 
 const Game = () => {
   useEffect(() => {
@@ -20,9 +21,9 @@ const Game = () => {
       handleKeyDown(e) {
         if (
           (e.key === 'ArrowDown' ||
-          e.key === 'ArrowUp' ||
-          e.key === 'ArrowLeft' ||
-          e.key === 'ArrowRight') &&
+            e.key === 'ArrowUp' ||
+            e.key === 'ArrowLeft' ||
+            e.key === 'ArrowRight') &&
           this.keys.indexOf(e.key) === -1
         ) {
           this.keys.push(e.key);
@@ -45,7 +46,7 @@ const Game = () => {
     }
 
     class Player {
-      constructor(gameWidth, gameHeight){
+      constructor(gameWidth, gameHeight) {
         this.gameWidth = gameWidth;
         this.gameHeight = gameHeight;
         this.width = 200;
@@ -70,7 +71,7 @@ const Game = () => {
         );
       }
       update(input) {
-        if(input.keys.indexOf('ArrowRight') > -1){
+        if (input.keys.indexOf('ArrowRight') > -1) {
           this.speed = 5;
         } else if (input.keys.indexOf('ArrowLeft') > -1) {
           this.speed = -5;
@@ -81,10 +82,10 @@ const Game = () => {
         }
         this.x += this.speed;
 
-        if (this.x <0) this.x = 0;
+        if (this.x < 0) this.x = 0;
         else if (this.x > this.gameWidth - this.width) this.x = this.gameWidth - this.width
         this.y += this.vy;
-        if (!this.onGround()){
+        if (!this.onGround()) {
           this.vy += this.weight
           this.frameY = 1;
         } else {
@@ -93,14 +94,33 @@ const Game = () => {
         }
         if (this.y > this.gameHeight - this.height) this.y - this.gameHeight - this.height
       }
-      onGround(){
+      onGround() {
         return this.y >= this.gameHeight - this.height;
       }
     }
 
     class Background {
-
-    }
+      constructor(gameWidth, gameHeight) {
+        this.gameWidth = gameWidth;
+        this.gameHeight = gameHeight;
+        this.image = new Image();
+        this.image.src = backgroundImage;
+        this.x = 0;
+        this.y = 0;
+        this.width = 2400;
+        this.height = 720;
+        this.speed = 10;
+      }
+        draw(context){
+          context.drawImage(this.image, this.x, this.y, this.width, this.height);
+          context.drawImage(this.image, this.x + this.width - this.speed, this.y, this.width, this.height);
+        }
+        update(){
+          this.x -= this.speed;
+          if (this.x < 0 - this.width) this.x = 0;
+        }
+      }
+    
 
     class Enemy {
 
@@ -116,13 +136,17 @@ const Game = () => {
 
     const input = new InputHandler();
     const player = new Player(canvas.width, canvas.height);
+    const background = new Background(canvas.width, canvas.height);
+
 
     function animate() {
-      ctx.clearRect(0,0,canvas.width, canvas.height);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      background.draw(ctx);
+      background.update();
       player.draw(ctx);
       player.update(input);
       requestAnimationFrame(animate);
-    } 
+    }
     animate();
 
     return () => {
