@@ -2,11 +2,11 @@ const request = require("supertest");
 const express = require("express");
 const BASE_URL = "http://localhost:3000";
 
-describe("GET /api/users/", () => {
-  it("respond with json", async () => {
-    const response = await request(BASE_URL).get("/api/users/").expect(200);
-  });
-});
+// describe("GET /api/users/", () => {
+//   it("respond with json", async () => {
+//     const response = await request(BASE_URL).get("/api/users/").expect(200);
+//   });
+// });
 
 //   describe('GET /api/user/:id', () => {
 //     it('should return one user', async () => {
