@@ -28,13 +28,7 @@ console.log();
 
 // Create/POST
 
-const createUser = async ({
-  name,
-  username,
-  email,
-  password,
-  date_of_birth,
-}) => {
+const createUser = async ({ name, username, email, password, date_of_birth }) => {
   try {
     const age = getAge(date_of_birth);
 
@@ -47,9 +41,7 @@ const createUser = async ({
     } else if (password.length > 250) {
       throw Error(`Your password is too long!`);
     } else if (age < 13) {
-      throw Error(
-        `Thanks for your interest in registering! Please ask your guardian to help you register an account.`
-      );
+      throw Error(`Thanks for your interest in registering! Please ask your guardian to help you register an account.`);
     } else {
       const plainTextPassword = password;
       const saltRounds = 10;
@@ -100,30 +92,22 @@ const getUserByUsername = async (username) => {
   }
 };
 
-const getUserById = async (userId) => {
+const getUserById = async (id) => {
   try {
     const userById = await prisma.user.findUnique({
       where: {
-        userId,
+        id,
       },
     });
 
-    return userById.user;
+    return userById;
   } catch (err) {
     throw err;
   }
 };
 
 // Update/PATCH
-const adminUpdatesUser = async (
-  name,
-  username,
-  email,
-  password,
-  date_of_birth,
-  is_admin,
-  nyan_unlocked
-) => {
+const adminUpdatesUser = async (name, username, email, password, date_of_birth, is_admin, nyan_unlocked) => {
   try {
     const updatedUser = await prisma.user.update({
       where: {

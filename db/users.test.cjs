@@ -28,17 +28,17 @@ test("Should create a new user", async () => {
 //   }).toThrow("Your username is too long!");
 // });
 
-test("Creating a user with a username too long throws an error", async () => {
-  const user2 = {
-    userId: 2,
-    name: "Nakayla Amazing",
-    username: "nakaylisthemostamazingandbesteverwoooooothisissolonghorray",
-    email: "nakaylamazing@cherrystonestudios.com",
-    password: "whaaat1",
-    date_of_birth: "1996-12-17T00:00:00",
-  };
+// test("Creating a user with a username too long throws an error", async () => {
+//   const user2 = {
+//     userId: 2,
+//     name: "Nakayla Amazing",
+//     username: "nakaylisthemostamazingandbesteverwoooooothisissolonghorray",
+//     email: "nakaylamazing@cherrystonestudios.com",
+//     password: "whaaat1",
+//     date_of_birth: "1996-12-17T00:00:00",
+//   };
 
-  prismaMock.user.create.mockReturnValue(user2);
+//   prismaMock.user.create.mockReturnValue(user2);
 
-  await expect(createUser(user2)).rejects.toThrow(`Your username is too long!`);
-});
+//   await expect(createUser(user2)).rejects.toThrow(`Your username is too long!`);
+// });

@@ -1,17 +1,15 @@
-
-const { requireAdmin, requireUser } = require('../utils.cjs');
-
-const express = require('express');
+const { requireAdmin, requireUser } = require("../utils.cjs");
+const express = require("express");
 const router = express.Router();
 
-// /api
+///api
 
-router.use('/api/users', requireUser, require('./users.cjs'));
+router.use("/users", require("./users.cjs"));
 
 //accessing all scores routes
-router.use('/api/scores', require('./scores.cjs'));
+// router.use('/scores', require('./scores.cjs'));
 
-// accessing all admin routes
-router.use('/api/admin', requireAdmin, require('./admin.cjs'));
+// accessing all admin routes (only accessible as ADMIN)
+// router.use('/admin', requireAdmin, require('./admin.cjs'));
 
 module.exports = router;
