@@ -32,8 +32,8 @@ const Game = () => {
           this.keys.indexOf(e.key) === -1
         ) {
           this.keys.push(e.key);
-        }
-      }
+        } else if (e.key === 'Enter' && gameOver) restartGame();
+      } 
       handleKeyUp(e) {
         if (
           e.key === 'ArrowDown' ||
@@ -70,14 +70,14 @@ const Game = () => {
         this.weight = 2;
         this.sprite = sprite; //Identity: ex 'orangeCat'
       }
+
+      restart(){
+        this.x = 10;
+        this.y = this.gameHeight - this.height;
+        this.frameY = 0;
+      }
+
       draw(context) {
-        // context.beginPath();
-        // context.arc(this.x + this.width/2, this.y + this.height/2, this.width/2, 0, Math.PI * 2);
-        // context.stroke();
-        // context.strokeStyle = 'blue';
-        // context.beginPath();
-        // context.arc(this.x, this.y, this.height / 2, this.width / 2, 0, Math.PI * 2);
-        // context.stroke();
         context.drawImage(
           this.image,
           this.frameX * this.spriteWidth,
@@ -149,6 +149,9 @@ const Game = () => {
         this.x -= this.speed;
         if (this.x < 0 - this.width) this.x = 0;
       }
+      restart(){
+        this.x = 0;
+      }
     }
 
 
@@ -167,15 +170,6 @@ const Game = () => {
         this.markedForDeletion = false;
       }
       draw(context) {
-        // context.strokeStyle = 'white';
-        // context.strokeRect(this.x, this.y, this.width, this.height);
-        // context.beginPath();
-        // context.arc(this.x + this.width / 2, this.y + this.height / 2, this.width / 2, 0, Math.PI * 2);
-        // context.stroke();
-        // context.strokeStyle = 'blue';
-        // context.beginPath();
-        // context.arc(this.x, this.y, this.height / 2, this.width / 2, 0, Math.PI * 2);
-        // context.stroke();
         context.drawImage(this.image, 0 * this.width, 0 * this.height, this.width, this.height, this.x, this.y, this.width, this.height);
       }
       update() {
@@ -211,6 +205,15 @@ const Game = () => {
         context.fillStyle = 'yellow';
         context.fillText('GAME OVER, try again!', canvas.width/2, 200);
       }
+    }
+
+    function restartGame(){
+      player.restart();
+      background.restart();
+      enemies = [];
+      score = 0;
+      gameOver = false;
+      animate(0);
     }
 
     const input = new InputHandler();
