@@ -11,7 +11,7 @@ const Game = () => {
     const ctx = canvas.getContext('2d');
     canvas.width = 800;
     canvas.height = 720;
-    const enemies = [];
+    let enemies = [];
 
     class InputHandler {
       constructor() {
@@ -147,12 +147,14 @@ const Game = () => {
         this.y = this.gameHeight - this.height;
         this.frameX = 0;
         this.speed = 8;
+        this.markedForDeletion = false;
       }
       draw(context) {
         context.drawImage(this.image, 0 * this.width, 0 * this.height, this.width, this.height, this.x, this.y, this.width, this.height);
       }
       update() {
         this.x -= this.speed;
+        if (this.x < 0 - this.width) this.markedForDeletion = true;
       }
     }
 
@@ -168,6 +170,7 @@ const Game = () => {
         enemy.draw(ctx);
         enemy.update();
       });
+      enemies = enemies.filter(enemy => !enemy.markedForDeletion)
     }
 
     function displayStatusText() {
