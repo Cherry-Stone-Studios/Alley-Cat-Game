@@ -12,6 +12,8 @@ const Game = () => {
     canvas.width = 800;
     canvas.height = 720;
     let enemies = [];
+    let score = 0;
+    let gameOver = false;
 
     class InputHandler {
       constructor() {
@@ -69,6 +71,13 @@ const Game = () => {
         this.sprite = sprite; //Identity: ex 'orangeCat'
       }
       draw(context) {
+        // context.beginPath();
+        // context.arc(this.x + this.width/2, this.y + this.height/2, this.width/2, 0, Math.PI * 2);
+        // context.stroke();
+        // context.strokeStyle = 'blue';
+        // context.beginPath();
+        // context.arc(this.x, this.y, this.height / 2, this.width / 2, 0, Math.PI * 2);
+        // context.stroke();
         context.drawImage(
           this.image,
           this.frameX * this.spriteWidth,
@@ -78,12 +87,20 @@ const Game = () => {
           this.x,
           this.y,
           this.width,
-          this.height
+          this.height,
         );
       }
 
       //Can put animations based on speed. Ex: Speed 0 = idle.
-      update(input) {
+      update(input, deltaTime, enemies) {
+        enemies.forEach(enemy => {
+          const dx = (enemy.x + enemy.width/2) - (this.x + this.width/2);
+          const dy = (enemy.y + enemy.height/2) - (this.y + this.height/2);
+          const distance = Math.sqrt(dx*dx+dy*dy);
+          if (distance < enemy.width/2 + this.width/2){
+            gameOver = true;
+          }
+        })
         if (input.keys.indexOf('ArrowRight') > -1) {
           this.speed = 5;
         } else if (input.keys.indexOf('ArrowLeft') > -1) {
@@ -146,15 +163,26 @@ const Game = () => {
         this.x = this.gameWidth;
         this.y = this.gameHeight - this.height;
         this.frameX = 0;
-        this.speed = 8;
+        this.speed = 12;
         this.markedForDeletion = false;
       }
       draw(context) {
+        // context.strokeStyle = 'white';
+        // context.strokeRect(this.x, this.y, this.width, this.height);
+        // context.beginPath();
+        // context.arc(this.x + this.width / 2, this.y + this.height / 2, this.width / 2, 0, Math.PI * 2);
+        // context.stroke();
+        // context.strokeStyle = 'blue';
+        // context.beginPath();
+        // context.arc(this.x, this.y, this.height / 2, this.width / 2, 0, Math.PI * 2);
+        // context.stroke();
         context.drawImage(this.image, 0 * this.width, 0 * this.height, this.width, this.height, this.x, this.y, this.width, this.height);
       }
       update() {
         this.x -= this.speed;
-        if (this.x < 0 - this.width) this.markedForDeletion = true;
+        if (this.x < 0 - this.width)
+          this.markedForDeletion = true;
+        score++;
       }
     }
 
@@ -162,19 +190,27 @@ const Game = () => {
       if (enemyTimer > enemyInterval + randomEnemyInterval) {
         enemies.push(new Enemy(canvas.width, canvas.height));
         randomEnemyInterval = Math.random() * 1000 + 500;
+        console.log(enemies);
         enemyTimer = 0;
       } else {
         enemyTimer += deltaTime;
       }
       enemies.forEach(enemy => {
         enemy.draw(ctx);
-        enemy.update();
+        enemy.update(deltaTime);
       });
       enemies = enemies.filter(enemy => !enemy.markedForDeletion)
     }
 
-    function displayStatusText() {
-
+    function displayStatusText(context) {
+      context.fillStyle = 'yellow';
+      context.font = '40px Helvetica';
+      context.fillText('Score: ' + score, 50, 110);
+      if (gameOver){
+        context.textAlign = 'center';
+        context.fillStyle = 'yellow';
+        context.fillText('GAME OVER, try again!', canvas.width/2, 200);
+      }
     }
 
     const input = new InputHandler();
@@ -194,9 +230,10 @@ const Game = () => {
       background.update();
       animatedSprite(player, "walk", "walk");
       player.draw(ctx);
-      player.update(input);
+      player.update(input, deltaTime, enemies);
       handleEnemies(deltaTime);
-      requestAnimationFrame(animate);
+      displayStatusText(ctx);
+      if (!gameOver) requestAnimationFrame(animate);
     }
     animate(0);
 
