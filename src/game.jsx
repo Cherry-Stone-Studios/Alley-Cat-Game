@@ -15,6 +15,7 @@ const Game = () => {
     let score = 0;
     let gameOver = false;
 
+    //Handles any keyboard inputs from the player
     class InputHandler {
       constructor() {
         this.keys = [];
@@ -23,6 +24,7 @@ const Game = () => {
         window.addEventListener('keydown', this.handleKeyDown);
         window.addEventListener('keyup', this.handleKeyUp);
       }
+      //Adds keys to an array when pressed, restarts game if enter is pressed while game is over
       handleKeyDown(e) {
         if (
           (e.key === 'ArrowDown' ||
@@ -34,6 +36,7 @@ const Game = () => {
           this.keys.push(e.key);
         } else if (e.key === 'Enter' && gameOver) restartGame();
       } 
+      //Removes key from the keys array when the button is released
       handleKeyUp(e) {
         if (
           e.key === 'ArrowDown' ||
@@ -44,12 +47,14 @@ const Game = () => {
           this.keys.splice(this.keys.indexOf(e.key), 1)
         }
       }
+      //Removes event listeners when component is unmounted
       removeEventListeners() {
         window.removeEventListener('keydown', this.handleKeyDown);
         window.removeEventListener('keyup', this.handleKeyUp);
       }
     }
 
+    //Class representing the player character, the kitty
     class Player {
       constructor(gameWidth, gameHeight, sprite) {
         this.gameWidth = gameWidth;
@@ -70,13 +75,14 @@ const Game = () => {
         this.weight = 2;
         this.sprite = sprite; //Identity: ex 'orangeCat'
       }
-
+      //Resets player position and frame Y to initial values upon restart
       restart(){
         this.x = 10;
         this.y = this.gameHeight - this.height;
         this.frameY = 0;
+        this.vy = 0;
       }
-
+      //Draws the player on the canvas the game is using
       draw(context) {
         context.drawImage(
           this.image,
@@ -92,6 +98,7 @@ const Game = () => {
       }
 
       //Can put animations based on speed. Ex: Speed 0 = idle.
+      //Updates player position and handles collisions with enemies
       update(input, deltaTime, enemies) {
         enemies.forEach(enemy => {
           const dx = (enemy.x + enemy.width/2) - (this.x + this.width/2);
@@ -110,6 +117,11 @@ const Game = () => {
         } else {
           this.speed = 0;
         }
+        if (input.keys.indexOf('ArrowUp') > -1 && this.onGround()) {
+          if (input.keys.indexOf('ArrowRight') > -1) {
+            this.vy -= 32; 
+          }}
+        
         this.x += this.speed;
 
         if (this.x < 0) this.x = 0;
@@ -124,11 +136,13 @@ const Game = () => {
         }
         if (this.y > this.gameHeight - this.height) this.y - this.gameHeight - this.height
       }
+      //Checks if player is on ground or in air
       onGround() {
         return this.y >= this.gameHeight - this.height;
       }
     }
 
+    //Represents our game's background
     class Background {
       constructor(gameWidth, gameHeight) {
         this.gameWidth = gameWidth;
@@ -141,20 +155,23 @@ const Game = () => {
         this.height = 720;
         this.speed = 10;
       }
+      //Draws the background on the canvas
       draw(context) {
         context.drawImage(this.image, this.x, this.y, this.width, this.height);
         context.drawImage(this.image, this.x + this.width - this.speed, this.y, this.width, this.height);
       }
+      //Updates the background position
       update() {
         this.x -= this.speed;
         if (this.x < 0 - this.width) this.x = 0;
       }
+      //Restarts background position
       restart(){
         this.x = 0;
       }
     }
 
-
+    //Represents the enemies in our game 
     class Enemy {
       constructor(gameWidth, gameHeight) {
         this.gameWidth = gameWidth;
@@ -169,9 +186,11 @@ const Game = () => {
         this.speed = 12;
         this.markedForDeletion = false;
       }
+      //Draws the enemy on the canvas
       draw(context) {
         context.drawImage(this.image, 0 * this.width, 0 * this.height, this.width, this.height, this.x, this.y, this.width, this.height);
       }
+      //Updates enemy position and marks for deletion if off-screen
       update() {
         this.x -= this.speed;
         if (this.x < 0 - this.width)
@@ -180,6 +199,7 @@ const Game = () => {
       }
     }
 
+    //Handles creating and updating enemies
     function handleEnemies(deltaTime) {
       if (enemyTimer > enemyInterval + randomEnemyInterval) {
         enemies.push(new Enemy(canvas.width, canvas.height));
@@ -196,9 +216,11 @@ const Game = () => {
       enemies = enemies.filter(enemy => !enemy.markedForDeletion)
     }
 
+    //Displays score and game over text
     function displayStatusText(context) {
       context.fillStyle = 'yellow';
       context.font = '40px Helvetica';
+      context.textAlign = 'left';
       context.fillText('Score: ' + score, 50, 110);
       if (gameOver){
         context.textAlign = 'center';
@@ -207,7 +229,8 @@ const Game = () => {
       }
     }
 
-    function restartGame(){
+    //Restarts the game by resetting player, background, enemies and score
+    function restartGame(ctx){
       player.restart();
       background.restart();
       enemies = [];
@@ -225,6 +248,7 @@ const Game = () => {
     const enemyInterval = 1000;
     let randomEnemyInterval = Math.random() * 1000 + 500;
 
+    //Main game loop: updates and renders game objects
     function animate(timeStamp) {
       const deltaTime = timeStamp - lastTime;
       lastTime = timeStamp;
