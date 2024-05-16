@@ -8,8 +8,9 @@
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "test": "jest",
-    "seed:dev": "nodemon ./db/seed.cjs"
+    "test": "NODE_OPTIONS=--experimental-vm-modules && jest",
+    "seed:dev": "nodemon ./db/seed.cjs",
+    "server:dev": "nodemon server.cjs"
   },
   "dependencies": {
     "@prisma/client": "^5.13.0",
@@ -27,7 +28,8 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.23.1",
-    "redux": "^5.0.1"
+    "redux": "^5.0.1",
+    "supertest": "^7.0.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",
