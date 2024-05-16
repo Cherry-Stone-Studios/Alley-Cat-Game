@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 import '../game_module/style.css';
-import playerImage from '../game_module/Walk.png';
+import playerImage from './assets/orangeCat/orangeCatSprite.png';
 import backgroundImage from '../game_module/background1.jpeg';
-import enemyImage from '../game_module/Dog_Black.png'
+import enemyImage from '../game_module/Dog_Black.png';
+import animatedSprite from './SpriteAnimation.jsx';
 
 const Game = () => {
   useEffect(() => {
@@ -48,30 +49,40 @@ const Game = () => {
     }
 
     class Player {
-      constructor(gameWidth, gameHeight) {
+      constructor(gameWidth, gameHeight, sprite) {
         this.gameWidth = gameWidth;
         this.gameHeight = gameHeight;
-        this.width = 200;
-        this.height = 200;
+        this.width = 120; // size of cats
+        this.height = 100;
+        this.spriteWidth = 47;
+        this.spriteHeight = 30;
         this.x = 10;
         this.y = this.gameHeight - this.height;
         this.image = new Image();
         this.image.src = playerImage;
         this.frameX = 0;
-        this.frameY = 0;
+        this.frameY = 0; //Row that cat starts out as
+        this.frameCount = 0;
         this.speed = 0;
         this.vy = 0;
-        this.weight = 1;
+        this.weight = 2;
+        this.sprite = sprite; //Identity: ex 'orangeCat'
       }
       draw(context) {
         context.drawImage(
           this.image,
+          this.frameX * this.spriteWidth,
+          this.frameY * this.spriteHeight,
+          this.spriteWidth,
+          this.spriteHeight,
           this.x,
           this.y,
           this.width,
           this.height
         );
       }
+
+      //Can put animations based on speed. Ex: Speed 0 = idle.
       update(input) {
         if (input.keys.indexOf('ArrowRight') > -1) {
           this.speed = 5;
@@ -89,10 +100,10 @@ const Game = () => {
         this.y += this.vy;
         if (!this.onGround()) {
           this.vy += this.weight
-          this.frameY = 1;
+          //this.frameY = 1;
         } else {
           this.vy = 0;
-          this.frameY = 0;
+          //this.frameY = 0;
         }
         if (this.y > this.gameHeight - this.height) this.y - this.gameHeight - this.height
       }
@@ -164,7 +175,7 @@ const Game = () => {
     }
 
     const input = new InputHandler();
-    const player = new Player(canvas.width, canvas.height);
+    const player = new Player(canvas.width, canvas.height, 'orangeCat');
     const background = new Background(canvas.width, canvas.height);
 
     let lastTime = 0;
@@ -178,6 +189,7 @@ const Game = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       background.draw(ctx);
       background.update();
+      animatedSprite(player, "walk", "walk");
       player.draw(ctx);
       player.update(input);
       handleEnemies(deltaTime);

@@ -1,6 +1,6 @@
 import './App.css'
 
-import Player from './Player.jsx';
+import Player from './SpriteAnimation.jsx';
 
 import {Route, Routes} from 'react-router-dom';
 import Game from './game';
@@ -10,10 +10,11 @@ function App() {
   return (
     <>
 
-      < Player />
+      
 
       <Routes>
         <Route path="/" element={<Game/>}/>
+        {/* < Player /> */}
       </Routes>
 
     </>
