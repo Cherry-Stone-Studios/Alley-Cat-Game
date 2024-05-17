@@ -23,7 +23,6 @@ const createScore = async ({ value, created_on, username, name }) => {
       return newScore;
     }
   } catch (err) {
-    console.log("Error creating score", err);
     throw err;
   }
 };
@@ -85,7 +84,6 @@ const deleteScore = async (id) => {
       },
     });
   } catch (err) {
-    console.log("Oops! Try that again.", err);
     throw err;
   }
 };
