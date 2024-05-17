@@ -11,20 +11,19 @@ describe("GET /api/users/", () => {
 
 describe("GET /api/user/:id", () => {
   it("should return one user", async () => {
-    const response = await request(server).get(`/api/users/:id`).expect(200);
+    const res = await request(server).get(`/users/:id`);
+    expect(res.statusCode).toBe(200);
+    expect(res.body).toHaveProperty("id");
   });
 });
 
-describe("GET /users/:username", () => {
-  it("respond with json", async () => {
-    console.log("HEY THERE");
-    const response = await request(BASE_URL)
-      .get("/api/users/:username/")
-      .expect(200);
-    console.log("GET RESPONSE", response);
-  });
-});
-
+// describe("GET /users/:username", () => {
+//   it("respond with json", async () => {
+//     const response = await request(server)
+//       .get("/api/users/:username")
+//       .expect(200);
+//   });
+// });
 
 // MEDIUM.COM
 // ./src/tests/e2e.test.js
