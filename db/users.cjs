@@ -75,7 +75,6 @@ const createUser = async ({
 const getAllUsers = async () => {
   try {
     const rows = await prisma.user.findMany();
-
     return rows;
   } catch (err) {
     throw err;

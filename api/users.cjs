@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const { jwt } = require("jsonwebtoken");
-const { requireAdmin } = require("./utils.cjs");
-const { bcrypt } = require("bcrypt");
+// const { requireAdmin } = require("./utils.cjs");
+// const { bcrypt } = require("bcrypt");
 
 const {
-  createUser,
+  // createUser,
   getAllUsers,
   getUserById,
   adminUpdatesUser,
@@ -14,12 +14,12 @@ const {
   getUserByUsername,
 } = require("../db/users.cjs");
 
-const signToken = (username, id) => {
-  const token = jwt.sign({ id, username }, process.env.JWT_SECRET, {
-    expiresIn: "2w",
-  });
-  return token;
-};
+// const signToken = (username, id) => {
+//   const token = jwt.sign({ id, username }, process.env.JWT_SECRET, {
+//     expiresIn: "2w",
+//   });
+//   return token;
+// };
 
 // CREATE/POST
 
@@ -66,7 +66,7 @@ const signToken = (username, id) => {
 
 // USER ACCESSED ENDPOINTS
 // READ/GET ALL USERS
-router.get("/api/users", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const users = await getAllUsers();
     res.status(200).send(users);
@@ -78,7 +78,8 @@ router.get("/api/users", async (req, res) => {
 // GET USER BY id
 router.get("/:id", async (req, res) => {
   try {
-    singleUser = await getUserById(parseInt(req.params.id)); //convert req.params.id to INT
+    const userId = parseInt(req.params.id); //convert req.params.id to INT
+    const singleUser = await getUserById(userId);
     res.status(200).send(singleUser);
   } catch (err) {
     throw err;
@@ -87,7 +88,7 @@ router.get("/:id", async (req, res) => {
 
 // READ/GET ALL USERS BY USERNAME
 
-router.get("/username/:username", async (req, res) => {
+router.get("/:username", async (req, res) => {
   const username = req.params.username;
   try {
     singleUser = await getUserByUsername(username);
@@ -97,18 +98,8 @@ router.get("/username/:username", async (req, res) => {
   }
 });
 
-// router.get("/:username", async (req, res) => {
-// 	const username = req.params.username
-// 	try{
-// 		singleUser = await getUserByUsername(username)
-// 		res.status(200).send(singleUser)
-// 	} catch (err){
-// 		throw err;
-// 	}
-// });
-
 //UPDATE USER BY USERNAME
-router.put("/api/users/:username", async (req, res) => {
+router.put("/:username", async (req, res) => {
   const username = req.params.username;
   try {
     singleUser = await userUpdatesUser(username);
@@ -118,24 +109,14 @@ router.put("/api/users/:username", async (req, res) => {
 });
 
 //DELETE USER
-router.delete("/api/users/:userId", async (req, res) => {
-  const username = req.params.userId;
+router.delete("/:id", async (req, res) => {
+  const userId = req.params.id;
   try {
     singleUser = await deleteUser(userId);
   } catch (err) {
     throw err;
   }
 });
-
-// //DELETE USER
-// router.delete("/users/:id", async (req, res) => {
-// 	const username = req.params.id
-// 	try{
-// 		singleUser = await deleteUser(id)
-// 	} catch (err){
-// 		throw err;
-// 	}
-// });
 
 // Admin accessed endpoints
 // TODO : IMPORT "requireAdmin" function to routes that only admin will reach
