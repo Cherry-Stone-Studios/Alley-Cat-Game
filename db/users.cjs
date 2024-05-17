@@ -1,13 +1,8 @@
 /* eslint-disable no-useless-catch */
 const prisma = require("../client.cjs");
 const bcrypt = require("bcrypt");
-
-// const Filter = require("bad-words"),
-//   filter = new Filter({ placeHolder: "x" });
-// import fs from "fs";
-// import path from "path";
-// let badwords = fs.readFileSync(path.resolve(__dirname, "swears.txt"), "utf8");
-// filter.addWords(badwords.split("\n"));
+const { doesContainBadWords } = require("deep-profanity-filter");
+const { wordFilter } = require("../moderation/filter.cjs");
 
 const getAge = (date_of_birth) => {
   let today = new Date();
@@ -35,33 +30,21 @@ const createUser = async ({
   password,
   date_of_birth,
 }) => {
-const createUser = async ({
-  name,
-  username,
-  email,
-  password,
-  date_of_birth,
-}) => {
   try {
     const age = getAge(date_of_birth);
-    const lowercaseUsername = username.toLowerCase();
+    const badWord = doesContainBadWords(username, wordFilter);
 
     if (name.length > 50) {
       throw Error(`We don't have enough room for your name!`);
     } else if (username.length > 25) {
       throw Error(`Your username is too long!`);
-    }
-    // else if (filter.isProfane(lowercaseUsername) === true) {
-    //   throw Error(`Your username is too naughty!`);
-    // }
-    else if (email.length > 75) {
+    } else if (badWord === true) {
+      throw Error(`Your username is too naughty!`);
+    } else if (email.length > 75) {
       throw Error(`Your email is too long!`);
     } else if (password.length > 250) {
       throw Error(`Your password is too long!`);
     } else if (age < 13) {
-      throw Error(
-        `Thanks for your interest in registering! Please ask your guardian to help you register an account.`
-      );
       throw Error(
         `Thanks for your interest in registering! Please ask your guardian to help you register an account.`
       );
@@ -83,7 +66,6 @@ const createUser = async ({
       return newUser;
     }
   } catch (err) {
-    console.log("Error creating user", err);
     throw err;
   }
 };
@@ -109,7 +91,6 @@ const getUserByUsername = async (username) => {
     });
     return user;
   } catch (err) {
-    console.log("Error getting user", err);
     throw err;
   }
 };
@@ -129,16 +110,6 @@ const getUserById = async (id) => {
 };
 
 // Update/PATCH
-
-const adminUpdatesUser = async (
-  name,
-  username,
-  email,
-  password,
-  date_of_birth,
-  is_admin,
-  nyan_unlocked
-) => {
 const adminUpdatesUser = async (
   name,
   username,
@@ -205,7 +176,6 @@ const deleteUser = async (req, id) => {
       },
     });
   } catch (err) {
-    console.log("Oops! Try that again.", err);
     throw err;
   }
 };
