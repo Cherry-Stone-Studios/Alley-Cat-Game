@@ -1,6 +1,9 @@
 import React, { useEffect } from 'react';
 import '../game_module/style.css';
-import playerImage from '../game_module/Walk.png'
+import playerImage from './assets/orangeCat/orangeCatSprite.png';
+import backgroundImage from '../game_module/background1.jpeg';
+import enemyImage from '../game_module/Dog_Black.png';
+import animatedSprite from './SpriteAnimation.jsx';
 
 const Game = () => {
   useEffect(() => {
@@ -8,7 +11,11 @@ const Game = () => {
     const ctx = canvas.getContext('2d');
     canvas.width = 800;
     canvas.height = 720;
+    let enemies = [];
+    let score = 0;
+    let gameOver = false;
 
+    //Handles any keyboard inputs from the player
     class InputHandler {
       constructor() {
         this.keys = [];
@@ -17,17 +24,19 @@ const Game = () => {
         window.addEventListener('keydown', this.handleKeyDown);
         window.addEventListener('keyup', this.handleKeyUp);
       }
+      //Adds keys to an array when pressed, restarts game if enter is pressed while game is over
       handleKeyDown(e) {
         if (
           (e.key === 'ArrowDown' ||
-          e.key === 'ArrowUp' ||
-          e.key === 'ArrowLeft' ||
-          e.key === 'ArrowRight') &&
+            e.key === 'ArrowUp' ||
+            e.key === 'ArrowLeft' ||
+            e.key === 'ArrowRight') &&
           this.keys.indexOf(e.key) === -1
         ) {
           this.keys.push(e.key);
-        }
-      }
+        } else if (e.key === 'Enter' && gameOver) restartGame();
+      } 
+      //Removes key from the keys array when the button is released
       handleKeyUp(e) {
         if (
           e.key === 'ArrowDown' ||
@@ -38,38 +47,253 @@ const Game = () => {
           this.keys.splice(this.keys.indexOf(e.key), 1)
         }
       }
+      //Removes event listeners when component is unmounted
       removeEventListeners() {
         window.removeEventListener('keydown', this.handleKeyDown);
         window.removeEventListener('keyup', this.handleKeyUp);
       }
     }
 
+    //Class representing the player character, the kitty
     class Player {
+      constructor(gameWidth, gameHeight, sprite) {
+        this.gameWidth = gameWidth;
+        this.gameHeight = gameHeight;
+        this.width = 120; // size of cats
+        this.height = 100;
+        this.spriteWidth = 47;
+        this.spriteHeight = 30;
+        this.x = 10;
+        this.y = this.gameHeight - this.height;
+        this.image = new Image();
+        this.image.src = playerImage;
+        this.frameX = 0;
+        this.frameY = 0; //Row that cat starts out as
+        this.frameCount = 0;
+        this.speed = 0;
+        this.vy = 0;
+        this.weight = 2;
+        this.sprite = sprite; //Identity: ex 'orangeCat'
+        this.spriteDirection = 'right';
+      }
+      //Resets player position and frame Y to initial values upon restart
+      restart(){
+        this.x = 10;
+        this.y = this.gameHeight - this.height;
+        this.frameY = 0;
+        this.vy = 0;
+      }
+      //Draws the player on the canvas the game is using
+      draw(context) {
+        context.drawImage(
+          this.image,
+          this.frameX * this.spriteWidth,
+          this.frameY * this.spriteHeight,
+          this.spriteWidth,
+          this.spriteHeight,
+          this.x,
+          this.y,
+          this.width,
+          this.height,
+        );
+      }
 
+      //Can put animations based on speed. Ex: Speed 0 = idle.
+      //Updates player position and handles collisions with enemies
+      update(input, deltaTime, enemies) {
+        enemies.forEach(enemy => {
+          const dx = (enemy.x + enemy.width/2) - (this.x + this.width/2);
+          const dy = (enemy.y + enemy.height/2) - (this.y + this.height/2);
+          const distance = Math.sqrt(dx*dx+dy*dy);
+          if (distance < enemy.width/2 + this.width/2){
+            gameOver = true;
+          }
+        })
+        if (input.keys.indexOf('ArrowRight') > -1) {
+          this.speed = 5;
+        } else if (input.keys.indexOf('ArrowLeft') > -1) {
+          this.speed = -5;
+        } else if (input.keys.indexOf('ArrowUp') > -1 && this.onGround()) {
+          this.vy -= 32;
+        } else {
+          this.speed = 0;
+        }
+        if (input.keys.indexOf('ArrowUp') > -1 && this.onGround()) {
+          if (input.keys.indexOf('ArrowRight') > -1) {
+            this.vy -= 32; 
+          }}
+        
+        this.x += this.speed;
+
+        if (this.x < 0) this.x = 0;
+        else if (this.x > this.gameWidth - this.width) this.x = this.gameWidth - this.width
+        this.y += this.vy;
+        if (!this.onGround()) {
+          this.vy += this.weight
+          //this.frameY = 1;
+        } else {
+          this.vy = 0;
+          //this.frameY = 0;
+        }
+        if (this.y > this.gameHeight - this.height) this.y - this.gameHeight - this.height
+      }
+      //Checks if player is on ground or in air
+      onGround() {
+        return this.y >= this.gameHeight - this.height;
+      }
     }
 
+    //Represents our game's background
     class Background {
-
+      constructor(gameWidth, gameHeight) {
+        this.gameWidth = gameWidth;
+        this.gameHeight = gameHeight;
+        this.image = new Image();
+        this.image.src = backgroundImage;
+        this.x = 0;
+        this.y = 0;
+        this.width = 2400;
+        this.height = 720;
+        this.speed = 8;
+      }
+      //Draws the background on the canvas
+      draw(context) {
+        context.drawImage(this.image, this.x, this.y, this.width, this.height);
+        context.drawImage(this.image, this.x + this.width - this.speed, this.y, this.width, this.height);
+      }
+      //Updates the background position
+      update() {
+        this.x -= this.speed;
+        if (this.x < 0 - this.width) this.x = 0;
+      }
+      //Restarts background position
+      restart(){
+        this.x = 0;
+      }
     }
 
+    //Represents the enemies in our game 
     class Enemy {
-
+      constructor(gameWidth, gameHeight, sprite) {
+        this.gameWidth = gameWidth;
+        this.gameHeight = gameHeight;
+        this.width = 160;
+        this.height = 110;
+        this.spriteWidth = 47;
+        this.spriteHeight = 30;
+        this.image = new Image();
+        this.image.src = enemyImage;
+        this.x = this.gameWidth;
+        this.y = this.gameHeight - this.height;
+        this.frameX = 0;
+        this.frameY = 0;
+        this.speed = 10;
+        this.frameCount = 0;
+        this.markedForDeletion = false;
+        this.sprite = sprite;
+        this.spriteDirection = 'left';
+        this.weight = 1;
+        this.vy = 0;
+      }
+      //Draws the enemy on the canvas
+      draw(context) {
+        // context.strokeStyle = 'white';
+        // context.strokeRect(this.x, this.y, this.width, this.height);
+        // context.beginPath();
+        // context.arc(this.x + this.width / 2, this.y + this.height / 2, this.width / 2, 0, Math.PI * 2);
+        // context.stroke();
+        // context.strokeStyle = 'blue';
+        // context.beginPath();
+        // context.arc(this.x, this.y, this.height / 2, this.width / 2, 0, Math.PI * 2);
+        // context.stroke();
+        context.drawImage(this.image, this.frameX * this.spriteWidth, this.frameY * this.spriteHeight, this.spriteWidth, this.spriteHeight, this.x, this.y, this.width, this.height);
+      }
+      //Updates enemy position and marks for deletion if off-screen
+      update() {
+        this.x -= this.speed;
+        if (this.x < 0 - this.width)
+          this.markedForDeletion = true;
+        score++;
+        this.y += this.vy;
+        if (!this.onGround()) {
+          this.vy += this.weight
+          //this.frameY = 1;
+        } else {
+          this.vy = 0;
+          //this.frameY = 0;
+        }
+        if (this.y > this.gameHeight - this.height) this.y - this.gameHeight - this.height
+      }
+      onGround() {
+        return this.y >= this.gameHeight - this.height;
+      }
     }
 
-    function handleEnemies() {
-
+    //Handles creating and updating enemies
+    function handleEnemies(deltaTime) {
+      if (enemyTimer > enemyInterval + randomEnemyInterval) {
+        enemies.push(new Enemy(canvas.width, canvas.height, 'shibaDog'));
+        randomEnemyInterval = Math.random() * 1000 + 500;
+        console.log(enemies);
+        enemyTimer = 0;
+      } else {
+        enemyTimer += deltaTime;
+      }
+      enemies.forEach(enemy => {
+        animatedSprite(enemy, "walk", "walk");
+        enemy.draw(ctx);
+        enemy.update(deltaTime);
+      });
+      enemies = enemies.filter(enemy => !enemy.markedForDeletion)
     }
 
-    function displayStatusText() {
+    //Displays score and game over text
+    function displayStatusText(context) {
+      context.fillStyle = 'yellow';
+      context.font = '40px Helvetica';
+      context.textAlign = 'left';
+      context.fillText('Score: ' + score, 50, 110);
+      if (gameOver){
+        context.textAlign = 'center';
+        context.fillStyle = 'yellow';
+        context.fillText('GAME OVER, try again!', canvas.width/2, 200);
+      }
+    }
 
+    //Restarts the game by resetting player, background, enemies and score
+    function restartGame(ctx){
+      player.restart();
+      background.restart();
+      enemies = [];
+      score = 0;
+      gameOver = false;
+      animate(0);
     }
 
     const input = new InputHandler();
+    const player = new Player(canvas.width, canvas.height, 'blackCat');
+    const background = new Background(canvas.width, canvas.height);
 
-    function animate() {
+    let lastTime = 0;
+    let enemyTimer = 0;
+    const enemyInterval = 1000;
+    let randomEnemyInterval = Math.random() * 1000 + 500;
 
-    } 
-    animate();
+    //Main game loop: updates and renders game objects
+    function animate(timeStamp) {
+      const deltaTime = timeStamp - lastTime;
+      lastTime = timeStamp;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      background.draw(ctx);
+      background.update();
+      animatedSprite(player, "walk", "walk");
+      player.draw(ctx);
+      player.update(input, deltaTime, enemies);
+      handleEnemies(deltaTime);
+      displayStatusText(ctx);
+      if (!gameOver) requestAnimationFrame(animate);
+    }
+    animate(0);
 
     return () => {
       input.removeEventListeners();
