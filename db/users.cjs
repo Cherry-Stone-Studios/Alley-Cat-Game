@@ -35,6 +35,13 @@ const createUser = async ({
   password,
   date_of_birth,
 }) => {
+const createUser = async ({
+  name,
+  username,
+  email,
+  password,
+  date_of_birth,
+}) => {
   try {
     const age = getAge(date_of_birth);
 
@@ -47,6 +54,9 @@ const createUser = async ({
     } else if (password.length > 250) {
       throw Error(`Your password is too long!`);
     } else if (age < 13) {
+      throw Error(
+        `Thanks for your interest in registering! Please ask your guardian to help you register an account.`
+      );
       throw Error(
         `Thanks for your interest in registering! Please ask your guardian to help you register an account.`
       );
@@ -65,7 +75,6 @@ const createUser = async ({
           date_of_birth: dob,
         },
       });
-
       return newUser;
     }
   } catch (err) {
@@ -90,7 +99,7 @@ const getUserByUsername = async (username) => {
   try {
     const user = await prisma.user.findUnique({
       where: {
-        username,
+        username: username,
       },
     });
     return user;
@@ -115,6 +124,15 @@ const getUserById = async (userId) => {
 };
 
 // Update/PATCH
+const adminUpdatesUser = async (
+  name,
+  username,
+  email,
+  password,
+  date_of_birth,
+  is_admin,
+  nyan_unlocked
+) => {
 const adminUpdatesUser = async (
   name,
   username,
