@@ -63,7 +63,6 @@ const createUser = async ({
           date_of_birth: dob,
         },
       });
-
       return newUser;
     }
   } catch (err) {
@@ -87,7 +86,7 @@ const getUserByUsername = async (username) => {
   try {
     const user = await prisma.user.findUnique({
       where: {
-        username,
+        username: username,
       },
     });
     return user;

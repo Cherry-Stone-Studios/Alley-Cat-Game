@@ -7,31 +7,22 @@ describe("GET /api/users/", () => {
   });
 });
 
-//   describe('GET /api/user/:id', () => {
-//     it('should return one user', async () => {
-//       const res = await request(app).get(`/users/${user.id}`);
-//       expect(res.statusCode).toBe(200);
-//       expect(res.body).toHaveProperty('id');
-//     });
-//   });
-// });
+describe("GET /api/user/:id", () => {
+  it("should return one user", async () => {
+    const response = await request(server).get(`/api/users/:id`).expect(200);
+  });
+});
 
-// describe("GET /api/users/:id", () => {
-//   it("should return one user", async () => {
-//     console.log("HEY THERE");
-//     const response = await request(BASE_URL).get("/api/users/${user.id}").expect(200).expect().toHaveProperty("id");
-//   });
-// });
+describe("GET /users/:username", () => {
+  it("respond with json", async () => {
+    console.log("HEY THERE");
+    const response = await request(BASE_URL)
+      .get("/api/users/:username/")
+      .expect(200);
+    console.log("GET RESPONSE", response);
+  });
+});
 
-// describe('GET /users/:username',  () => {
-//   it('respond with json', async () => {
-//     console.log('HEY THERE')
-//     const response = await request(BASE_URL)
-//       .get('/api/users/:username/')
-//       .expect(200)
-//       console.log('GET RESPONSE', response)
-//   })
-// });
 
 // MEDIUM.COM
 // ./src/tests/e2e.test.js

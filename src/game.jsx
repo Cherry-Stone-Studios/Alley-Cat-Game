@@ -74,6 +74,7 @@ const Game = () => {
         this.vy = 0;
         this.weight = 2;
         this.sprite = sprite; //Identity: ex 'orangeCat'
+        this.spriteDirection = 'right';
       }
       //Resets player position and frame Y to initial values upon restart
       restart(){
@@ -153,7 +154,7 @@ const Game = () => {
         this.y = 0;
         this.width = 2400;
         this.height = 720;
-        this.speed = 10;
+        this.speed = 8;
       }
       //Draws the background on the canvas
       draw(context) {
@@ -173,22 +174,39 @@ const Game = () => {
 
     //Represents the enemies in our game 
     class Enemy {
-      constructor(gameWidth, gameHeight) {
+      constructor(gameWidth, gameHeight, sprite) {
         this.gameWidth = gameWidth;
         this.gameHeight = gameHeight;
         this.width = 160;
-        this.height = 119;
+        this.height = 110;
+        this.spriteWidth = 47;
+        this.spriteHeight = 30;
         this.image = new Image();
         this.image.src = enemyImage;
         this.x = this.gameWidth;
         this.y = this.gameHeight - this.height;
         this.frameX = 0;
-        this.speed = 12;
+        this.frameY = 0;
+        this.speed = 10;
+        this.frameCount = 0;
         this.markedForDeletion = false;
+        this.sprite = sprite;
+        this.spriteDirection = 'left';
+        this.weight = 1;
+        this.vy = 0;
       }
       //Draws the enemy on the canvas
       draw(context) {
-        context.drawImage(this.image, 0 * this.width, 0 * this.height, this.width, this.height, this.x, this.y, this.width, this.height);
+        // context.strokeStyle = 'white';
+        // context.strokeRect(this.x, this.y, this.width, this.height);
+        // context.beginPath();
+        // context.arc(this.x + this.width / 2, this.y + this.height / 2, this.width / 2, 0, Math.PI * 2);
+        // context.stroke();
+        // context.strokeStyle = 'blue';
+        // context.beginPath();
+        // context.arc(this.x, this.y, this.height / 2, this.width / 2, 0, Math.PI * 2);
+        // context.stroke();
+        context.drawImage(this.image, this.frameX * this.spriteWidth, this.frameY * this.spriteHeight, this.spriteWidth, this.spriteHeight, this.x, this.y, this.width, this.height);
       }
       //Updates enemy position and marks for deletion if off-screen
       update() {
@@ -196,13 +214,25 @@ const Game = () => {
         if (this.x < 0 - this.width)
           this.markedForDeletion = true;
         score++;
+        this.y += this.vy;
+        if (!this.onGround()) {
+          this.vy += this.weight
+          //this.frameY = 1;
+        } else {
+          this.vy = 0;
+          //this.frameY = 0;
+        }
+        if (this.y > this.gameHeight - this.height) this.y - this.gameHeight - this.height
+      }
+      onGround() {
+        return this.y >= this.gameHeight - this.height;
       }
     }
 
     //Handles creating and updating enemies
     function handleEnemies(deltaTime) {
       if (enemyTimer > enemyInterval + randomEnemyInterval) {
-        enemies.push(new Enemy(canvas.width, canvas.height));
+        enemies.push(new Enemy(canvas.width, canvas.height, 'shibaDog'));
         randomEnemyInterval = Math.random() * 1000 + 500;
         console.log(enemies);
         enemyTimer = 0;
@@ -210,6 +240,7 @@ const Game = () => {
         enemyTimer += deltaTime;
       }
       enemies.forEach(enemy => {
+        animatedSprite(enemy, "walk", "walk");
         enemy.draw(ctx);
         enemy.update(deltaTime);
       });
@@ -240,7 +271,7 @@ const Game = () => {
     }
 
     const input = new InputHandler();
-    const player = new Player(canvas.width, canvas.height, 'orangeCat');
+    const player = new Player(canvas.width, canvas.height, 'blackCat');
     const background = new Background(canvas.width, canvas.height);
 
     let lastTime = 0;
