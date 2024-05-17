@@ -6,10 +6,11 @@ const router = express.Router();
 
 router.use("/users", require("./users.cjs"));
 
+// accessing all admin routes (only accessible as ADMIN)
+// TEST AGAIN AFTER LOG IN AND REGISTER ARE COMPLETE
+router.use("/admin", require("./admin.cjs"));
+
 //accessing all scores routes
 // router.use('/scores', require('./scores.cjs'));
-
-// accessing all admin routes (only accessible as ADMIN)
-// router.use('/admin', requireAdmin, require('./admin.cjs'));
 
 module.exports = router;
