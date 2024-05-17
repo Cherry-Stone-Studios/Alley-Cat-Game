@@ -1,12 +1,3 @@
-// install and use dotenv for the port
-require("dotenv").config();
-const PORT = process.env.PORT || 3000;
-
-// // install Prisma to run Jest Extended
-// const { PrismaClient } = require("@prisma/client");
-// const prisma = new PrismaClient();
-// module.exports =  prisma;
-
 // install and use Express
 const express = require("express");
 const server = express();
@@ -15,8 +6,8 @@ const server = express();
 const morgan = require("morgan");
 server.use(morgan("dev"));
 
-// const fs = require("fs"); // nodejs "file system" module where we are saving our morgan log
-// const path = require("path"); // creates a path in our "file system" to the file we are saving our morgan log in
+const fs = require("fs"); // nodejs "file system" module where we are saving our morgan log
+const path = require("path"); // creates a path in our "file system" to the file we are saving our morgan log in
 
 // !!!!!!!! TODO : FIX MORGAN BODY LOGGER !!!!!!!!
 // log morgan on body
@@ -36,7 +27,7 @@ server.use(bodyParser.urlencoded({ extended: false }));
 // requires getUserById
 // requires jsonwebtoken
 
-// const { getUserById } = require("./db/users.cjs");
+const { getUserById } = require("./db/users.cjs");
 const jwt = require("jsonwebtoken");
 
 // generate and server.use an Express Router for the API
@@ -78,7 +69,4 @@ apiRouter.use(async (req, res, next) => {
   }
 });
 
-// listen to the port
-server.listen(PORT, () => {
-  console.log(`Please adopt cat ${PORT} today!`);
-});
+module.exports = { server };
