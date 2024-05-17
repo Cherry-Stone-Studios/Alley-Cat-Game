@@ -117,7 +117,6 @@ router.put("/api/users/:username", async (req, res) => {
   }
 });
 
-
 //DELETE USER
 router.delete("/api/users/:userId", async (req, res) => {
   const username = req.params.userId;
@@ -159,7 +158,6 @@ router.put("/api/users/admin/:userId", async (req, res) => {
     throw err;
   }
 });
-
 
 // ADMIN ACCESSED ENDPOINTS
 //UPDATE USER BY USERNAME ADMIN
