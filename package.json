@@ -14,9 +14,9 @@
   },
   "dependencies": {
     "@prisma/client": "^5.13.0",
-    "bad-words": "^3.0.4",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
+    "deep-profanity-filter": "^2.3.3",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "faker": "^5.5.3",

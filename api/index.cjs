@@ -1,4 +1,4 @@
-const { requireAdmin, requireUser } = require("../utils.cjs");
+const { requireAdmin, requireUser } = require("./utils.cjs");
 const express = require("express");
 const router = express.Router();
 

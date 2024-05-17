@@ -3,7 +3,7 @@ const { prismaMock } = require("../singleton.cjs");
 
 test("Should create a valid new user", async () => {
   const user1 = {
-    userId: 1,
+    id: 1,
     name: "Anusha S. Delightful",
     username: "nooshydelightful",
     email: "nooshydelightful@charmelions.com",
@@ -14,7 +14,7 @@ test("Should create a valid new user", async () => {
   prismaMock.user.create.mockReturnValue(user1);
   const userResult1 = await createUser(user1);
   expect(userResult1).toEqual({
-    userId: 1,
+    id: 1,
     name: "Anusha S. Delightful",
     username: "nooshydelightful",
     email: "nooshydelightful@charmelions.com",
@@ -25,7 +25,7 @@ test("Should create a valid new user", async () => {
 
 test("Creating a user with a name too long throws an error", async () => {
   const user2 = {
-    userId: 2,
+    id: 2,
     name: "Nakaylisthemostamazingandbesteverwoooooothisissolonghorray Amazingandbesteverwoooooothisissolonghorray",
     username: "nakaylisamazing",
     email: "nakaylamazing@cherrystonestudios.com",
@@ -42,7 +42,7 @@ test("Creating a user with a name too long throws an error", async () => {
 
 test("Creating a user with a username too long throws an error", async () => {
   const user3 = {
-    userId: 3,
+    id: 3,
     name: "Chris the Incredible",
     username: "chrisisthemostiandbesteverwoooooothisissolonghorray",
     email: "chrisincredible@cherrystonestudios.com",
@@ -55,26 +55,26 @@ test("Creating a user with a username too long throws an error", async () => {
   await expect(createUser(user3)).rejects.toThrow(`Your username is too long!`);
 });
 
-// test("Creating a user with a naughty username throws an error", async () => {
-//   const user7 = {
-//     userId: 7,
-//     name: "Diablo the Naughty",
-//     username: "shootdidIdothat",
-//     email: "diablo@cherrystonestudios.com",
-//     password: "naughtyboi",
-//     date_of_birth: "2000-01-01T00:00:00",
-//   };
+test("Creating a user with a naughty username throws an error", async () => {
+  const user7 = {
+    id: 7,
+    name: "Diablo the Naughty",
+    username: "fuck",
+    email: "diablo@cherrystonestudios.com",
+    password: "naughtyboi",
+    date_of_birth: "2000-01-01T00:00:00",
+  };
 
-//   prismaMock.user.create.mockReturnValue(user7);
+  prismaMock.user.create.mockReturnValue(user7);
 
-//   await expect(createUser(user7)).rejects.toThrow(
-//     `Your username is too naughty!`
-//   );
-// });
+  await expect(createUser(user7)).rejects.toThrow(
+    `Your username is too naughty!`
+  );
+});
 
 test("Creating a user with a email too long throws an error", async () => {
   const user4 = {
-    userId: 4,
+    id: 4,
     name: "Valentino S. Cool",
     username: "valentinocoolcat",
     email:
@@ -90,7 +90,7 @@ test("Creating a user with a email too long throws an error", async () => {
 
 test("Creating a user with a password too long throws an error", async () => {
   const user5 = {
-    userId: 5,
+    id: 5,
     name: "Char and Miles",
     username: "char&miles",
     email: "miles4life@charmelions.com",
@@ -106,7 +106,7 @@ test("Creating a user with a password too long throws an error", async () => {
 
 test("Creating an underage user throws an error", async () => {
   const user6 = {
-    userId: 6,
+    id: 6,
     name: "Duke the Kid",
     username: "duke",
     email: "notoldenough@doubledukes.com",
