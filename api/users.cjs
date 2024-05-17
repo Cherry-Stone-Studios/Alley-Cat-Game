@@ -1,10 +1,18 @@
 const express = require("express");
 const router = express.Router();
 const { jwt } = require("jsonwebtoken");
-const { requireAdmin } = require("../utils.cjs");
+const { requireAdmin } = require("./utils.cjs");
 const { bcrypt } = require("bcrypt");
 
-const { createUser, getAllUsers, getUserById, adminUpdatesUser, userUpdatesUser, deleteUser, getUserByUsername } = require("../db/users.cjs");
+const {
+  createUser,
+  getAllUsers,
+  getUserById,
+  adminUpdatesUser,
+  userUpdatesUser,
+  deleteUser,
+  getUserByUsername,
+} = require("../db/users.cjs");
 
 const signToken = (username, id) => {
   const token = jwt.sign({ id, username }, process.env.JWT_SECRET, {

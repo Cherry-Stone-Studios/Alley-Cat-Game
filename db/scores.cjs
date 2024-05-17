@@ -1,20 +1,27 @@
 /* eslint-disable no-useless-catch */
 const prisma = require("../client.cjs");
+const { doesContainBadWords } = require("deep-profanity-filter");
+const { wordFilter } = require("../moderation/filter.cjs");
 
 // Create/POST
 
 const createScore = async ({ value, created_on, username, name }) => {
   try {
-    const newScore = await prisma.scores.create({
-      data: {
-        value,
-        created_on,
-        username,
-        name,
-      },
-    });
+    const badName = doesContainBadWords(name, wordFilter);
 
-    return newScore;
+    if (badName === true) {
+      throw Error(`Your name is too naughty!`);
+    } else {
+      const newScore = await prisma.scores.create({
+        data: {
+          value,
+          created_on,
+          username,
+          name,
+        },
+      });
+      return newScore;
+    }
   } catch (err) {
     console.log("Error creating score", err);
     throw err;
