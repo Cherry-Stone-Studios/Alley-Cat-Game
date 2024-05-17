@@ -9,9 +9,11 @@ describe("GET /api/users/", () => {
 
 describe("GET /api/user/:id", () => {
   it("should return one user", async () => {
-    const res = await request(server).get(`/users/:id`);
-    expect(res.statusCode).toBe(200);
-    expect(res.body).toHaveProperty("id");
+    const response1 = await request(server).get("/api/users/:id").expect(200);
+    const response2 = await request(server)
+      .get("/api/users/:id")
+      .expect(res.body)
+      .toHaveProperty("id");
   });
 });
 
