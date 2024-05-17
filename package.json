@@ -10,7 +10,7 @@
     "preview": "vite preview",
     "test": "NODE_OPTIONS=--experimental-vm-modules && jest",
     "seed:dev": "nodemon ./db/seed.cjs",
-    "server:dev": "nodemon server.cjs"
+    "server:dev": "nodemon app.cjs"
   },
   "dependencies": {
     "@prisma/client": "^5.13.0",
