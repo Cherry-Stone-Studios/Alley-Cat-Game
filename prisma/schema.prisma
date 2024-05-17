@@ -32,7 +32,7 @@ model scores {
   value      Int
   created_on DateTime @default(now())
   username   user?    @relation(fields: [name], references: [username])
-  name       String
+  name       String   @db.VarChar(25)
 }
 
 model images {

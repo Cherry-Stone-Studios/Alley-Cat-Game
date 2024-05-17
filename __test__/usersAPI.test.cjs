@@ -1,7 +1,5 @@
 const request = require("supertest");
-// const request = supertest("http://127.0.0.1:55503");
 const { server } = require("../server.cjs");
-// const BASE_URL = "http://localhost:3000";
 
 describe("GET /api/users/", () => {
   it("respond with json", async () => {
