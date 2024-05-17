@@ -23,4 +23,4 @@ jobs:
         run: npm install
 
       - name: Run Jest tests
-        run: npm run server:dev & && sleep 2s && npm test
+        run: npm test
