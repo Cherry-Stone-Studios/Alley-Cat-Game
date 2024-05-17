@@ -2,6 +2,13 @@
 const prisma = require("../client.cjs");
 const bcrypt = require("bcrypt");
 
+// const Filter = require("bad-words"),
+//   filter = new Filter({ placeHolder: "x" });
+// import fs from "fs";
+// import path from "path";
+// let badwords = fs.readFileSync(path.resolve(__dirname, "swears.txt"), "utf8");
+// filter.addWords(badwords.split("\n"));
+
 const getAge = (date_of_birth) => {
   let today = new Date();
   let birthDate = new Date(date_of_birth);
@@ -19,37 +26,27 @@ const getDOB = (date_of_birth) => {
   return dobISO;
 };
 
-const event = new Date("05 October 2011 14:48 UTC");
-console.log(event.toString());
-// Expected output: "Wed Oct 05 2011 16:48:00 GMT+0200 (CEST)"
-// Note: your timezone may vary
-
-console.log();
-
 // Create/POST
 
-const createUser = async ({
-  name,
-  username,
-  email,
-  password,
-  date_of_birth,
-}) => {
+const createUser = async ({ name, username, email, password, date_of_birth }) => {
   try {
     const age = getAge(date_of_birth);
+    const lowercaseUsername = username.toLowerCase();
 
     if (name.length > 50) {
       throw Error(`We don't have enough room for your name!`);
     } else if (username.length > 25) {
       throw Error(`Your username is too long!`);
-    } else if (email.length > 75) {
+    }
+    // else if (filter.isProfane(lowercaseUsername) === true) {
+    //   throw Error(`Your username is too naughty!`);
+    // }
+    else if (email.length > 75) {
       throw Error(`Your email is too long!`);
     } else if (password.length > 250) {
       throw Error(`Your password is too long!`);
     } else if (age < 13) {
-      throw Error(
-        `Thanks for your interest in registering! Please ask your guardian to help you register an account.`
-      );
+      throw Error(`Thanks for your interest in registering! Please ask your guardian to help you register an account.`);
     } else {
       const plainTextPassword = password;
       const saltRounds = 10;
@@ -100,30 +97,22 @@ const getUserByUsername = async (username) => {
   }
 };
 
-const getUserById = async (userId) => {
+const getUserById = async (id) => {
   try {
     const userById = await prisma.user.findUnique({
       where: {
-        userId,
+        id,
       },
     });
 
-    return userById.user;
+    return userById;
   } catch (err) {
     throw err;
   }
 };
 
 // Update/PATCH
-const adminUpdatesUser = async (
-  name,
-  username,
-  email,
-  password,
-  date_of_birth,
-  is_admin,
-  nyan_unlocked
-) => {
+const adminUpdatesUser = async (name, username, email, password, date_of_birth, is_admin, nyan_unlocked) => {
   try {
     const updatedUser = await prisma.user.update({
       where: {
