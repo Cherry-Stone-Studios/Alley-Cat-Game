@@ -19,7 +19,6 @@ const createScore = async ({ value, created_on, username, name }) => {
           value,
           created_on,
           username,
-          name: null,
         },
       });
       return userNewScore;
@@ -28,7 +27,6 @@ const createScore = async ({ value, created_on, username, name }) => {
         data: {
           value,
           created_on,
-          username: null,
           name,
         },
       });

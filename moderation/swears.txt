@@ -270,7 +270,7 @@ clogwog
 cnts
 cntz
 cocaine
-cock
+cock*
 cock-head
 cock-sucker
 Cock*
@@ -685,6 +685,7 @@ gypp
 gyppie
 gyppo
 gyppy
+gypsy
 h00r
 h0ar
 h0r
@@ -899,8 +900,6 @@ limey
 limpdick
 limy
 lingerie
-Lipshits
-Lipshitz
 liquor
 livesex
 loadedgun
@@ -1146,7 +1145,7 @@ pendy
 penetration
 peni5
 penile
-penis
+penis*
 penis-breath
 penises
 penthouse
@@ -1346,6 +1345,10 @@ screwing
 screwyou
 scrotum
 scum
+shit*
+shitty
+shitter
+shitfaced
 semen
 seppo
 servant
@@ -1582,7 +1585,7 @@ titfuckin
 titjob
 titlicker
 titlover
-tits
+tits*
 titt
 titt*
 tittie
