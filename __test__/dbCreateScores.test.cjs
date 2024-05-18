@@ -1,13 +1,13 @@
 const { createScore } = require("../db/scores.cjs");
 const { prismaMock } = require("../singleton.cjs");
 
-test("Should create a valid new score for a user", async () => {
+test("Create a new score for a registered user", async () => {
   const scores1 = {
     id: 1,
     value: 1000,
     created_on: "2000-01-01T00:00:00",
     username: "nakaylisamazing",
-    name: "nakaylisamazing",
+    name: null,
   };
 
   prismaMock.scores.create.mockReturnValue(scores1);
@@ -17,17 +17,17 @@ test("Should create a valid new score for a user", async () => {
     value: 1000,
     created_on: "2000-01-01T00:00:00",
     username: "nakaylisamazing",
-    name: "nakaylisamazing",
+    name: null,
   });
 });
 
-test("Should create a valid new score for an unregistered user", async () => {
+test("Create a new score for an unregistered user", async () => {
   const scores2 = {
     id: 2,
     value: 1000,
     created_on: "2000-01-01T00:00:00",
     username: null,
-    name: "nooshydelightful",
+    name: "newuser",
   };
 
   prismaMock.scores.create.mockReturnValue(scores2);
@@ -37,7 +37,7 @@ test("Should create a valid new score for an unregistered user", async () => {
     value: 1000,
     created_on: "2000-01-01T00:00:00",
     username: null,
-    name: "nooshydelightful",
+    name: "newuser",
   });
 });
 

@@ -11,16 +11,28 @@ const createScore = async ({ value, created_on, username, name }) => {
 
     if (badName === true) {
       throw Error(`Your name is too naughty!`);
-    } else {
-      const newScore = await prisma.scores.create({
+    } else if (name.length > 25) {
+      throw Error(`Your high score nickname is too long!`);
+    } else if (username.length > 0) {
+      const userNewScore = await prisma.scores.create({
         data: {
           value,
           created_on,
           username,
+          name: null,
+        },
+      });
+      return userNewScore;
+    } else {
+      const unregisteredNewScore = await prisma.scores.create({
+        data: {
+          value,
+          created_on,
+          username: null,
           name,
         },
       });
-      return newScore;
+      return unregisteredNewScore;
     }
   } catch (err) {
     throw err;
