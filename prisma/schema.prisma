@@ -32,28 +32,11 @@ model scores {
   value      Int
   created_on DateTime @default(now())
   username   user?    @relation(fields: [name], references: [username])
-  name       String   @db.VarChar(25)
+  name       String?  @db.VarChar(25)
 }
 
 model images {
-  id       Int    @id @default(autoincrement())
-  name     String
-  base00   String
-  idle01   String
-  idle02   String
-  idle03   String
-  hurt01   String
-  death01  String
-  death02  String
-  death03  String
-  death04  String
-  attack01 String
-  attack02 String
-  attack03 String
-  run00    String
-  run01    String
-  run02    String
-  run03    String
-  run04    String
-  run05    String
+  id     Int    @id @default(autoincrement())
+  name   String
+  sprite String
 }

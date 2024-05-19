@@ -120,9 +120,6 @@ const adminUpdatesUser = async (
 ) => {
   try {
     const updatedUser = await prisma.user.update({
-      where: {
-        is_admin: true,
-      },
       data: {
         name,
         username,
