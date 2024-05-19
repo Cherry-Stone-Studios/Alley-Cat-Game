@@ -147,7 +147,7 @@ test("Get scores for a registered user", async () => {
     id: 1,
     value: 1000,
     created_on: "2000-01-01",
-    username: "nakaylisamazing",
+    username: "nooshydelightful",
     name: "",
   };
 
@@ -155,7 +155,7 @@ test("Get scores for a registered user", async () => {
     id: 2,
     value: 2000,
     created_on: "2000-01-01",
-    username: "nakaylisamazing",
+    username: "nooshydelightful",
     name: "",
   };
 
@@ -163,19 +163,38 @@ test("Get scores for a registered user", async () => {
     id: 3,
     value: 3000,
     created_on: "2000-01-01",
-    username: "nakaylisamazing",
+    username: "nooshydelightful",
     name: "",
   };
 
   const user = {
-    username: "nakaylisamazing",
+    username: "nooshydelightful",
   };
 
-  await createScore(scores1, scores2, scores3);
+  await createScore(scores1);
+  await createScore(scores2);
+  await createScore(scores3);
   const usernameScores = await getScoresByUsername(user);
 
-  expect(usernameScores).toMatchObject({
-    name: "nakaylisamazing",
-    value: 1000,
-  });
+  expect(usernameScores).toMatchObject([
+    {
+      value: 1000,
+      created_on: "2000-01-01T00:00:00.000Z",
+      name: "nooshydelightful",
+      id: 1,
+    },
+    {
+      value: 2000,
+      created_on: "2000-01-01T00:00:00.000Z",
+      name: "nooshydelightful",
+      id: 2,
+    },
+
+    {
+      value: 3000,
+      created_on: "2000-01-01T00:00:00.000Z",
+      name: "nooshydelightful",
+      id: 3,
+    },
+  ]);
 });
