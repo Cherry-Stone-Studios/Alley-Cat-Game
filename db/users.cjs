@@ -163,12 +163,11 @@ const userUpdatesUser = async (id, name, username, email, password) => {
 
 // Delete
 
-const deleteUser = async (req, id) => {
+const deleteUser = async (id) => {
   try {
     await prisma.user.delete({
       where: {
         id: parseInt(id),
-        userId: req.user.id,
       },
     });
   } catch (err) {

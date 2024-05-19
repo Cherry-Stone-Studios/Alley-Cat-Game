@@ -14,17 +14,26 @@ datasource db {
 }
 
 model user {
-  id            Int      @id @default(autoincrement())
-  name          String   @db.VarChar(50)
-  username      String   @unique @db.VarChar(25)
-  email         String   @unique @db.VarChar(75)
-  password      String   @db.VarChar(250)
+  id            Int       @id @default(autoincrement())
+  name          String    @db.VarChar(50)
+  username      String    @unique @db.VarChar(25)
+  email         String    @unique @db.VarChar(75)
+  password      String    @db.VarChar(250)
   date_of_birth DateTime
-  is_admin      Boolean  @default(false)
-  nyan_unlocked Boolean  @default(false)
-  friends       user[]   @relation("Friends")
-  friendsof     user[]   @relation("Friends")
+  is_admin      Boolean   @default(false)
+  nyan_unlocked Boolean   @default(false)
   scores        scores[]
+  friends       friends[] @relation("friends")
+  friendsOf     friends[] @relation("friendsof")
+}
+
+model friends {
+  friends     user @relation("friends", fields: [friendsId], references: [id])
+  friendsId   Int
+  friendsOf   user @relation("friendsof", fields: [friendsOfId], references: [id])
+  friendsOfId Int
+
+  @@id([friendsId, friendsOfId])
 }
 
 model scores {
