@@ -50,6 +50,7 @@ const createScore = async ({ value, created_on, username, name }) => {
         },
       });
       return unregisteredNewScore;
+      return unregisteredNewScore;
     }
   } catch (err) {
     throw err;
