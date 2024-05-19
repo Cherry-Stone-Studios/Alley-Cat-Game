@@ -3,37 +3,20 @@ const prisma = require("../client.cjs");
 
 // Create/POST
 
-const addFriend = async (id, friendid) => {
+const addFriend = async ({ id, friendid }) => {
   try {
-    const newFriend = await prisma.user.update({
+    const userWithFriends = await prisma.user.update({
       where: {
-        id: id,
+        id,
       },
       data: {
         friends: {
-          connect: {
-            id: friendid,
-          },
-        },
-      },
-    });
-
-    return newFriend;
-  } catch (err) {
-    throw err;
-  }
-};
-
-// Read/GET
-
-const getOutgoingFriends = async () => {
-  try {
-    const friends = await prisma.user.findMany({
-      where: {
-        friends: {
-          select: {
-            username: true,
-            scores: true,
+          create: {
+            friendsOf: {
+              connect: {
+                id: friendid,
+              },
+            },
           },
         },
       },
@@ -41,7 +24,35 @@ const getOutgoingFriends = async () => {
         friends: true,
       },
     });
-    return friends;
+    return userWithFriends;
+  } catch (err) {
+    throw err;
+  }
+};
+
+// Read/GET
+
+const getOutgoingFriends = async ({ id, friendid }) => {
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        friends: {
+          include: {
+            friendsOf: {
+              select: {
+                username: true,
+                scores: { select: { value: true } },
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return user;
   } catch (err) {
     throw err;
   }
@@ -49,18 +60,29 @@ const getOutgoingFriends = async () => {
 
 // Delete
 
-const removeFriend = async (id) => {
+const removeFriend = async ({ id, friendid }) => {
   try {
-    await prisma.post.update({
+    const removedFriend = await prisma.user.update({
       where: {
         id,
       },
       data: {
         friends: {
-          disconnect: true,
+          disconnect: {
+            friendsOf: {
+              disconnect: {
+                id: friendid,
+              },
+            },
+          },
         },
       },
+      include: {
+        friends: true,
+      },
     });
+    console.log("MY FRIENDS ARE ALL GONE", removedFriend);
+    return removedFriend;
   } catch (err) {
     throw err;
   }
