@@ -15,6 +15,27 @@ server.use(express.json());
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: false }));
 
+// nodejs "file system" module where we are saving our morgan log
+const fs = require("fs");
+// creates a path in our "file system" to the file we are saving our morgan log in
+const accessLogStream = fs.createWriteStream(
+  path.join(__dirname, "access.log"),
+  { flags: "a" }
+);
+
+// middleware for morgan to create a token
+morgan.token("type", function (req, res) {
+  return req.headers["content-type"];
+});
+
+// log morgan on body
+server.use(
+  morgan(
+    ":method :url :status :res[content-length] - :response-time ms :date[web] :type",
+    { stream: accessLogStream }
+  )
+);
+
 // Use morgan for logging
 server.use(morgan("dev"));
 
