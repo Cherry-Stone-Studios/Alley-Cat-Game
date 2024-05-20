@@ -11,13 +11,12 @@ const server = express();
 // Middleware to parse JSON requests
 server.use(express.json());
 
-<<<<<<< HEAD
+
 // Middleware to parse URL-encoded data
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: false }));
 
-=======
->>>>>>> origin/#33Render
+
 // nodejs "file system" module where we are saving our morgan log
 const fs = require("fs");
 // creates a path in our "file system" to the file we are saving our morgan log in
@@ -39,8 +38,6 @@ server.use(
   )
 );
 
-<<<<<<< HEAD
-=======
 server.get("/", function (req, res) {
   res.send("Hello world! Cool game coming soon!!");
 });
@@ -48,7 +45,6 @@ server.get("/", function (req, res) {
 // Middleware to parse URL-encoded data
 server.use(bodyParser.urlencoded({ extended: false }));
 
->>>>>>> origin/#33Render
 // Use morgan for logging
 server.use(morgan("dev"));
 
