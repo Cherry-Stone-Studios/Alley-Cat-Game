@@ -1,3 +1,6 @@
+//install dotenv on server
+require("dotenv").config;
+
 // install and use Express
 const express = require("express");
 const server = express();
@@ -58,7 +61,7 @@ apiRouter.use(async (req, res, next) => {
   if (!auth) {
     next();
   }
-  // else if auth header contains Bearer
+  // else if auth header contains Bearer**
   // create a token for the user
   else if (auth.startsWith(prefix)) {
     const token = auth.slice(prefix.length);

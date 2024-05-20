@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const { jwt } = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 // const { requireAdmin } = require("./utils.cjs");
-// const { bcrypt } = require("bcrypt");
+const { bcrypt } = require("bcrypt");
+require("dotenv").config;
 
 const {
   createUser,
@@ -15,10 +16,12 @@ const {
 } = require("../db/users.cjs");
 
 // USING JWT TO SIGN USER WITH TOKEN THAT LASTS 2 WEEKS
-const signToken = (username, id) => {
-  const token = jwt.sign({ id, username }, process.env.JWT_SECRET, {
+const signToken = async ({ id, username }) => {
+  const user = { id, username };
+  const token = jwt.sign(user, process.env.JWT_SECRET, {
     expiresIn: "2w",
   });
+  console.log("TOKEN", token);
   return token;
 };
 
@@ -29,24 +32,59 @@ router.post("/register", async (req, res) => {
   const { name, username, email, password, date_of_birth } = req.body;
   try {
     // register user with createUser function
-    singleUser = await createUser(
+    singleUser = await createUser({
       name,
       username,
       email,
       password,
-      date_of_birth
-    );
-    console.log(singleUser);
+      date_of_birth,
+    });
     // sign token with user info
-    const token = signToken(singleUser.username, singleUser.id);
+    const token = await signToken({
+      id: singleUser.id,
+      username: singleUser.username,
+    });
+    console.log("TOKEN", token);
     // Send back the token w/ message
-    res
-      .send({
-        message: `Thank you for registering, wonderful to meet you ${singleUser.name}.`,
-      })
-      .send(201);
+    res.send({
+      message: `Thank you for registering, wonderful to meet you ${singleUser.name}.`,
+      token,
+    });
   } catch (err) {
     throw err;
+  }
+});
+
+// login to existing account with JWT
+// api/users/login
+router.post("/login", async (req, res) => {
+  // User gives us a username and password on the body
+  const { username, plainPassword } = req.body;
+
+  // does this user already exist?
+  try {
+    const user = await getUserByUsername({ username });
+
+    //if there is no user, send back a 401 Unauthorized
+
+    if (!user) {
+      res.sendStatus(401);
+    } else {
+      // checkpassword against the hash
+      const validPassword = await bcrypt.compare(plainPassword, user.password);
+      if (validPassword) {
+        // Valid user credentials were given
+
+        const token = signToken(user.username, user.id);
+
+        res.send({ message: "Successfully Logged in", token });
+      } else {
+        res.sendStatus(401);
+      }
+    }
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(500);
   }
 });
 

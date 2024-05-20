@@ -20,7 +20,7 @@ describe("POST /api/users/register", () => {
         res.body.id = "some fixed id";
         res.body.email = "john@john.com";
       })
-      .expect(200);
+      .expect(201);
   });
 });
 
