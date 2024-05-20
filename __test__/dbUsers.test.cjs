@@ -1,4 +1,13 @@
-const { createUser } = require("../db/users.cjs");
+const {
+  createUser,
+  getAllUsers,
+  getUserByUsername,
+  getUserById,
+  adminUpdatesUser,
+  userUpdatesUser,
+  deleteUser,
+} = require("../db/users.cjs");
+const { createScore } = require("../db/scores.cjs");
 
 test("Should create a valid new user", async () => {
   const user1 = {
@@ -104,4 +113,235 @@ test("Creating an underage user throws an error", async () => {
   await expect(createUser(user6)).rejects.toThrow(
     `Thanks for your interest in registering! Please ask your guardian to help you register an account.`
   );
+});
+
+test("Get information on all users", async () => {
+  const user1 = {
+    id: 1,
+    name: "Anusha S. Delightful",
+    username: "nooshydelightful",
+    email: "nooshydelightful@charmelions.com",
+    password: "charming",
+    date_of_birth: "2000-01-01",
+  };
+
+  const user2 = {
+    id: 2,
+    name: "Nakayla Amazing",
+    username: "nakaylisamazing",
+    email: "nakaylamazing@cherrystonestudios.com",
+    password: "rabbitrabbit",
+    date_of_birth: "2000-01-01",
+  };
+
+  const user3 = {
+    id: 3,
+    name: "Valentino S. Cool",
+    username: "valentinocoolcat",
+    email: "valentinocoolcat@cherrystonestudios.com",
+    password: "catsaredope",
+    date_of_birth: "2000-01-01",
+  };
+
+  const scores1 = {
+    id: 1,
+    value: 1000,
+    created_on: "2000-01-01",
+    username: "nakaylisamazing",
+    name: "",
+  };
+
+  const scores2 = {
+    id: 2,
+    value: 2000,
+    created_on: "2000-01-01",
+    username: "nooshydelightful",
+    name: "",
+  };
+
+  const scores3 = {
+    id: 3,
+    value: 3000,
+    created_on: "2000-01-01",
+    username: "valentinocoolcat",
+    name: "",
+  };
+
+  await createUser(user1);
+  await createUser(user2);
+  await createUser(user3);
+  await createScore(scores1);
+  await createScore(scores2);
+  await createScore(scores3);
+
+  const allUsers = await getAllUsers();
+
+  expect(allUsers).toMatchObject([
+    {
+      id: 1,
+      name: "Anusha S. Delightful",
+      username: "nooshydelightful",
+      email: "nooshydelightful@charmelions.com",
+      date_of_birth: "2000-01-01T00:00:00.000Z",
+    },
+    {
+      id: 2,
+      name: "Nakayla Amazing",
+      username: "nakaylisamazing",
+      email: "nakaylamazing@cherrystonestudios.com",
+      date_of_birth: "2000-01-01T00:00:00.000Z",
+    },
+    {
+      id: 3,
+      name: "Valentino S. Cool",
+      username: "valentinocoolcat",
+      email: "valentinocoolcat@cherrystonestudios.com",
+      date_of_birth: "2000-01-01T00:00:00.000Z",
+    },
+  ]);
+});
+
+test("Get info by username for a single registered user", async () => {
+  const user1 = {
+    id: 1,
+    name: "Anusha S. Delightful",
+    username: "nooshydelightful",
+    email: "nooshydelightful@charmelions.com",
+    password: "charming",
+    date_of_birth: "2000-01-01",
+  };
+
+  await createUser(user1);
+
+  const user = {
+    username: "nooshydelightful",
+  };
+
+  const userByUsername = await getUserByUsername(user);
+
+  expect(userByUsername).toMatchObject({
+    id: 1,
+    name: "Anusha S. Delightful",
+    username: "nooshydelightful",
+    email: "nooshydelightful@charmelions.com",
+    date_of_birth: "2000-01-01T00:00:00.000Z",
+  });
+});
+
+test("Get info by ID for a single registered user", async () => {
+  const user1 = {
+    id: 1,
+    name: "Anusha S. Delightful",
+    username: "nooshydelightful",
+    email: "nooshydelightful@charmelions.com",
+    password: "charming",
+    date_of_birth: "2000-01-01",
+  };
+
+  await createUser(user1);
+
+  const user = {
+    id: 1,
+  };
+
+  const userByID = await getUserById(user);
+
+  expect(userByID).toMatchObject({
+    id: 1,
+    name: "Anusha S. Delightful",
+    username: "nooshydelightful",
+    email: "nooshydelightful@charmelions.com",
+    date_of_birth: "2000-01-01T00:00:00.000Z",
+  });
+});
+
+test("A quoteAdminquote updates the user", async () => {
+  const user1 = {
+    id: 1,
+    name: "Anusha S. Delightful",
+    username: "nooshydelightful",
+    email: "nooshydelightful@charmelions.com",
+    password: "charming",
+    date_of_birth: "2000-01-01",
+    is_admin: false,
+    nyan_unlocked: false,
+  };
+
+  await createUser(user1);
+
+  const adminUpdatedField = {
+    id: 1,
+    name: "Anusha Wonderful",
+    username: "wonderful.nooshy",
+    email: "nooshydelightful02@charmelions.com",
+    password: "charmingAgain",
+    date_of_birth: "2000-02-28",
+    is_admin: true,
+    nyan_unlocked: true,
+  };
+
+  const updatedUser = await adminUpdatesUser(adminUpdatedField);
+
+  expect(updatedUser).toMatchObject({
+    id: 1,
+    name: "Anusha Wonderful",
+    username: "wonderful.nooshy",
+    email: "nooshydelightful02@charmelions.com",
+    date_of_birth: "2000-02-28T00:00:00.000Z",
+    is_admin: true,
+    nyan_unlocked: true,
+  });
+});
+
+test("A user updates the user", async () => {
+  const user1 = {
+    id: 1,
+    name: "Anusha S. Delightful",
+    username: "nooshydelightful",
+    email: "nooshydelightful@charmelions.com",
+    password: "charming",
+    date_of_birth: "2000-01-01",
+    is_admin: false,
+    nyan_unlocked: false,
+  };
+
+  await createUser(user1);
+
+  const userUpdatedField = {
+    id: 1,
+    name: "Anusha Wonderful",
+    username: "wonderful.nooshy",
+    email: "nooshydelightful02@charmelions.com",
+    password: "charmingAgain",
+  };
+
+  const updatedUser = await userUpdatesUser(userUpdatedField);
+
+  expect(updatedUser).toMatchObject({
+    id: 1,
+    name: "Anusha Wonderful",
+    username: "wonderful.nooshy",
+    email: "nooshydelightful02@charmelions.com",
+  });
+});
+
+test("A user gets deleted", async () => {
+  const user1 = {
+    id: 1,
+    name: "Anusha S. Delightful",
+    username: "nooshydelightful",
+    email: "nooshydelightful@charmelions.com",
+    password: "charming",
+    date_of_birth: "2000-01-01",
+    is_admin: false,
+    nyan_unlocked: false,
+  };
+
+  await createUser(user1);
+
+  const userId = {
+    id: 1,
+  };
+
+  await expect(deleteUser(userId)).toMatchObject({});
 });
