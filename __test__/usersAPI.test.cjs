@@ -4,6 +4,25 @@ const { server } = require("../server.cjs");
 // TO-DO: test the createUser function
 // to see if it correctly posts
 // new user information to the db
+describe("POST /api/users/register", () => {
+  it("should register a new user in our db", function () {
+    request(server)
+      .post("/api/users/register")
+      .send({
+        name: "john",
+        username: "johnnyboy",
+        email: "john@john.com",
+        password: "jonjon",
+        date_of_birth: "2000:12:12",
+      })
+      .set("Accept", "application/json")
+      .expect((res) => {
+        res.body.id = "some fixed id";
+        res.body.email = "john@john.com";
+      })
+      .expect(200);
+  });
+});
 
 describe("GET /api/users/", () => {
   it("return a response it got all users", async () => {
@@ -17,6 +36,39 @@ describe("GET /api/user/:id", () => {
   });
 });
 
+// TO-DO: test the userUpdatesUser function
+// to see if it correctly checks
+// if the user requesting the changes
+// IS the user to which the changes are being applied
+// so that users can be logged in and update their information in our db
+// describe("PUT /api/users/register", () => {
+//   it("should update user information if they are the selected user themselves", function () {
+//     request(server)
+//       .put("/api/users/:username")
+//       .send({
+//         name: "john",
+//         username: "johnnyboy",
+//         email: "john@john.com",
+//         password: "jonjon",
+//         date_of_birth: "2000:12:12",
+//       })
+//       .set("Accept", "application/json")
+//       .expect((res) => {
+//         res.body.id = "some fixed id";
+//         res.body.email = "john@john.com";
+//       })
+//       .expect(201);
+//   });
+// });
+
+// TO-DO: test the deleteUser function
+// to see if it correctly checks
+// if the user requesting the changes
+// IS the user to which the delete request is being made from
+// OR if the body has sent an is_admin signature
+// so that users can be logged in and update their information in our db
+
+// TO-DO: MOVE TO adminAPI.test.cjs
 // TO-DO: test the UTILS on getting users
 // to see if it correctly checks
 // if the body has sent an is_admin signature
@@ -26,16 +78,3 @@ describe("GET /api/user/:id", () => {
 // to see if it correctly checks
 // if the body has sent an is_admin signature
 // so that only admins can update users in our db
-
-// TO-DO: test the userUpdatesUser function
-// to see if it correctly checks
-// if the user requesting the changes
-// IS the user to which the changes are being applied
-// so that users can be logged in and update their information in our db
-
-// TO-DO: test the deleteUser function
-// to see if it correctly checks
-// if the user requesting the changes
-// IS the user to which the delete request is being made from
-// OR if the body has sent an is_admin signature
-// so that users can be logged in and update their information in our db

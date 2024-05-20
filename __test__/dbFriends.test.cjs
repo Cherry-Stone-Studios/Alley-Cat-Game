@@ -2,7 +2,7 @@ const { createUser } = require("../db/users.cjs");
 const { createScore } = require("../db/scores.cjs");
 const {
   addFriend,
-  getOutgoingFriends,
+  getUsersFriends,
   removeFriend,
 } = require("../db/friends.cjs");
 
@@ -98,7 +98,7 @@ test("Should get information for a user's friend", async () => {
   await createScore(scores3);
 
   const friendConnection = await addFriend(friendRequest1);
-  const friendData = await getOutgoingFriends(friendConnection);
+  const friendData = await getUsersFriends(friendConnection);
 
   expect(friendData).toMatchObject({
     friends: [

@@ -1,4 +1,10 @@
-const { createScore, getScoresByUsername } = require("../db/scores.cjs");
+const {
+  createScore,
+  getScoresByUsername,
+  getAllScores,
+  adminUpdateScore,
+  deleteScore,
+} = require("../db/scores.cjs");
 const { createUser } = require("../db/users.cjs");
 
 test("Create a new score for a registered user", async () => {
@@ -197,4 +203,154 @@ test("Get scores for a registered user", async () => {
       id: 3,
     },
   ]);
+});
+
+test("Get all scores for high scores", async () => {
+  const user1 = {
+    id: 1,
+    name: "Anusha S. Delightful",
+    username: "nooshydelightful",
+    email: "nooshydelightful@charmelions.com",
+    password: "charming",
+    date_of_birth: "2000-01-01",
+  };
+
+  const user2 = {
+    id: 2,
+    name: "Nakayla Amazing",
+    username: "nakaylisamazing",
+    email: "nakaylamazing@cherrystonestudios.com",
+    password: "rabbitrabbit",
+    date_of_birth: "2000-01-01",
+  };
+
+  const user3 = {
+    id: 3,
+    name: "Valentino S. Cool",
+    username: "valentinocoolcat",
+    email: "valentinocoolcat@cherrystonestudios.com",
+    password: "catsaredope",
+    date_of_birth: "2000-01-01",
+  };
+
+  const scores1 = {
+    id: 1,
+    value: 1000,
+    created_on: "2000-01-01",
+    username: "nakaylisamazing",
+    name: "",
+  };
+
+  const scores2 = {
+    id: 2,
+    value: 2000,
+    created_on: "2000-01-01",
+    username: "nooshydelightful",
+    name: "",
+  };
+
+  const scores3 = {
+    id: 3,
+    value: 3000,
+    created_on: "2000-01-01",
+    username: "valentinocoolcat",
+    name: "",
+  };
+
+  await createUser(user1);
+  await createUser(user2);
+  await createUser(user3);
+  await createScore(scores1);
+  await createScore(scores2);
+  await createScore(scores3);
+
+  const allScores = await getAllScores();
+
+  expect(allScores).toMatchObject([
+    {
+      value: 1000,
+      created_on: "2000-01-01T00:00:00.000Z",
+      name: "nakaylisamazing",
+      id: 1,
+    },
+    {
+      value: 2000,
+      created_on: "2000-01-01T00:00:00.000Z",
+      name: "nooshydelightful",
+      id: 2,
+    },
+
+    {
+      value: 3000,
+      created_on: "2000-01-01T00:00:00.000Z",
+      name: "valentinocoolcat",
+      id: 3,
+    },
+  ]);
+});
+
+test("A quoteAdminquote updates the score", async () => {
+  const user1 = {
+    id: 1,
+    name: "Anusha S. Delightful",
+    username: "nooshydelightful",
+    email: "nooshydelightful@charmelions.com",
+    password: "charming",
+    date_of_birth: "2000-01-01",
+  };
+
+  const scores1 = {
+    id: 1,
+    value: 1000,
+    created_on: "2000-01-01",
+    username: "nooshydelightful",
+    name: "",
+  };
+
+  await createUser(user1);
+  await createScore(scores1);
+
+  const adminUpdatedField = {
+    value: 10000,
+    created_on: "2000-01-01",
+    name: "nakaylisamazing",
+    id: 1,
+  };
+
+  const updatedScore = await adminUpdateScore(adminUpdatedField);
+
+  expect(updatedScore).toMatchObject({
+    value: 10000,
+    created_on: "2000-01-01T00:00:00.000Z",
+    name: "nakaylisamazing",
+    id: 1,
+  });
+});
+
+test("A score gets deleted", async () => {
+  const user1 = {
+    id: 1,
+    name: "Anusha S. Delightful",
+    username: "nooshydelightful",
+    email: "nooshydelightful@charmelions.com",
+    password: "charming",
+    date_of_birth: "2000-01-01",
+  };
+
+  const scores1 = {
+    id: 1,
+    value: 1000,
+    created_on: "2000-01-01",
+    username: "nooshydelightful",
+    name: "",
+  };
+
+  await createUser(user1);
+  await createScore(scores1);
+
+  const scoreID = {
+    id: 1,
+  };
+
+  await expect(deleteScore(scoreID)).toMatchObject({});
 });

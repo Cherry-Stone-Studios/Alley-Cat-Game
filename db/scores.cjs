@@ -50,7 +50,6 @@ const createScore = async ({ value, created_on, username, name }) => {
         },
       });
       return unregisteredNewScore;
-      return unregisteredNewScore;
     }
   } catch (err) {
     throw err;
@@ -76,7 +75,6 @@ const getScoresByUsername = async (username) => {
         username,
       },
     });
-    console.log("GO GET MY USER SCORES BY USERNAME", userByUsername);
     return userByUsername;
   } catch (err) {
     throw err;
@@ -84,15 +82,14 @@ const getScoresByUsername = async (username) => {
 };
 
 // Update/PATCH
-const adminUpdateScore = async (value, created_on, username, name) => {
+const adminUpdateScore = async ({ value, created_on, username, name }) => {
   try {
+    const date = getDate(created_on);
+
     const updatedScore = await prisma.scores.update({
-      where: {
-        is_admin: true,
-      },
       data: {
         value,
-        created_on,
+        created_on: date,
         username,
         name,
       },
@@ -106,7 +103,7 @@ const adminUpdateScore = async (value, created_on, username, name) => {
 
 // Delete
 
-const deleteScore = async (id) => {
+const deleteScore = async ({ id }) => {
   try {
     await prisma.scores.delete({
       where: {
