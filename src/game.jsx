@@ -4,6 +4,7 @@ import playerImage from './assets/orangeCat/orangeCatSprite.png';
 import backgroundImage from '../game_module/background1.jpeg';
 import enemyImage from '../game_module/Dog_Black.png';
 import animatedSprite from './SpriteAnimation.jsx';
+import flyingEnemy from '../game_module/bee_idle.gif';
 
 const Game = () => {
   useEffect(() => {
@@ -14,6 +15,8 @@ const Game = () => {
     let enemies = [];
     let score = 0;
     let gameOver = false;
+    const numberOfEnemies = 10;
+    const flyingEnemiesArray = []
 
     //Handles any keyboard inputs from the player
     class InputHandler {
@@ -229,6 +232,30 @@ const Game = () => {
       }
     }
 
+    class FlyingEnemy {
+      constructor(){
+        this.width = 100;
+        this.height = 100;
+        this.x = Math.random() * (canvas.width - this.width);
+        this.y = Math.random() * (canvas.height - this.height);
+        //this.speed = Math.random() * 4 - 2;
+        this.image = new Image();
+        this.image.src = flyingEnemy;
+      }
+      update(){
+        this.x += Math.random() * 15 - 7.5;
+        this.y += Math.random() * 10 - 5;
+      }
+      draw(){
+        //ctx.strokeRect(this.x, this.y, this.width, this.height)
+        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+      }
+    }
+
+    for (let i = 0; i < numberOfEnemies; i++){
+      flyingEnemiesArray.push(new FlyingEnemy());
+    }
+
     //Handles creating and updating enemies
     function handleEnemies(deltaTime) {
       if (enemyTimer > enemyInterval + randomEnemyInterval) {
@@ -291,6 +318,10 @@ const Game = () => {
       player.update(input, deltaTime, enemies);
       handleEnemies(deltaTime);
       displayStatusText(ctx);
+      flyingEnemiesArray.forEach(flyingenemy => {
+        flyingenemy.update();
+        flyingenemy.draw();
+      })
       if (!gameOver) requestAnimationFrame(animate);
     }
     animate(0);
