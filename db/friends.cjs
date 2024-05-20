@@ -24,6 +24,7 @@ const addFriend = async ({ id, friendid }) => {
         friends: true,
       },
     });
+    console.log("THIS IS ADD FRIEND", userWithFriends);
     return userWithFriends;
   } catch (err) {
     throw err;
@@ -51,6 +52,7 @@ const getUsersFriends = async ({ id }) => {
         },
       },
     });
+    console.log("THIS IS USERS FRIENDS INFO", user);
 
     return user;
   } catch (err) {
@@ -81,6 +83,7 @@ const removeFriend = async ({ id, friendid }) => {
         friends: true,
       },
     });
+    console.log("THIS IS REMOVED FRIEND", removedFriend);
     return removedFriend;
   } catch (err) {
     throw err;
