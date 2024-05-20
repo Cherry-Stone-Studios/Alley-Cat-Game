@@ -6,17 +6,33 @@ const server = express();
 const morgan = require("morgan");
 server.use(morgan("dev"));
 
-const fs = require("fs"); // nodejs "file system" module where we are saving our morgan log
-const path = require("path"); // creates a path in our "file system" to the file we are saving our morgan log in
+// nodejs "file system" module where we are saving our morgan log
+const fs = require("fs");
+// creates a path in our "file system" to the file we are saving our morgan log in
+const path = require("path");
+// creates a path for the log data to be written to
+const accessLogStream = fs.createWriteStream(
+  path.join(__dirname, "access.log"),
+  { flags: "a" }
+);
 
-// !!!!!!!! TODO : FIX MORGAN BODY LOGGER !!!!!!!!
+// middleware for morgan to create a token
+
+morgan.token("type", function (req, res) {
+  return req.headers["content-type"];
+});
+
 // log morgan on body
-// server.use(
-//   morgan(
-//     ":method :url :status :res[content-length] - :response-time ms :date[web]",
-//     { stream: accessLogStream }
-//   )
-// );
+server.use(
+  morgan(
+    ":method :url :status :res[content-length] - :response-time ms :date[web] :type",
+    { stream: accessLogStream }
+  )
+);
+
+server.get("/", function (req, res) {
+  res.send("Hello world! Cool game coming soon!!");
+});
 
 // install and use body-parser
 const bodyParser = require("body-parser");
