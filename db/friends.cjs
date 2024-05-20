@@ -32,7 +32,7 @@ const addFriend = async ({ id, friendid }) => {
 
 // Read/GET
 
-const getOutgoingFriends = async ({ id, friendid }) => {
+const getUsersFriends = async ({ id }) => {
   try {
     const user = await prisma.user.findUnique({
       where: {
@@ -81,7 +81,6 @@ const removeFriend = async ({ id, friendid }) => {
         friends: true,
       },
     });
-    console.log("MY FRIENDS ARE ALL GONE", removedFriend);
     return removedFriend;
   } catch (err) {
     throw err;
@@ -90,6 +89,6 @@ const removeFriend = async ({ id, friendid }) => {
 
 module.exports = {
   addFriend,
-  getOutgoingFriends,
+  getUsersFriends,
   removeFriend,
 };

@@ -9,17 +9,17 @@ const { server } = require("../server.cjs");
 // to see if it correctly posts
 // new scores for an unregistered user to the scores db
 
-// describe("GET /api/scores/", () => {
-//     it("return a response it got all scores", async () => {
-//       await request(server).get("/api/users").expect(200);
-//     });
-//   });
+describe("GET /api/users/", () => {
+  it("return a response it got all users", async () => {
+    await request(server).get("/api/users").expect(200);
+  });
+});
 
-//   describe("GET /api/scores/:id", () => {
-//     it("should return a response it got one user's scores", async () => {
-//       await request(server).get("/api/scores/36").expect(200);
-//     });
-//   });
+describe("GET /api/user/:id", () => {
+  it("should return a response it got one user", async () => {
+    await request(server).get("/api/users/36").expect(200);
+  });
+});
 
 // TO-DO: test the UTILS on getting users
 // to see if it correctly checks

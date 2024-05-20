@@ -74,8 +74,8 @@ const createUser = async ({
 
 const getAllUsers = async () => {
   try {
-    const rows = await prisma.user.findMany();
-    return rows;
+    const allUsers = await prisma.user.findMany();
+    return allUsers;
   } catch (err) {
     throw err;
   }
@@ -88,6 +88,7 @@ const getUserByUsername = async (username) => {
         username: username,
       },
     });
+
     return user;
   } catch (err) {
     throw err;
@@ -109,35 +110,43 @@ const getUserById = async (id) => {
 };
 
 // Update/PATCH
-const adminUpdatesUser = async (
+const adminUpdatesUser = async ({
+  id,
   name,
   username,
   email,
   password,
   date_of_birth,
   is_admin,
-  nyan_unlocked
-) => {
+  nyan_unlocked,
+}) => {
   try {
-    const updatedUser = await prisma.user.update({
+    const plainTextPassword = password;
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(plainTextPassword, saltRounds);
+    const dob = getDOB(date_of_birth);
+
+    const adminUpdatedUser = await prisma.user.update({
+      where: {
+        id: id,
+      },
       data: {
-        name,
+        name: name,
         username,
         email,
-        password,
-        date_of_birth,
+        password: hashedPassword,
+        date_of_birth: dob,
         is_admin,
         nyan_unlocked,
       },
     });
-
-    return updatedUser;
+    return adminUpdatedUser;
   } catch (err) {
     throw err;
   }
 };
 
-const userUpdatesUser = async (id, name, username, email, password) => {
+const userUpdatesUser = async ({ id, name, username, email, password }) => {
   try {
     const plainTextPassword = password;
     const saltRounds = 10;
@@ -165,11 +174,12 @@ const userUpdatesUser = async (id, name, username, email, password) => {
 
 const deleteUser = async (id) => {
   try {
-    await prisma.user.delete({
+    const deletedUser = await prisma.user.delete({
       where: {
-        id: parseInt(id),
+        id,
       },
     });
+    console.log("THIS IS THE DELETED USER", deletedUser);
   } catch (err) {
     throw err;
   }
