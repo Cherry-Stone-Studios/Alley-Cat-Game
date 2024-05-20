@@ -11,6 +11,34 @@ const server = express();
 // Middleware to parse JSON requests
 server.use(express.json());
 
+// nodejs "file system" module where we are saving our morgan log
+const fs = require("fs");
+// creates a path in our "file system" to the file we are saving our morgan log in
+const path = require("path");
+// creates a path for the log data to be written to
+const accessLogStream = fs.createWriteStream(
+  path.join(__dirname, "access.log"),
+  { flags: "a" }
+);
+
+// middleware for morgan to create a token
+
+morgan.token("type", function (req, res) {
+  return req.headers["content-type"];
+});
+
+// log morgan on body
+server.use(
+  morgan(
+    ":method :url :status :res[content-length] - :response-time ms :date[web] :type",
+    { stream: accessLogStream }
+  )
+);
+
+server.get("/", function (req, res) {
+  res.send("Hello world! Cool game coming soon!!");
+});
+
 // Middleware to parse URL-encoded data
 server.use(bodyParser.urlencoded({ extended: false }));
 
