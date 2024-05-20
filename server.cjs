@@ -12,6 +12,7 @@ const server = express();
 server.use(express.json());
 
 // Middleware to parse URL-encoded data
+server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: false }));
 
 // Use morgan for logging
