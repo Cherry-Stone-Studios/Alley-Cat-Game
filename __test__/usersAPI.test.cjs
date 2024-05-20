@@ -13,7 +13,7 @@ describe("POST /api/users/register", () => {
         username: "johnnyboy",
         email: "john@john.com",
         password: "jonjon",
-        date_of_birth: "2000:12:12",
+        date_of_birth: "2000-12-12",
       })
       .set("Accept", "application/json")
       .expect((res) => {
@@ -36,30 +36,17 @@ describe("GET /api/user/:id", () => {
   });
 });
 
+describe("GET /api/user/:username", () => {
+  it("should return a response it got one user", async () => {
+    await request(server).get("/api/users/Serendipity").expect(200);
+  });
+});
+
 // TO-DO: test the userUpdatesUser function
 // to see if it correctly checks
 // if the user requesting the changes
 // IS the user to which the changes are being applied
 // so that users can be logged in and update their information in our db
-// describe("PUT /api/users/register", () => {
-//   it("should update user information if they are the selected user themselves", function () {
-//     request(server)
-//       .put("/api/users/:username")
-//       .send({
-//         name: "john",
-//         username: "johnnyboy",
-//         email: "john@john.com",
-//         password: "jonjon",
-//         date_of_birth: "2000:12:12",
-//       })
-//       .set("Accept", "application/json")
-//       .expect((res) => {
-//         res.body.id = "some fixed id";
-//         res.body.email = "john@john.com";
-//       })
-//       .expect(201);
-//   });
-// });
 
 // TO-DO: test the deleteUser function
 // to see if it correctly checks
