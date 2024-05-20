@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "test": "NODE_OPTIONS=--experimental-vm-modules && jest",
     "seed:dev": "nodemon ./db/seed.cjs",
-    "server:dev": "nodemon app.cjs"
+    "server:dev": "node app.cjs",
+    "start": "node app.cjs"
   },
   "dependencies": {
     "@prisma/client": "^5.13.0",
@@ -41,7 +42,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.6",
     "jest-mock-extended": "^3.0.7",
-    "prisma": "^5.13.0",
+    "prisma": "^5.14.0",
     "vite": "^5.2.0"
   },
   "description": "This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.",

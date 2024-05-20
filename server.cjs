@@ -1,36 +1,26 @@
-// install and use Express
 const express = require("express");
+const path = require("path");
+const morgan = require("morgan");
+const bodyParser = require("body-parser");
+const jwt = require("jsonwebtoken");
+const { getUserById } = require("./db/users.cjs");
+
+// Create the express server
 const server = express();
 
-// install and use Morgan
-const morgan = require("morgan");
-server.use(morgan("dev"));
+// Middleware to parse JSON requests
+server.use(express.json());
 
-const fs = require("fs"); // nodejs "file system" module where we are saving our morgan log
-const path = require("path"); // creates a path in our "file system" to the file we are saving our morgan log in
-
-// !!!!!!!! TODO : FIX MORGAN BODY LOGGER !!!!!!!!
-// log morgan on body
-// server.use(
-//   morgan(
-//     ":method :url :status :res[content-length] - :response-time ms :date[web]",
-//     { stream: accessLogStream }
-//   )
-// );
-
-// install and use body-parser
-const bodyParser = require("body-parser");
-server.use(bodyParser.json());
+// Middleware to parse URL-encoded data
 server.use(bodyParser.urlencoded({ extended: false }));
 
-//Parse the headers to see if there is a token on the user ID
-// requires getUserById
-// requires jsonwebtoken
+// Use morgan for logging
+server.use(morgan("dev"));
 
-const { getUserById } = require("./db/users.cjs");
-const jwt = require("jsonwebtoken");
+// Serve static files from the 'dist' directory (assuming Vite build output is here)
+server.use(express.static(path.join(__dirname, "dist")));
 
-// generate and server.use an Express Router for the API
+// API routes
 const apiRouter = require("./api/index.cjs");
 server.use("/api", apiRouter);
 
@@ -38,35 +28,29 @@ apiRouter.use(async (req, res, next) => {
   const prefix = "Bearer ";
   const auth = req.header("Authorization");
 
-  //if no authorization provided, do next
   if (!auth) {
     next();
-  }
-  // else if auth header contains Bearer
-  // create a token for the user
-  else if (auth.startsWith(prefix)) {
+  } else if (auth.startsWith(prefix)) {
     const token = auth.slice(prefix.length);
 
-    //if token provided, create a deconstructed id using the token and jwt secret
-    const { id } = jwt.verify(token, process.env.JWT_SECRET);
-
-    // if the user id is provided by jwt
-    if (id) {
-      // on validation from a login request, getUserById with the verified jwt id
-      // set the logged-in user to be the user
-      // then do next
-      const user = await getUserById(id);
-      req.user = { id: user.id, username: user.username };
-      next();
+    try {
+      const { id } = jwt.verify(token, process.env.JWT_SECRET);
+      if (id) {
+        const user = await getUserById(id);
+        req.user = { id: user.id, username: user.username };
+      }
+    } catch (error) {
+      console.error("JWT verification error:", error);
     }
-    // else do next
-    else {
-      next();
-    }
-  } // else do next
-  else {
+    next();
+  } else {
     next();
   }
+});
+
+// Catch-all route to serve index.html for client-side routing
+server.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "dist", "index.html"));
 });
 
 module.exports = { server };
