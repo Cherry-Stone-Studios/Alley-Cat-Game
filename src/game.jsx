@@ -19,7 +19,7 @@ const Game = () => {
     const numberOfEnemies = 10;
     let flyingEnemiesArray = []
     let flyingEnemyTimer = 0;
-    const flyingEnemyInterval = 2000; // Adjust this value to control the spawn rate
+    const flyingEnemyInterval = 3000; // Adjust this value to control the spawn rate
     let randomFlyingEnemyInterval = Math.random() * 1000 + 500;
 
     //Handles any keyboard inputs from the player
@@ -202,7 +202,7 @@ const Game = () => {
         this.y = this.gameHeight - this.height;
         this.frameX = 0;
         this.frameY = 0;
-        this.speed = 10;
+        this.speed = 18;
         this.frameCount = 0;
         this.markedForDeletion = false;
         this.sprite = sprite;
@@ -251,7 +251,7 @@ const Game = () => {
         this.width = 100;
         this.height = 100;
         this.x = gameWidth;
-        this.y = Math.random() * (gameHeight /2) +80;
+        this.y = Math.random() * (gameHeight /4) + gameHeight /4;
         this.speed = Math.random() * 4 + 2;
         this.image = new Image();
         this.image.src = flyingEnemy;
@@ -340,7 +340,7 @@ const Game = () => {
 
     let lastTime = 0;
     let enemyTimer = 0;
-    const enemyInterval = 1000;
+    const enemyInterval = 2000;
     let randomEnemyInterval = Math.random() * 1000 + 500;
 
     //Main game loop: updates and renders game objects
