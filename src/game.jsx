@@ -4,6 +4,7 @@ import playerImage from './assets/orangeCat/orangeCatSprite.png';
 import backgroundImage from '../game_module/background1.jpeg';
 import enemyImage from '../game_module/Dog_Black.png';
 import animatedSprite from './SpriteAnimation.jsx';
+import flyingEnemy from '../game_module/bee_idle.gif';
 
 const Game = () => {
   useEffect(() => {
@@ -14,6 +15,11 @@ const Game = () => {
     let enemies = [];
     let score = 0;
     let gameOver = false;
+    const numberOfEnemies = 10;
+    let flyingEnemiesArray = []
+    let flyingEnemyTimer = 0;
+    const flyingEnemyInterval = 2000; // Adjust this value to control the spawn rate
+    let randomFlyingEnemyInterval = Math.random() * 1000 + 500;
 
     //Handles any keyboard inputs from the player
     class InputHandler {
@@ -100,12 +106,20 @@ const Game = () => {
 
       //Can put animations based on speed. Ex: Speed 0 = idle.
       //Updates player position and handles collisions with enemies
-      update(input, deltaTime, enemies) {
+      update(input, deltaTime, enemies, flyingEnemiesArray) {
         enemies.forEach(enemy => {
           const dx = (enemy.x + enemy.width/2) - (this.x + this.width/2);
           const dy = (enemy.y + enemy.height/2) - (this.y + this.height/2);
           const distance = Math.sqrt(dx*dx+dy*dy);
           if (distance < enemy.width/2 + this.width/2){
+            gameOver = true;
+          }
+        })
+        flyingEnemiesArray.forEach(flyingenemy => {
+          const dx = (flyingenemy.x + flyingenemy.width/2) - (this.x + this.width/2);
+          const dy = (flyingenemy.y + flyingenemy.height/2) - (this.y + this.height/2);
+          const distance = Math.sqrt(dx*dx+dy*dy);
+          if (distance < flyingenemy.width/2 + this.width/2){
             gameOver = true;
           }
         })
@@ -229,6 +243,38 @@ const Game = () => {
       }
     }
 
+    class FlyingEnemy {
+      constructor(gameWidth, gameHeight){
+        this.gameWidth = gameWidth;
+        this.gameHeight = gameHeight;
+        this.width = 100;
+        this.height = 100;
+        this.x = gameWidth;
+        this.y = Math.random() * (gameHeight /2) +70;
+        this.speed = Math.random() * 4 + 2;
+        this.image = new Image();
+        this.image.src = flyingEnemy;
+        this.markedForDeletion = false;
+      }
+      update(){
+        this.x -= this.speed;
+        if (this.x < 0 - this.width) this.markedForDeletion = true
+          score++;
+        // this.x += this.speed;
+        // this.y += this.speed;
+        //this.x += Math.random() * 15 - 2.5;
+        //this.y += Math.random() * 5 - 2.5;
+      }
+      draw(){
+        //ctx.strokeRect(this.x, this.y, this.width, this.height)
+        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+      }
+    }
+
+    for (let i = 0; i < numberOfEnemies; i++){
+      flyingEnemiesArray.push(new FlyingEnemy(canvas.width, canvas.height));
+    }
+
     //Handles creating and updating enemies
     function handleEnemies(deltaTime) {
       if (enemyTimer > enemyInterval + randomEnemyInterval) {
@@ -245,6 +291,21 @@ const Game = () => {
         enemy.update(deltaTime);
       });
       enemies = enemies.filter(enemy => !enemy.markedForDeletion)
+    }
+
+    function handleFlyingEnemies(deltaTime) {
+      if (flyingEnemyTimer > flyingEnemyInterval + randomFlyingEnemyInterval) {
+        flyingEnemiesArray.push(new FlyingEnemy(canvas.width, canvas.height));
+        randomFlyingEnemyInterval = Math.random() * 1000 + 500;
+        flyingEnemyTimer = 0;
+      } else {
+        flyingEnemyTimer += deltaTime;
+      }
+      flyingEnemiesArray.forEach((enemy) => {
+        enemy.update();
+        enemy.draw(ctx);
+      });
+      flyingEnemiesArray = flyingEnemiesArray.filter((enemy) => !enemy.markedForDeletion);
     }
 
     //Displays score and game over text
@@ -265,6 +326,7 @@ const Game = () => {
       player.restart();
       background.restart();
       enemies = [];
+      flyingEnemiesArray = [];
       score = 0;
       gameOver = false;
       animate(0);
@@ -288,8 +350,9 @@ const Game = () => {
       background.update();
       animatedSprite(player, "walk", "walk");
       player.draw(ctx);
-      player.update(input, deltaTime, enemies);
+      player.update(input, deltaTime, enemies, flyingEnemiesArray);
       handleEnemies(deltaTime);
+      handleFlyingEnemies(deltaTime);
       displayStatusText(ctx);
       if (!gameOver) requestAnimationFrame(animate);
     }
