@@ -12,7 +12,7 @@ const server = express();
 // Middleware to parse JSON requests
 // Middleware to parse URL-encoded data
 server.use(bodyParser.json());
-server.use(bodyParser.urlencoded({ extended: false }));
+server.use(bodyParser.urlencoded({ extended: true }));
 
 // nodejs "file system" module where we are saving our morgan log
 const fs = require("fs");

@@ -4,8 +4,6 @@ import blackCatImage from './assets/blackCat/blackCatSprite.png';
 import dobermanDogImage from './assets/dogDoberman/dobermanDogSprite.png';
 import shibaDogImage from './assets/dogShiba/shibaDogSprite.png';
 
-
-
 const characterSprite = [
   {
     sprite: "orangeCat",
@@ -45,81 +43,99 @@ const characterSprite = [
     sprite: "dobermanDog",
     imgSource: dobermanDogImage,
     SpriteDimensions: {
-      width: 120,
-      height: 100,
+      width: 160,
+      height: 140,
       spriteWidth: 48,
       spriteHeight: 34,
     },
     animationStates: [
       { name: "walk", frames: 5, row: 0, speed: 6 },
-      { name: "attack", frames: 3, row: 1, speed: 10 },
+      { name: "attack", frames: 3, row: 1, speed: 6 },
     ],
   },
   {
     sprite: "shibaDog",
     imgSource: shibaDogImage,
     SpriteDimensions: {
-      width: 110,
-      height: 90,
+      width: 150,
+      height: 120,
       spriteWidth: 48,
       spriteHeight: 28,
     },
     animationStates: [
       { name: "walk", frames: 5, row: 0, speed: 6 },
-      { name: "attack", frames: 3, row: 1, speed: 10 },
+      { name: "attack", frames: 3, row: 1, speed: 6 },
     ],
   },
 ];
 
+const animatedSprite = (player, currState, prevState) => {
+  let isCat = true; // Flag to check if the player is a cat
 
-const animatedSprite = (player, currState, prevState) => { //player, walk, walk from game.jsx
+  characterSprite.forEach((animal) => {
+    if (animal.sprite === player.sprite) {
+      isCat = false; // The player is not a cat
+      if (animal.sprite.startsWith('doberman') || animal.sprite.startsWith('shiba')) {
+        // Set the initial random state if not already set
+        if (!player.randomState) {
+          player.randomState = Math.random() < 0.8 ? "walk" : "attack"; // 80% chance for "walk", 20% for "attack"
+        }
+        animatedSpriteHelper(player, player.randomState, prevState);
+        return; // Exit the loop once the state is set
+      }
+      // For cats, use the original animation behavior
+      animatedSpriteHelper(player, currState, prevState);
+    }
+  });
+
+  if (isCat) {
+    // For cats, use the original animation behavior
+    animatedSpriteHelper(player, currState, prevState);
+  }
+};
+
+const animatedSpriteHelper = (player, currState, prevState) => {
   let currRow = 0;
   let maxFrames = 0;
   let speed = 0;
-  
+
   characterSprite.forEach((animal) => {
-    if(animal.sprite === player.sprite) {
+    if (animal.sprite === player.sprite) {
       animal.animationStates.forEach((state) => {
-        //Need to animate through picture grabbing state.frames and speed to control them
-        if (state.name === currState) { //Finding current state information, if it is, keep going on that row
-          currRow = state.row; // animationStates.row
-          maxFrames = (state.frames + 1) * state.speed - 1;
+        if (state.name === currState) {
+          currRow = state.row;
+          maxFrames = state.frames;
           speed = state.speed;
-  
           return;
         }
       });
-      //Updating variables
       player.image.src = animal.imgSource;
       player.width = animal.SpriteDimensions.width;
       player.height = animal.SpriteDimensions.height;
       player.spriteWidth = animal.SpriteDimensions.spriteWidth;
       player.spriteHeight = animal.SpriteDimensions.spriteHeight;
     }
-  })
+  });
 
+  if (currState !== prevState) {
+    player.frameCount = 0;
+    player.frameY = currRow;
+  }
 
-  if(player.spriteDirection === 'right'){
-    if (currState != prevState) {
-      player.frameCount = 0;
-      player.frameY = currRow;
-    } else if (player.frameCount < maxFrames) {
-      player.frameCount++;
-    } else {
+  if (player.spriteDirection === 'right') {
+    player.frameCount += 1;
+    if (player.frameCount >= maxFrames * speed) {
       player.frameCount = 0;
     }
   } else {
-    if (currState != prevState) {
-      player.frameCount = maxFrames;
-      player.frameY = currRow;
-    } else if (player.frameCount > 0 ) {
-      player.frameCount--;
-    } else {
-      player.frameCount = maxFrames;
+    player.frameCount -= 1;
+    if (player.frameCount < 0) {
+      player.frameCount = maxFrames * speed - 1;
     }
   }
-player.frameX = Math.floor(player.frameCount / speed);
-console.log(player.frameX, player.frameCount, player.spriteDirection)
+
+  player.frameX = Math.floor(player.frameCount / speed);
 };
 
 export default animatedSprite;
+
