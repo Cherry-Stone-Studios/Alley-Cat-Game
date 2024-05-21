@@ -42,6 +42,7 @@ model scores {
   created_on DateTime @default(now())
   username   user?    @relation(fields: [name], references: [username])
   name       String?  @db.VarChar(25)
+  guestname  String?  @db.VarChar(25)
 }
 
 model images {

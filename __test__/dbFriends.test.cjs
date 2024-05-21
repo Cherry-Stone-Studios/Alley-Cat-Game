@@ -67,7 +67,7 @@ test("Should get information for a user's friend", async () => {
     value: 1000,
     created_on: "2000-01-01",
     username: "nakaylisamazing",
-    name: "",
+    guestname: "",
   };
 
   const scores2 = {
@@ -75,7 +75,7 @@ test("Should get information for a user's friend", async () => {
     value: 2000,
     created_on: "2000-01-01",
     username: "nakaylisamazing",
-    name: "",
+    guestname: "",
   };
 
   const scores3 = {
@@ -83,7 +83,7 @@ test("Should get information for a user's friend", async () => {
     value: 3000,
     created_on: "2000-01-01",
     username: "nakaylisamazing",
-    name: "",
+    guestname: "",
   };
 
   const friendRequest1 = {

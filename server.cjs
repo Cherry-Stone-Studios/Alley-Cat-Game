@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const path = require("path");
 const morgan = require("morgan");
@@ -9,13 +10,9 @@ const { getUserById } = require("./db/users.cjs");
 const server = express();
 
 // Middleware to parse JSON requests
-server.use(express.json());
-
-
 // Middleware to parse URL-encoded data
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: false }));
-
 
 // nodejs "file system" module where we are saving our morgan log
 const fs = require("fs");
@@ -38,20 +35,15 @@ server.use(
   )
 );
 
+// Use morgan for logging
+server.use(morgan("dev"));
+
 server.get("/", function (req, res) {
   res.send("Hello world! Cool game coming soon!!");
 });
 
-// Middleware to parse URL-encoded data
-server.use(bodyParser.urlencoded({ extended: false }));
-
-// Use morgan for logging
-server.use(morgan("dev"));
-
-// Serve static files from the 'dist' directory (assuming Vite build output is here)
-server.use(express.static(path.join(__dirname, "dist")));
-
 // API routes
+
 const apiRouter = require("./api/index.cjs");
 server.use("/api", apiRouter);
 
@@ -78,6 +70,9 @@ apiRouter.use(async (req, res, next) => {
     next();
   }
 });
+
+// Serve static files from the 'dist' directory (assuming Vite build output is here)
+server.use(express.static(path.join(__dirname, "dist")));
 
 // Catch-all route to serve index.html for client-side routing
 server.get("*", (req, res) => {
