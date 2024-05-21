@@ -14,7 +14,7 @@ server.use(express.json());
 
 // Middleware to parse URL-encoded data
 server.use(bodyParser.json());
-server.use(bodyParser.urlencoded({ extended: false }));
+server.use(bodyParser.urlencoded({ extended: true }));
 
 
 // nodejs "file system" module where we are saving our morgan log
@@ -42,8 +42,6 @@ server.get("/", function (req, res) {
   res.send("Hello world! Cool game coming soon!!");
 });
 
-// Middleware to parse URL-encoded data
-server.use(bodyParser.urlencoded({ extended: false }));
 
 // Use morgan for logging
 server.use(morgan("dev"));
