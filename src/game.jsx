@@ -106,12 +106,20 @@ const Game = () => {
 
       //Can put animations based on speed. Ex: Speed 0 = idle.
       //Updates player position and handles collisions with enemies
-      update(input, deltaTime, enemies) {
+      update(input, deltaTime, enemies, flyingEnemiesArray) {
         enemies.forEach(enemy => {
           const dx = (enemy.x + enemy.width/2) - (this.x + this.width/2);
           const dy = (enemy.y + enemy.height/2) - (this.y + this.height/2);
           const distance = Math.sqrt(dx*dx+dy*dy);
           if (distance < enemy.width/2 + this.width/2){
+            gameOver = true;
+          }
+        })
+        flyingEnemiesArray.forEach(flyingenemy => {
+          const dx = (flyingenemy.x + flyingenemy.width/2) - (this.x + this.width/2);
+          const dy = (flyingenemy.y + flyingenemy.height/2) - (this.y + this.height/2);
+          const distance = Math.sqrt(dx*dx+dy*dy);
+          if (distance < flyingenemy.width/2 + this.width/2){
             gameOver = true;
           }
         })
@@ -250,7 +258,8 @@ const Game = () => {
       }
       update(){
         this.x -= this.speed;
-        if (this.x < 0 - this.width) this.markedForDeletion = true;
+        if (this.x < 0 - this.width) this.markedForDeletion = true
+          score++;
         // this.x += this.speed;
         // this.y += this.speed;
         //this.x += Math.random() * 15 - 2.5;
@@ -341,7 +350,7 @@ const Game = () => {
       background.update();
       animatedSprite(player, "walk", "walk");
       player.draw(ctx);
-      player.update(input, deltaTime, enemies);
+      player.update(input, deltaTime, enemies, flyingEnemiesArray);
       handleEnemies(deltaTime);
       handleFlyingEnemies(deltaTime);
       displayStatusText(ctx);
