@@ -5,6 +5,7 @@ import backgroundImage from '../game_module/background1.jpeg';
 import enemyImage from '../game_module/Dog_Black.png';
 import animatedSprite from './SpriteAnimation.jsx';
 import flyingEnemy from '../game_module/bee_idle.gif';
+import trashObstacle from '../game_module/E075B70C-32FD-4253-879A-461B36290F63_4_5005_c.jpeg'
 
 const Game = () => {
   useEffect(() => {
@@ -250,7 +251,7 @@ const Game = () => {
         this.width = 100;
         this.height = 100;
         this.x = gameWidth;
-        this.y = Math.random() * (gameHeight /2) +70;
+        this.y = Math.random() * (gameHeight /2) +80;
         this.speed = Math.random() * 4 + 2;
         this.image = new Image();
         this.image.src = flyingEnemy;
