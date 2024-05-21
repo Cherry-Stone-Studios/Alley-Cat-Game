@@ -131,7 +131,7 @@ const adminUpdatesUser = async ({
         id: id,
       },
       data: {
-        name: name,
+        name,
         username,
         email,
         password: hashedPassword,
