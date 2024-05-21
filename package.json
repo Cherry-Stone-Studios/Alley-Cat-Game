@@ -10,7 +10,7 @@
     "preview": "vite preview",
     "test": "NODE_OPTIONS=--experimental-vm-modules && jest",
     "seed:dev": "nodemon ./db/seed.cjs",
-    "server:dev": "node app.cjs",
+    "server:dev": "nodemon app.cjs",
     "start": "node app.cjs"
   },
   "dependencies": {

@@ -2,8 +2,9 @@ const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
 // const { requireAdmin } = require("./utils.cjs");
-const { bcrypt } = require("bcrypt");
+const bcrypt = require("bcrypt");
 require("dotenv").config;
+const log = console.log;
 
 const {
   createUser,
@@ -26,7 +27,7 @@ const signToken = async ({ id, username }) => {
 };
 
 // CREATE/POST
-
+// POST /api/user/register2
 router.post("/register", async (req, res) => {
   // given username and password on body
   const { name, username, email, password, date_of_birth } = req.body;
@@ -56,39 +57,46 @@ router.post("/register", async (req, res) => {
 });
 
 // login to existing account with JWT
-// api/users/login
+// POST api/users/login
 router.post("/login", async (req, res) => {
-  // User gives us a username and password on the body
-  const { username, plainPassword } = req.body;
-
-  // does this user already exist?
+  // We recieve a username and password on body
+  const plainPassword = req.body.password;
+  // has plainPassword for compare
+  const { username } = req.body;
+  //Does this user exist?
   try {
-    const user = await getUserByUsername({ username });
+    const user = await getUserByUsername(username);
 
-    //if there is no user, send back a 401 Unauthorized
-
+    // if the user is not in our DB -> throw err that states "user does not exist"
     if (!user) {
-      res.sendStatus(401);
+      res.send({
+        message: `User does not exist. Register today to keep track of the fun!`,
+      });
+      // else if the user is in the DB
     } else {
-      // checkpassword against the hash
+      // check password agaist the hash with bcrypt compare
       const validPassword = await bcrypt.compare(plainPassword, user.password);
-      if (validPassword) {
-        // Valid user credentials were given
-
-        const token = signToken(user.username, user.id);
-
-        res.send({ message: "Successfully Logged in", token });
+      // if the password is not a match
+      if (!validPassword) {
+        // return a invalid credentials message to user
+        res.send({
+          message:
+            "Sorry, you have provided invalid credendials for successful login. Try again.",
+        });
+        // if the password is a match
       } else {
-        res.sendStatus(401);
+        // this is a valid login --> sign token
+        const token = await signToken(user.name, user.id);
+        res.send({ message: `${user.username} Sucessfully Logged In!` });
       }
     }
   } catch (err) {
     console.log(err);
-    res.sendStatus(500);
   }
 });
 
 // READ/GET ALL USERS
+// GET /api/users/
 router.get("/", async (req, res) => {
   try {
     const users = await getAllUsers();
@@ -99,18 +107,20 @@ router.get("/", async (req, res) => {
 });
 
 // GET USER BY id
+// GET /api/users/:id
 router.get("/:id", async (req, res) => {
   try {
     const userId = parseInt(req.params.id); //convert req.params.id to INT
     const singleUser = await getUserById(userId);
     res.status(200).send(singleUser);
   } catch (err) {
-    throw err;
+    log(err);
+    res.sendStatus(500);
   }
 });
 
 // READ/GET ALL USERS BY USERNAME
-
+// GET /api/users/:username
 router.get("/:username", async (req, res) => {
   const username = req.params.username;
   try {
@@ -122,6 +132,7 @@ router.get("/:username", async (req, res) => {
 });
 
 //UPDATE USER BY USERNAME
+// PUT /api/users/:username
 router.put("/:username", async (req, res) => {
   const username = req.params.username;
   try {
@@ -132,6 +143,7 @@ router.put("/:username", async (req, res) => {
 });
 
 //DELETE USER
+// DELETE /api/users/:id
 router.delete("/:id", async (req, res) => {
   const userId = parseInt(req.params.id);
   try {
