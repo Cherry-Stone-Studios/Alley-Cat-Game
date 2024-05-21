@@ -279,7 +279,8 @@ const Game = () => {
     //Handles creating and updating enemies
     function handleEnemies(deltaTime) {
       if (enemyTimer > enemyInterval + randomEnemyInterval) {
-        enemies.push(new Enemy(canvas.width, canvas.height, 'shibaDog'));
+        const enemyType = Math.random() < 0.5? 'dobermanDog' : 'shibaDog';
+        enemies.push(new Enemy(canvas.width, canvas.height, enemyType));
         randomEnemyInterval = Math.random() * 1000 + 500;
         console.log(enemies);
         enemyTimer = 0;
