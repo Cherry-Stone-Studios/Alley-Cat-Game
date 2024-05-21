@@ -113,24 +113,24 @@ const Game = () => {
       //Updates player position and handles collisions with enemies
       update(input, deltaTime, enemies, flyingEnemiesArray) {
         enemies.forEach(enemy => {
-          const dx = (enemy.x + enemy.width/2) - (this.x + this.width/2);
-          const dy = (enemy.y + enemy.height/2) - (this.y + this.height/2);
+          const dx = (enemy.x + enemy.width/0.5) - (this.x + this.width/0.5);
+          const dy = (enemy.y + enemy.height/0.5) - (this.y + this.height/0.5);
           const distance = Math.sqrt(dx*dx+dy*dy);
           if (distance < enemy.width/2 + this.width/2){
             gameOver = true;
           }
         })
         flyingEnemiesArray.forEach(flyingenemy => {
-          const dx = (flyingenemy.x + flyingenemy.width/2) - (this.x + this.width/2);
-          const dy = (flyingenemy.y + flyingenemy.height/2) - (this.y + this.height/2);
+          const dx = (flyingenemy.x + flyingenemy.width/0.5) - (this.x + this.width/0.5);
+          const dy = (flyingenemy.y + flyingenemy.height/0.5) - (this.y + this.height/0.5);
           const distance = Math.sqrt(dx*dx+dy*dy);
           if (distance < flyingenemy.width/2 + this.width/2){
             gameOver = true;
           }
         })
         trashObstacleArray.forEach(obstacle => {
-          const dx = (obstacle.x + obstacle.width / 2) - (this.x + this.width / 2);
-          const dy = (obstacle.y + obstacle.height / 2) - (this.y + this.height / 2);
+          const dx = (obstacle.x + obstacle.width / 2.5) - (this.x + this.width / 2.5);
+          const dy = (obstacle.y + obstacle.height / 0.5) - (this.y + this.height / 0.5);
           const distance = Math.sqrt(dx * dx + dy * dy);
           if (distance < obstacle.width / 2 + this.width / 2) {
             gameOver = true;
@@ -224,15 +224,15 @@ const Game = () => {
       }
       //Draws the enemy on the canvas
       draw(context) {
-        // context.strokeStyle = 'white';
-        // context.strokeRect(this.x, this.y, this.width, this.height);
-        // context.beginPath();
-        // context.arc(this.x + this.width / 2, this.y + this.height / 2, this.width / 2, 0, Math.PI * 2);
-        // context.stroke();
-        // context.strokeStyle = 'blue';
-        // context.beginPath();
-        // context.arc(this.x, this.y, this.height / 2, this.width / 2, 0, Math.PI * 2);
-        // context.stroke();
+        context.strokeStyle = 'white';
+        context.strokeRect(this.x, this.y, this.width, this.height);
+        context.beginPath();
+        context.arc(this.x + this.width / 2, this.y + this.height / 2, this.width / 2, 0, Math.PI * 2);
+        context.stroke();
+        context.strokeStyle = 'blue';
+        context.beginPath();
+        context.arc(this.x, this.y, this.height / 2, this.width / 2, 0, Math.PI * 2);
+        context.stroke();
         context.drawImage(this.image, this.frameX * this.spriteWidth, this.frameY * this.spriteHeight, this.spriteWidth, this.spriteHeight, this.x, this.y, this.width, this.height);
       }
       //Updates enemy position and marks for deletion if off-screen
@@ -282,7 +282,7 @@ const Game = () => {
         //this.y += Math.random() * 5 - 2.5;
       }
       draw(){
-        //ctx.strokeRect(this.x, this.y, this.width, this.height)
+        ctx.strokeRect(this.x, this.y, this.width, this.height)
         ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
       }
     }
@@ -314,6 +314,7 @@ const Game = () => {
       }
     
       draw(context) {
+        ctx.strokeRect(this.x, this.y, this.width, this.height)
         context.drawImage(this.image, this.x, this.y, this.width, this.height);
       }
     }
