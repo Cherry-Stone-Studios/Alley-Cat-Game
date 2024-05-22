@@ -35,6 +35,25 @@ describe("POST /api/users/register", () => {
   });
 });
 
+describe("POST /api/users/login", () => {
+  test("should login in a user", async () => {
+    let token = await signToken({
+      id: regUser.id,
+      username: regUser.username,
+    });
+    return request(server)
+      .post("/api/users/register")
+      .set("Accept", "application/json")
+      .send(regUser)
+      .expect(200)
+      .then(({ body }) => {
+        user = body.data;
+        token = token;
+        message = `Thank you for registering, wonderful to meet you ${regUser.name}.`;
+      });
+  });
+});
+
 // test("Successfully Login user", async () => {
 //   const user = {
 //     id: 1,
@@ -59,38 +78,6 @@ describe("POST /api/users/register", () => {
 //     throw err;
 //   }
 // });
-
-// describe("POST /api/users/login", () => {
-//   it("should login a registered user if they exist in our db", async () => {
-//     const response = await request(server).get("/api/users/login");
-//     expect(response.body).toMatchObject({
-//       username: "3eyePaul",
-//       password: "3eyePaul",
-//     });
-//     expect(
-//       response.send({
-//         message: `${username} Sucessfully Logged In!`,
-//         token,
-//       })
-//     );
-//   });
-// });
-
-// describe("POST /api/users/login", () => {
-//   it("should login a registered user if they exist in our db", async () => {
-//     const response = await request(server).get("/api/users/login")
-//       .send({
-//         name: "Hannah",
-//         username: "Serendipity",
-//       })
-//       .set("Accept", "application/json")
-//       .expect((res) => {
-//         console.log("THIS IS MY SUCCESSFULL LOGIN");
-//         res.send({ message: `${user.username} Sucessfully Logged In!` });
-//       });
-//   });
-// });
-
 describe("GET /api/users/", () => {
   it("return a response it got all users", async () => {
     await request(server).get("/api/users").expect(200);
