@@ -113,26 +113,26 @@ const Game = () => {
       //Updates player position and handles collisions with enemies
       update(input, deltaTime, enemies, flyingEnemiesArray) {
         enemies.forEach(enemy => {
-          const dx = (enemy.x + enemy.width/2) - (this.x + this.width/2);
-          const dy = (enemy.y + enemy.height/2) - (this.y + this.height/2);
+          const dx = (enemy.x + enemy.width/0.5) - (this.x + this.width/0.5);
+          const dy = (enemy.y + enemy.height/0.5) - (this.y + this.height/0.5);
           const distance = Math.sqrt(dx*dx+dy*dy);
           if (distance < enemy.width/2 + this.width/2){
             gameOver = true;
           }
         })
         flyingEnemiesArray.forEach(flyingenemy => {
-          const dx = (flyingenemy.x + flyingenemy.width/2) - (this.x + this.width/2);
-          const dy = (flyingenemy.y + flyingenemy.height/2) - (this.y + this.height/2);
+          const dx = (flyingenemy.x + flyingenemy.width/0.5) - (this.x + this.width/1.5);
+          const dy = (flyingenemy.y + flyingenemy.height/0.5) - (this.y + this.height/0.5);
           const distance = Math.sqrt(dx*dx+dy*dy);
-          if (distance < flyingenemy.width/2 + this.width/2){
+          if (distance < flyingenemy.width/2.75 + this.width/2.75){
             gameOver = true;
           }
         })
         trashObstacleArray.forEach(obstacle => {
-          const dx = (obstacle.x + obstacle.width / 2) - (this.x + this.width / 2);
-          const dy = (obstacle.y + obstacle.height / 2) - (this.y + this.height / 2);
+          const dx = (obstacle.x + obstacle.width / 1) - (this.x + this.width / 1.2);
+          const dy = (obstacle.y + obstacle.height / 1.8) - (this.y + this.height / 2);
           const distance = Math.sqrt(dx * dx + dy * dy);
-          if (distance < obstacle.width / 2 + this.width / 2) {
+          if (distance < obstacle.width / 2.75 + this.width / 2.75) {
             gameOver = true;
           }
         });
@@ -261,8 +261,8 @@ const Game = () => {
       constructor(gameWidth, gameHeight){
         this.gameWidth = gameWidth;
         this.gameHeight = gameHeight;
-        this.width = 100;
-        this.height = 100;
+        this.width = 70;
+        this.height = 70;
         this.x = gameWidth;
         this.y = Math.random() * (gameHeight /4) + gameHeight /4;
         this.speed = Math.random() * 4 + 2;
@@ -282,7 +282,7 @@ const Game = () => {
         //this.y += Math.random() * 5 - 2.5;
       }
       draw(){
-        //ctx.strokeRect(this.x, this.y, this.width, this.height)
+        // ctx.strokeRect(this.x, this.y, this.width, this.height)
         ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
       }
     }
@@ -314,6 +314,7 @@ const Game = () => {
       }
     
       draw(context) {
+        // ctx.strokeRect(this.x, this.y, this.width, this.height)
         context.drawImage(this.image, this.x, this.y, this.width, this.height);
       }
     }
