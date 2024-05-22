@@ -23,4 +23,6 @@ jobs:
         run: npm install
 
       - name: Run Jest tests
+        env:
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
         run: npm test

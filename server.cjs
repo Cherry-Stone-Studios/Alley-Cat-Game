@@ -1,4 +1,7 @@
-require("dotenv").config();
+//install dotenv on server
+require("dotenv").config;
+
+// install and use Express
 const express = require("express");
 const path = require("path");
 const morgan = require("morgan");
@@ -42,22 +45,22 @@ server.get("/", function (req, res) {
   res.send("Hello world! Cool game coming soon!!");
 });
 
-// API routes
-
-const apiRouter = require("./api/index.cjs");
-server.use("/api", apiRouter);
-
-apiRouter.use(async (req, res, next) => {
+server.use(async (req, res, next) => {
   const prefix = "Bearer ";
   const auth = req.header("Authorization");
 
   if (!auth) {
     next();
-  } else if (auth.startsWith(prefix)) {
+  }
+  // else if auth header contains Bearer**
+  // create a token for the user
+  else if (auth.startsWith(prefix)) {
     const token = auth.slice(prefix.length);
 
     try {
-      const { id } = jwt.verify(token, process.env.JWT_SECRET);
+      const verifiedToken = jwt.verify(token, process.env.JWT_SECRET);
+      console.log(verifiedToken);
+      const id = verifiedToken.id;
       if (id) {
         const user = await getUserById(id);
         req.user = { id: user.id, username: user.username };
@@ -71,8 +74,12 @@ apiRouter.use(async (req, res, next) => {
   }
 });
 
+// API routes
+const apiRouter = require("./api/index.cjs");
+server.use("/api", apiRouter);
+
 // Serve static files from the 'dist' directory (assuming Vite build output is here)
-server.use(express.static(path.join(__dirname, "dist")));
+// server.use(express.static(path.join(__dirname, "dist")));
 
 // Catch-all route to serve index.html for client-side routing
 server.get("*", (req, res) => {

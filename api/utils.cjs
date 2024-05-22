@@ -1,3 +1,6 @@
+const jwt = require("jsonwebtoken");
+require("dotenv").config;
+
 // if user is register -> grant access
 const requireUser = (req, res, next) => {
   if (req.user) {
@@ -16,7 +19,17 @@ const requireAdmin = (req, res, next) => {
   }
 };
 
+// USING JWT TO SIGN USER WITH TOKEN THAT LASTS 2 WEEKS
+const signToken = async ({ id, username }) => {
+  const user = { id, username };
+  const token = jwt.sign(user, process.env.JWT_SECRET, {
+    expiresIn: "2w",
+  });
+
+  return token;
+};
 module.exports = {
   requireAdmin,
   requireUser,
+  signToken,
 };

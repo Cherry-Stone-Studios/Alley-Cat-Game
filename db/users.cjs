@@ -22,7 +22,6 @@ const getDOB = (date_of_birth) => {
 };
 
 // Create/POST
-
 const createUser = async ({
   name,
   username,
