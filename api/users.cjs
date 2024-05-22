@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 require("dotenv").config;
 const log = console.log;
+const { requireUser } = require("./utils.cjs");
 
 const {
   createUser,
@@ -15,6 +16,7 @@ const {
   deleteUser,
   getUserByUsername,
 } = require("../db/users.cjs");
+const { UNSAFE_NavigationContext } = require("react-router-dom");
 
 // USING JWT TO SIGN USER WITH TOKEN THAT LASTS 2 WEEKS
 const signToken = async ({ id, username }) => {
@@ -27,7 +29,7 @@ const signToken = async ({ id, username }) => {
 };
 
 // CREATE/POST
-// POST /api/user/register2
+// POST /api/user/register
 router.post("/register", async (req, res) => {
   // given username and password on body
   const { name, username, email, password, date_of_birth } = req.body;
@@ -86,8 +88,8 @@ router.post("/login", async (req, res) => {
         // if the password is a match
       } else {
         // this is a valid login --> sign token
-        const token = await signToken(user.name, user.id);
-        res.send({ message: `${user.username} Sucessfully Logged In!` });
+        const token = await signToken({ id: user.id, username: user.username });
+        res.send({ message: `${user.username} Sucessfully Logged In!`, token });
       }
     }
   } catch (err) {
@@ -131,14 +133,38 @@ router.get("/:username", async (req, res) => {
   }
 });
 
-//UPDATE USER BY USERNAME
-// PUT /api/users/:username
-router.put("/:username", async (req, res) => {
-  const username = req.params.username;
-  try {
-    singleUser = await userUpdatesUser(username);
-  } catch (err) {
-    throw err;
+//UPDATE USER BY ID
+// PUT /api/users/:id
+router.put("/:id", requireUser, async (req, res, next) => {
+  // grab the id from params -> this is the username we want to update
+  const id = parseInt(req.params.id);
+  const { name, username, email, password } = req.body;
+  console.log(typeof id);
+  // grab the id from body -> this is the user who is interacting with our app
+  const currId = req.user.id;
+  console.log(typeof currId);
+  // check to see if the two usernames are a match
+  const matchedId = id === currId;
+  console.log("MATCHED ID BOOL", matchedId);
+
+  // if they are not a match, send them a non-authorized error (401)
+  if (!matchedId) {
+    res.sendStatus(401);
+    //else if they are, next()
+  } else {
+    // update the user with given username from req.params
+    try {
+      const singleUser = await userUpdatesUser({
+        id,
+        name,
+        username,
+        email,
+        password,
+      });
+      res.send({ message: `User updated Successful`, ...singleUser });
+    } catch (err) {
+      throw err;
+    }
   }
 });
 

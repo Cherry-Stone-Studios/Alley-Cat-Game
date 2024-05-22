@@ -17,10 +17,30 @@ describe("POST /api/users/register", () => {
       })
       .set("Accept", "application/json")
       .expect((res) => {
-        res.body.id = "some fixed id";
-        res.body.email = "john@john.com";
+        (res.body.id = "some fixed id"),
+          (res.body.name = "john"),
+          (res.body.username = "johnnyboy"),
+          (res.body.email = "john@john.com"),
+          (res.body.password = "johnjohn"),
+          (res.body.date_of_birth = "2000-12-12");
       })
       .expect(201);
+  });
+});
+
+describe("POST /api/users/login", () => {
+  it("should login a registered user if they exist in our db", function () {
+    request(server)
+      .post("/api/users/login")
+      .send({
+        name: "Hannah",
+        username: "Serendipity",
+      })
+      .set("Accept", "application/json")
+      .expect((res) => {
+        console.log("THIS IS MY SUCCESSFULL LOGIN");
+        res.send({ message: `${user.username} Sucessfully Logged In!` });
+      });
   });
 });
 
