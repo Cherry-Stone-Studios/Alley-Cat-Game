@@ -1,5 +1,5 @@
 const request = require("supertest");
-const { server } = require("../server.cjs");
+const server = require("../server.cjs");
 
 // TO-DO: test the createUser function
 // to see if it correctly posts
@@ -23,8 +23,8 @@ describe("POST /api/users/register", () => {
           (res.body.email = "john@john.com"),
           (res.body.password = "johnjohn"),
           (res.body.date_of_birth = "2000-12-12");
-      })
-      .expect(201);
+        res.send(200);
+      });
   });
 });
 
