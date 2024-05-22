@@ -9,6 +9,7 @@ require("supertest");
 // new user information to the db
 describe("POST /api/users/register", () => {
   const regUser = {
+    id: 10,
     name: "Sandy",
     username: "sandycheeks",
     email: "sandy@sandy.com",
@@ -17,6 +18,10 @@ describe("POST /api/users/register", () => {
   };
 
   test("should register a new user", async () => {
+    let token = await signToken({
+      id: regUser.id,
+      username: regUser.username,
+    });
     return request(server)
       .post("/api/users/register")
       .set("Accept", "application/json")
@@ -24,6 +29,8 @@ describe("POST /api/users/register", () => {
       .expect(200)
       .then(({ body }) => {
         user = body.data;
+        token = token;
+        message = `Thank you for registering, wonderful to meet you ${regUser.name}.`;
       });
   });
 });
