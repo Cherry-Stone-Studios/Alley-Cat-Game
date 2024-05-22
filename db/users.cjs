@@ -178,6 +178,7 @@ const deleteUser = async (id) => {
         id,
       },
     });
+    return deletedUser;
     console.log("THIS IS THE DELETED USER", deletedUser);
   } catch (err) {
     throw err;

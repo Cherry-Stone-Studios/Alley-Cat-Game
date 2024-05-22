@@ -184,15 +184,15 @@ router.delete("/:id", requireUser, async (req, res) => {
   // check to see if the two usernames are a match
   const matchedId = id === currId;
 
-  // if they are not a match, send back an unauthoraized message
+  // if they are not a match, send back an unauthorized message
   if (!matchedId) {
     res.status(401);
     // if they are a match, run the deleteUser with the Id of current user
   } else
     try {
-      singleUser = await deleteUser(id);
+      const deletedUser = await deleteUser(id);
       res.send({
-        message: `${singleUser} has been deleted from our database.`,
+        message: `You have successfully deleted your account. Goodbye ${deletedUser.username}`,
       });
     } catch (err) {
       throw err;

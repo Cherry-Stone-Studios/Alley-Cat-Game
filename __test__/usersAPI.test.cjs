@@ -36,6 +36,15 @@ describe("POST /api/users/register", () => {
 });
 
 describe("POST /api/users/login", () => {
+  const user = {
+    id: 1,
+    name: "Anusha Delightful",
+    username: "nooshydeli",
+    email: "nooshydeli@charmelions.com",
+    password: "charming",
+    date_of_birth: "2000-01-01",
+  };
+
   test("should login in a user", async () => {
     let token = await signToken({
       id: regUser.id,
@@ -55,14 +64,6 @@ describe("POST /api/users/login", () => {
 });
 
 // test("Successfully Login user", async () => {
-//   const user = {
-//     id: 1,
-//     name: "Anusha Delightful",
-//     username: "nooshydeli",
-//     email: "nooshydeli@charmelions.com",
-//     password: "charming",
-//     date_of_birth: "2000-01-01",
-//   };
 
 //   await createUser(user);
 
@@ -78,6 +79,7 @@ describe("POST /api/users/login", () => {
 //     throw err;
 //   }
 // });
+
 describe("GET /api/users/", () => {
   it("return a response it got all users", async () => {
     await request(server).get("/api/users").expect(200);
