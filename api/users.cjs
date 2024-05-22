@@ -17,7 +17,6 @@ const {
   deleteUser,
   getUserByUsername,
 } = require("../db/users.cjs");
-
 // USING JWT TO SIGN USER WITH TOKEN THAT LASTS 2 WEEKS
 const signToken = async ({ id, username }) => {
   const user = { id, username };
@@ -91,8 +90,6 @@ router.post("/login", async (req, res) => {
         // this is a valid login --> sign token
         const token = await signToken({ id: user.id, username: user.username });
         res.send({ message: `${user.username} Sucessfully Logged In!`, token });
-
-        
       }
     }
   } catch (err) {
@@ -181,5 +178,4 @@ router.delete("/:id", async (req, res) => {
     throw err;
   }
 });
-
 module.exports = router;

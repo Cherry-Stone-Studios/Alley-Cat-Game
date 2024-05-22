@@ -62,7 +62,6 @@ const createUser = async ({
           date_of_birth: dob,
         },
       });
-      console.log(newUser);
       return newUser;
     }
   } catch (err) {

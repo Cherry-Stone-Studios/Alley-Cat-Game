@@ -4,7 +4,7 @@ require("dotenv").config();
 const PORT = process.env.PORT || 3000;
 
 // import the server
-const server = require("./server.cjs");
+const { server } = require("./server.cjs");
 
 server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

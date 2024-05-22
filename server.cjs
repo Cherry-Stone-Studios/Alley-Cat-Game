@@ -48,7 +48,6 @@ server.get("/", function (req, res) {
 server.use(async (req, res, next) => {
   const prefix = "Bearer ";
   const auth = req.header("Authorization");
-  console.log(auth);
 
   if (!auth) {
     next();
@@ -88,4 +87,4 @@ server.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "dist", "index.html"));
 });
 
-module.exports = server;
+module.exports = { server };
