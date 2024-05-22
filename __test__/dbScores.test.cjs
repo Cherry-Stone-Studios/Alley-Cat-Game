@@ -8,12 +8,23 @@ const {
 const { createUser } = require("../db/users.cjs");
 
 test("Create a new score for a registered user", async () => {
+  const user1 = {
+    id: 1,
+    name: "Nakayla S. Delightful",
+    username: "nakaylisamazing",
+    email: "cherry@stonestudios.com",
+    password: "charming",
+    date_of_birth: "2000-01-01",
+  };
+
+  await createUser(user1);
+
   const scores1 = {
     id: 1,
     value: 1000,
     created_on: "2000-01-01",
     username: "nakaylisamazing",
-    name: "",
+    guestname: "",
   };
 
   const scoresResult1 = await createScore(scores1);
@@ -31,7 +42,7 @@ test("Create a new score for an unregistered user", async () => {
     value: 1000,
     created_on: "2000-01-01",
     username: "",
-    name: "newuser",
+    guestname: "newuser",
   };
 
   const scoresResult2 = await createScore(scores2);
@@ -39,7 +50,25 @@ test("Create a new score for an unregistered user", async () => {
     id: 1,
     value: 1000,
     created_on: "2000-01-01T00:00:00.000Z",
-    name: "newuser",
+    guestname: "newuser",
+  });
+});
+
+test("Create a new score for an unregistered user using the username field", async () => {
+  const scores03 = {
+    id: 1,
+    value: 1000,
+    created_on: "2000-01-01",
+    username: "cappyisthehappy",
+    guestname: "",
+  };
+
+  const scoresResult03 = await createScore(scores03);
+  expect(scoresResult03).toMatchObject({
+    id: 1,
+    value: 1000,
+    created_on: "2000-01-01T00:00:00.000Z",
+    guestname: "cappyisthehappy",
   });
 });
 
@@ -49,7 +78,7 @@ test("Creating a score with a naughty name throws an error", async () => {
     value: 1000,
     created_on: "2000-01-01",
     username: "",
-    name: "fuck this game",
+    guestname: "fuck this game",
   };
 
   await expect(createScore(scores3)).rejects.toThrow(
@@ -63,7 +92,7 @@ test("Creating a score with a naughty name throws an error", async () => {
     value: 1000,
     created_on: "2000-01-01",
     username: "",
-    name: "this game is the shit",
+    guestname: "this game is the shit",
   };
 
   await expect(createScore(scores4)).rejects.toThrow(
@@ -77,7 +106,7 @@ test("Creating a score with a naughty name throws an error", async () => {
     value: 1000,
     created_on: "2000-01-01",
     username: "",
-    name: "cunty mc cunterson",
+    guestname: "cunty mc cunterson",
   };
 
   await expect(createScore(scores5)).rejects.toThrow(
@@ -91,7 +120,7 @@ test("Creating a score with a naughty name throws an error", async () => {
     value: 1000,
     created_on: "2000-01-01",
     username: "",
-    name: "fuckcuntpisshit",
+    guestname: "fuckcuntpisshit",
   };
 
   await expect(createScore(scores6)).rejects.toThrow(
@@ -105,7 +134,7 @@ test("Creating a score with a long name throws an error", async () => {
     value: 1000,
     created_on: "2000-01-01",
     username: "",
-    name: "chrisisthemostiandbesteverwoooooothisissolonghorray",
+    guestname: "chrisisthemostiandbesteverwoooooothisissolonghorray",
   };
 
   await expect(createScore(score7)).rejects.toThrow(
@@ -128,7 +157,7 @@ test("Creating a score with a name that belongs to a user throws an error", asyn
     value: 1000,
     created_on: "2000-01-01",
     username: "",
-    name: "nooshydelightful",
+    guestname: "nooshydelightful",
   };
 
   await createUser(user1);
@@ -154,7 +183,7 @@ test("Get scores for a registered user", async () => {
     value: 1000,
     created_on: "2000-01-01",
     username: "nooshydelightful",
-    name: "",
+    guestname: "",
   };
 
   const scores2 = {
@@ -162,7 +191,7 @@ test("Get scores for a registered user", async () => {
     value: 2000,
     created_on: "2000-01-01",
     username: "nooshydelightful",
-    name: "",
+    guestname: "",
   };
 
   const scores3 = {
@@ -170,7 +199,7 @@ test("Get scores for a registered user", async () => {
     value: 3000,
     created_on: "2000-01-01",
     username: "nooshydelightful",
-    name: "",
+    guestname: "",
   };
 
   const user = {
@@ -238,7 +267,7 @@ test("Get all scores for high scores", async () => {
     value: 1000,
     created_on: "2000-01-01",
     username: "nakaylisamazing",
-    name: "",
+    guestname: "",
   };
 
   const scores2 = {
@@ -246,7 +275,7 @@ test("Get all scores for high scores", async () => {
     value: 2000,
     created_on: "2000-01-01",
     username: "nooshydelightful",
-    name: "",
+    guestname: "",
   };
 
   const scores3 = {
@@ -254,7 +283,7 @@ test("Get all scores for high scores", async () => {
     value: 3000,
     created_on: "2000-01-01",
     username: "valentinocoolcat",
-    name: "",
+    guestname: "",
   };
 
   await createUser(user1);
@@ -304,7 +333,7 @@ test("A quoteAdminquote updates the score", async () => {
     value: 1000,
     created_on: "2000-01-01",
     username: "nooshydelightful",
-    name: "",
+    guestname: "",
   };
 
   await createUser(user1);
@@ -313,8 +342,8 @@ test("A quoteAdminquote updates the score", async () => {
   const adminUpdatedField = {
     value: 10000,
     created_on: "2000-01-01",
-    name: "nakaylisamazing",
-    id: 1,
+    username: "nakaylisamazing",
+    guestname: "",
   };
 
   const updatedScore = await adminUpdateScore(adminUpdatedField);
@@ -342,7 +371,7 @@ test("A score gets deleted", async () => {
     value: 1000,
     created_on: "2000-01-01",
     username: "nooshydelightful",
-    name: "",
+    guestname: "",
   };
 
   await createUser(user1);

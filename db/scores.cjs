@@ -11,28 +11,36 @@ const getDate = (created_on) => {
 
 // Create/POST
 
-const createScore = async ({ value, created_on, username, name }) => {
+const createScore = async ({ value, created_on, username, guestname }) => {
   try {
-    const badName = doesContainBadWords(name, wordFilter);
+    const badName = doesContainBadWords(guestname, wordFilter);
     const date = getDate(created_on);
 
     const isUser = await prisma.user
       .count({
         where: {
-          username: name,
+          username: guestname,
+        },
+      })
+      .then(Boolean);
+
+    const ifUserExists = await prisma.user
+      .count({
+        where: {
+          username,
         },
       })
       .then(Boolean);
 
     if (badName === true) {
       throw Error(`Your name is too naughty!`);
-    } else if (name.length > 25) {
+    } else if (guestname.length > 25) {
       throw Error(`Your high score nickname is too long!`);
     } else if (isUser === true) {
       throw Error(
         `Your high score name belongs to a user. Register your own account to claim your very own name!`
       );
-    } else if (username.length > 0) {
+    } else if (ifUserExists && username.length > 0) {
       const userNewScore = await prisma.scores.create({
         data: {
           value,
@@ -40,16 +48,30 @@ const createScore = async ({ value, created_on, username, name }) => {
           name: username,
         },
       });
+      console.log("USER SCORES", userNewScore);
       return userNewScore;
-    } else {
+    } else if (guestname.length > 0) {
       const unregisteredNewScore = await prisma.scores.create({
         data: {
           value,
           created_on: date,
-          name,
+          guestname: guestname,
         },
       });
+      console.log("GUEST SCORES", unregisteredNewScore);
+
       return unregisteredNewScore;
+    } else if (!ifUserExists === true) {
+      const oopsieHighScore = await prisma.scores.create({
+        data: {
+          value,
+          created_on: date,
+          guestname: username,
+        },
+      });
+      console.log("OOPSIE SCORES", oopsieHighScore);
+
+      return oopsieHighScore;
     }
   } catch (err) {
     throw err;
@@ -60,9 +82,9 @@ const createScore = async ({ value, created_on, username, name }) => {
 
 const getAllScores = async () => {
   try {
-    const rows = await prisma.scores.findMany();
+    const allScores = await prisma.scores.findMany();
 
-    return rows;
+    return allScores;
   } catch (err) {
     throw err;
   }
@@ -71,9 +93,7 @@ const getAllScores = async () => {
 const getScoresByUsername = async (username) => {
   try {
     const userByUsername = await prisma.scores.findMany({
-      where: {
-        username,
-      },
+      where: { name: username },
     });
     return userByUsername;
   } catch (err) {
@@ -82,7 +102,7 @@ const getScoresByUsername = async (username) => {
 };
 
 // Update/PATCH
-const adminUpdateScore = async ({ value, created_on, username, name }) => {
+const adminUpdateScore = async ({ value, created_on, username, guestname }) => {
   try {
     const date = getDate(created_on);
 
@@ -90,11 +110,10 @@ const adminUpdateScore = async ({ value, created_on, username, name }) => {
       data: {
         value,
         created_on: date,
-        username,
-        name,
+        name: username,
+        guestname,
       },
     });
-
     return updatedScore;
   } catch (err) {
     throw err;

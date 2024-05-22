@@ -4,6 +4,8 @@ import playerImage from './assets/orangeCat/orangeCatSprite.png';
 import backgroundImage from '../game_module/background1.jpeg';
 import enemyImage from '../game_module/Dog_Black.png';
 import animatedSprite from './SpriteAnimation.jsx';
+import flyingEnemy from '../game_module/bee_idle.gif';
+import trashObstacle from '../game_module/trashcan.png';
 
 const Game = () => {
   useEffect(() => {
@@ -14,6 +16,15 @@ const Game = () => {
     let enemies = [];
     let score = 0;
     let gameOver = false;
+    const numberOfEnemies = 10;
+    let flyingEnemiesArray = []
+    let flyingEnemyTimer = 0;
+    const flyingEnemyInterval = 5000; // Adjust this value to control the spawn rate
+    let randomFlyingEnemyInterval = Math.random() * 1000 + 500;
+    let trashObstacleArray = [];
+    let trashObstacleTimer = 0;
+    const trashObstacleInterval = 6000;
+    let randomTrashObstacleInterval = Math.random() * 1000 + 500;
 
     //Handles any keyboard inputs from the player
     class InputHandler {
@@ -100,7 +111,7 @@ const Game = () => {
 
       //Can put animations based on speed. Ex: Speed 0 = idle.
       //Updates player position and handles collisions with enemies
-      update(input, deltaTime, enemies) {
+      update(input, deltaTime, enemies, flyingEnemiesArray) {
         enemies.forEach(enemy => {
           const dx = (enemy.x + enemy.width/2) - (this.x + this.width/2);
           const dy = (enemy.y + enemy.height/2) - (this.y + this.height/2);
@@ -109,6 +120,22 @@ const Game = () => {
             gameOver = true;
           }
         })
+        flyingEnemiesArray.forEach(flyingenemy => {
+          const dx = (flyingenemy.x + flyingenemy.width/2) - (this.x + this.width/2);
+          const dy = (flyingenemy.y + flyingenemy.height/2) - (this.y + this.height/2);
+          const distance = Math.sqrt(dx*dx+dy*dy);
+          if (distance < flyingenemy.width/2 + this.width/2){
+            gameOver = true;
+          }
+        })
+        trashObstacleArray.forEach(obstacle => {
+          const dx = (obstacle.x + obstacle.width / 2) - (this.x + this.width / 2);
+          const dy = (obstacle.y + obstacle.height / 2) - (this.y + this.height / 2);
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          if (distance < obstacle.width / 2 + this.width / 2) {
+            gameOver = true;
+          }
+        });
         if (input.keys.indexOf('ArrowRight') > -1) {
           this.speed = 5;
         } else if (input.keys.indexOf('ArrowLeft') > -1) {
@@ -187,7 +214,7 @@ const Game = () => {
         this.y = this.gameHeight - this.height;
         this.frameX = 0;
         this.frameY = 0;
-        this.speed = 10;
+        this.speed = 16;
         this.frameCount = 0;
         this.markedForDeletion = false;
         this.sprite = sprite;
@@ -211,9 +238,10 @@ const Game = () => {
       //Updates enemy position and marks for deletion if off-screen
       update() {
         this.x -= this.speed;
-        if (this.x < 0 - this.width)
+        if (this.x < 0 - this.width) {
           this.markedForDeletion = true;
-        score++;
+          score++;
+        }
         this.y += this.vy;
         if (!this.onGround()) {
           this.vy += this.weight
@@ -229,10 +257,72 @@ const Game = () => {
       }
     }
 
+    class FlyingEnemy {
+      constructor(gameWidth, gameHeight){
+        this.gameWidth = gameWidth;
+        this.gameHeight = gameHeight;
+        this.width = 100;
+        this.height = 100;
+        this.x = gameWidth;
+        this.y = Math.random() * (gameHeight /4) + gameHeight /4;
+        this.speed = Math.random() * 4 + 2;
+        this.image = new Image();
+        this.image.src = flyingEnemy;
+        this.markedForDeletion = false;
+      }
+      update(){
+        this.x -= this.speed;
+        if (this.x < 0 - this.width) {
+          this.markedForDeletion = true
+          score++;
+        }
+        // this.x += this.speed;
+        // this.y += this.speed;
+        //this.x += Math.random() * 15 - 2.5;
+        //this.y += Math.random() * 5 - 2.5;
+      }
+      draw(){
+        //ctx.strokeRect(this.x, this.y, this.width, this.height)
+        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+      }
+    }
+
+    for (let i = 0; i < numberOfEnemies; i++){
+      flyingEnemiesArray.push(new FlyingEnemy(canvas.width, canvas.height));
+    }
+
+    class TrashObstacle {
+      constructor(gameWidth, gameHeight) {
+        this.gameWidth = gameWidth;
+        this.gameHeight = gameHeight;
+        this.width = 100;
+        this.height = 100;
+        this.x = gameWidth;
+        this.y = gameHeight - this.height; // Ground level
+        this.image = new Image();
+        this.image.src = trashObstacle;
+        this.speed = 5;
+        this.markedForDeletion = false;
+      }
+    
+      update() {
+        this.x -= this.speed;
+        if (this.x < 0 - this.width) {
+          this.markedForDeletion = true;
+          score++;
+        }
+      }
+    
+      draw(context) {
+        context.drawImage(this.image, this.x, this.y, this.width, this.height);
+      }
+    }
+
     //Handles creating and updating enemies
     function handleEnemies(deltaTime) {
       if (enemyTimer > enemyInterval + randomEnemyInterval) {
-        enemies.push(new Enemy(canvas.width, canvas.height, 'shibaDog'));
+        const enemyType = Math.random() < 0.5? 'dobermanDog' : 'shibaDog';
+        enemies.push(new Enemy(canvas.width, canvas.height, enemyType));
         randomEnemyInterval = Math.random() * 1000 + 500;
         console.log(enemies);
         enemyTimer = 0;
@@ -245,6 +335,36 @@ const Game = () => {
         enemy.update(deltaTime);
       });
       enemies = enemies.filter(enemy => !enemy.markedForDeletion)
+    }
+
+    function handleFlyingEnemies(deltaTime) {
+      if (flyingEnemyTimer > flyingEnemyInterval + randomFlyingEnemyInterval) {
+        flyingEnemiesArray.push(new FlyingEnemy(canvas.width, canvas.height));
+        randomFlyingEnemyInterval = Math.random() * 1000 + 500;
+        flyingEnemyTimer = 0;
+      } else {
+        flyingEnemyTimer += deltaTime;
+      }
+      flyingEnemiesArray.forEach((enemy) => {
+        enemy.update();
+        enemy.draw(ctx);
+      });
+      flyingEnemiesArray = flyingEnemiesArray.filter((enemy) => !enemy.markedForDeletion);
+    }
+
+    function handleTrashObstacles(deltaTime) {
+      if (trashObstacleTimer > trashObstacleInterval + randomTrashObstacleInterval) {
+        trashObstacleArray.push(new TrashObstacle(canvas.width, canvas.height));
+        randomTrashObstacleInterval = Math.random() * 1000 + 500;
+        trashObstacleTimer = 0;
+      } else {
+        trashObstacleTimer += deltaTime;
+      }
+      trashObstacleArray.forEach((obstacle) => {
+        obstacle.update();
+        obstacle.draw(ctx);
+      });
+      trashObstacleArray = trashObstacleArray.filter((obstacle) => !obstacle.markedForDeletion);
     }
 
     //Displays score and game over text
@@ -265,6 +385,8 @@ const Game = () => {
       player.restart();
       background.restart();
       enemies = [];
+      flyingEnemiesArray = [];
+      trashObstacleArray = [];
       score = 0;
       gameOver = false;
       animate(0);
@@ -276,7 +398,7 @@ const Game = () => {
 
     let lastTime = 0;
     let enemyTimer = 0;
-    const enemyInterval = 1000;
+    const enemyInterval = 2000;
     let randomEnemyInterval = Math.random() * 1000 + 500;
 
     //Main game loop: updates and renders game objects
@@ -288,8 +410,10 @@ const Game = () => {
       background.update();
       animatedSprite(player, "walk", "walk");
       player.draw(ctx);
-      player.update(input, deltaTime, enemies);
+      player.update(input, deltaTime, enemies, flyingEnemiesArray, trashObstacleArray);
       handleEnemies(deltaTime);
+      handleFlyingEnemies(deltaTime);
+      handleTrashObstacles(deltaTime);
       displayStatusText(ctx);
       if (!gameOver) requestAnimationFrame(animate);
     }

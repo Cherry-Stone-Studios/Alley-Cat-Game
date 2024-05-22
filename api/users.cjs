@@ -6,6 +6,7 @@ const bcrypt = require("bcrypt");
 require("dotenv").config;
 const log = console.log;
 const { requireUser } = require("./utils.cjs");
+const { UNSAFE_NavigationContext } = require("react-router-dom");
 
 const {
   createUser,
@@ -16,7 +17,6 @@ const {
   deleteUser,
   getUserByUsername,
 } = require("../db/users.cjs");
-const { UNSAFE_NavigationContext } = require("react-router-dom");
 
 // USING JWT TO SIGN USER WITH TOKEN THAT LASTS 2 WEEKS
 const signToken = async ({ id, username }) => {
@@ -25,6 +25,7 @@ const signToken = async ({ id, username }) => {
     expiresIn: "2w",
   });
   console.log("TOKEN", token);
+
   return token;
 };
 
@@ -90,6 +91,8 @@ router.post("/login", async (req, res) => {
         // this is a valid login --> sign token
         const token = await signToken({ id: user.id, username: user.username });
         res.send({ message: `${user.username} Sucessfully Logged In!`, token });
+
+        
       }
     }
   } catch (err) {

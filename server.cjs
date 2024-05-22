@@ -13,11 +13,9 @@ const { getUserById } = require("./db/users.cjs");
 const server = express();
 
 // Middleware to parse JSON requests
-server.use(express.json());
-
 // Middleware to parse URL-encoded data
 server.use(bodyParser.json());
-server.use(bodyParser.urlencoded({ extended: false }));
+server.use(bodyParser.urlencoded({ extended: true }));
 
 // nodejs "file system" module where we are saving our morgan log
 const fs = require("fs");
@@ -40,20 +38,15 @@ server.use(
   )
 );
 
+// Use morgan for logging
+server.use(morgan("dev"));
+
 server.get("/", function (req, res) {
   res.send("Hello world! Cool game coming soon!!");
 });
 
-// Middleware to parse URL-encoded data
-server.use(bodyParser.urlencoded({ extended: false }));
-
-// Use morgan for logging
-server.use(morgan("dev"));
-
-// Serve static files from the 'dist' directory (assuming Vite build output is here)
-server.use(express.static(path.join(__dirname, "dist")));
-
 server.use(async (req, res, next) => {
+apiRouter.use(async (req, res, next) => {
   const prefix = "Bearer ";
   const auth = req.header("Authorization");
   console.log(auth);
@@ -87,6 +80,9 @@ server.use(async (req, res, next) => {
 // API routes
 const apiRouter = require("./api/index.cjs");
 server.use("/api", apiRouter);
+
+// Serve static files from the 'dist' directory (assuming Vite build output is here)
+// server.use(express.static(path.join(__dirname, "dist")));
 
 // Catch-all route to serve index.html for client-side routing
 server.get("*", (req, res) => {
