@@ -20,3 +20,5 @@ server.use((err, req, res, next) => {
 server.use((req, res) => {
   res.status(404).send("Path not found.");
 });
+
+module.exports = { server };

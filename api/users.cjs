@@ -17,6 +17,7 @@ const {
   deleteUser,
   getUserByUsername,
 } = require("../db/users.cjs");
+const { useReducer } = require("react");
 // USING JWT TO SIGN USER WITH TOKEN THAT LASTS 2 WEEKS
 const signToken = async ({ id, username }) => {
   const user = { id, username };
@@ -29,7 +30,7 @@ const signToken = async ({ id, username }) => {
 };
 
 // CREATE/POST
-// POST /api/user/register
+// POST /api/users/register
 router.post("/register", async (req, res) => {
   // given username and password on body
   const { name, username, email, password, date_of_birth } = req.body;
@@ -89,7 +90,11 @@ router.post("/login", async (req, res) => {
       } else {
         // this is a valid login --> sign token
         const token = await signToken({ id: user.id, username: user.username });
-        res.send({ message: `${user.username} Sucessfully Logged In!`, token });
+        res.send({
+          message: `${user.username} Sucessfully Logged In!`,
+          token,
+          ...user,
+        });
       }
     }
   } catch (err) {
@@ -139,18 +144,17 @@ router.put("/:id", requireUser, async (req, res, next) => {
   // grab the id from params -> this is the username we want to update
   const id = parseInt(req.params.id);
   const { name, username, email, password } = req.body;
-  console.log(typeof id);
+
   // grab the id from body -> this is the user who is interacting with our app
   const currId = req.user.id;
-  console.log(typeof currId);
+
   // check to see if the two usernames are a match
   const matchedId = id === currId;
-  console.log("MATCHED ID BOOL", matchedId);
 
   // if they are not a match, send them a non-authorized error (401)
   if (!matchedId) {
     res.sendStatus(401);
-    //else if they are, next()
+    //else if they are, run the updateUsers function
   } else {
     // update the user with given username from req.params
     try {
@@ -170,12 +174,28 @@ router.put("/:id", requireUser, async (req, res, next) => {
 
 //DELETE USER
 // DELETE /api/users/:id
-router.delete("/:id", async (req, res) => {
-  const userId = parseInt(req.params.id);
-  try {
-    singleUser = await deleteUser(userId);
-  } catch (err) {
-    throw err;
-  }
+router.delete("/:id", requireUser, async (req, res) => {
+  // grab the id from params -> this is the username we want to update
+  const id = parseInt(req.params.id);
+
+  // grab the id from body -> this is the user who is interacting with our app
+  const currId = req.user.id;
+
+  // check to see if the two usernames are a match
+  const matchedId = id === currId;
+
+  // if they are not a match, send back an unauthoraized message
+  if (!matchedId) {
+    res.status(401);
+    // if they are a match, run the deleteUser with the Id of current user
+  } else
+    try {
+      singleUser = await deleteUser(id);
+      res.send({
+        message: `${singleUser} has been deleted from our database.`,
+      });
+    } catch (err) {
+      throw err;
+    }
 });
 module.exports = router;

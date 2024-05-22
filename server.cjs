@@ -63,7 +63,6 @@ server.use(async (req, res, next) => {
       const id = verifiedToken.id;
       if (id) {
         const user = await getUserById(id);
-        console.log(user);
         req.user = { id: user.id, username: user.username };
       }
     } catch (error) {

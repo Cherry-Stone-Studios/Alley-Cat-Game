@@ -1,34 +1,32 @@
 const request = require("supertest");
-const server = require("../server.cjs");
+const { server } = require("../server.cjs");
 const { createUser } = require("../db/users.cjs");
 const { signToken } = require("../api/utils.cjs");
+require("supertest");
 
 // TO-DO: test the createUser function
 // to see if it correctly posts
 // new user information to the db
-// describe("POST /api/users/register", () => {
-//   it("should register a new user in our db", function () {
-//     request(server)
-//       .post("/api/users/register")
-//       .send({
-//         name: "john",
-//         username: "johnnyboy",
-//         email: "john@john.com",
-//         password: "jonjon",
-//         date_of_birth: "2000-12-12",
-//       })
-//       .set("Accept", "application/json")
-//       .expect((res) => {
-//         (res.body.id = "some fixed id"),
-//           (res.body.name = "john"),
-//           (res.body.username = "johnnyboy"),
-//           (res.body.email = "john@john.com"),
-//           (res.body.password = "johnjohn"),
-//           (res.body.date_of_birth = "2000-12-12");
-//         res.send(200);
-//       });
-//   });
-// });
+describe("POST /api/users/register", () => {
+  const regUser = {
+    name: "Sandy",
+    username: "sandycheeks",
+    email: "sandy@sandy.com",
+    password: "Sandy",
+    date_of_birth: "2000-01-01",
+  };
+
+  test("should register a new user", async () => {
+    return request(server)
+      .post("/api/users/register")
+      .set("Accept", "application/json")
+      .send(regUser)
+      .expect(200)
+      .then(({ body }) => {
+        user = body.data;
+      });
+  });
+});
 
 // test("Successfully Login user", async () => {
 //   const user = {

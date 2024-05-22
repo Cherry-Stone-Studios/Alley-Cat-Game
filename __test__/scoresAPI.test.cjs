@@ -1,5 +1,5 @@
 const request = require("supertest");
-const server = require("../server.cjs");
+const { server } = require("../server.cjs");
 
 // TO-DO: test the createScore function
 // to see if it correctly posts
