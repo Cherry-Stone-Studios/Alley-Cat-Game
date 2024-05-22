@@ -46,7 +46,6 @@ server.get("/", function (req, res) {
 });
 
 server.use(async (req, res, next) => {
-apiRouter.use(async (req, res, next) => {
   const prefix = "Bearer ";
   const auth = req.header("Authorization");
   console.log(auth);
