@@ -6,6 +6,7 @@ import enemyImage from '../game_module/Dog_Black.png';
 import animatedSprite from './SpriteAnimation.jsx';
 import flyingEnemy from '../game_module/bee_idle.gif';
 import trashObstacle from '../game_module/trashcan.png';
+import food1 from '../game_module/goldieSprite.png';
 
 const Game = () => {
   useEffect(() => {
@@ -15,6 +16,7 @@ const Game = () => {
     canvas.height = 720;
     let enemies = [];
     let score = 0;
+    let chonkMeter = 0;
     let gameOver = false;
     const numberOfEnemies = 10;
     let flyingEnemiesArray = []
@@ -25,6 +27,10 @@ const Game = () => {
     let trashObstacleTimer = 0;
     const trashObstacleInterval = 6000;
     let randomTrashObstacleInterval = Math.random() * 1000 + 500;
+    let foodArray = [];
+    let foodTimer = 0;
+    const foodInterval = 6000;
+    let randomFoodInterval = Math.random() * 1000 + 500;
 
     //Handles any keyboard inputs from the player
     class InputHandler {
@@ -111,29 +117,38 @@ const Game = () => {
 
       //Can put animations based on speed. Ex: Speed 0 = idle.
       //Updates player position and handles collisions with enemies
-      update(input, deltaTime, enemies, flyingEnemiesArray) {
+      update(input, deltaTime, enemies, flyingEnemiesArray, trashObstacleArray ,foodArray) {
         enemies.forEach(enemy => {
-          const dx = (enemy.x + enemy.width/2) - (this.x + this.width/2);
-          const dy = (enemy.y + enemy.height/2) - (this.y + this.height/2);
+          const dx = (enemy.x + enemy.width/0.5) - (this.x + this.width/0.5);
+          const dy = (enemy.y + enemy.height/0.5) - (this.y + this.height/0.5);
           const distance = Math.sqrt(dx*dx+dy*dy);
           if (distance < enemy.width/2 + this.width/2){
             gameOver = true;
           }
         })
         flyingEnemiesArray.forEach(flyingenemy => {
-          const dx = (flyingenemy.x + flyingenemy.width/2) - (this.x + this.width/2);
-          const dy = (flyingenemy.y + flyingenemy.height/2) - (this.y + this.height/2);
+          const dx = (flyingenemy.x + flyingenemy.width/0.5) - (this.x + this.width/1.5);
+          const dy = (flyingenemy.y + flyingenemy.height/0.5) - (this.y + this.height/0.5);
           const distance = Math.sqrt(dx*dx+dy*dy);
-          if (distance < flyingenemy.width/2 + this.width/2){
+          if (distance < flyingenemy.width/2.75 + this.width/2.75){
             gameOver = true;
           }
         })
         trashObstacleArray.forEach(obstacle => {
-          const dx = (obstacle.x + obstacle.width / 2) - (this.x + this.width / 2);
-          const dy = (obstacle.y + obstacle.height / 2) - (this.y + this.height / 2);
+          const dx = (obstacle.x + obstacle.width / 1) - (this.x + this.width / 1.2);
+          const dy = (obstacle.y + obstacle.height / 1.8) - (this.y + this.height / 2);
           const distance = Math.sqrt(dx * dx + dy * dy);
-          if (distance < obstacle.width / 2 + this.width / 2) {
+          if (distance < obstacle.width / 2.75 + this.width / 2.75) {
             gameOver = true;
+          }
+        });
+        foodArray.forEach(food => {
+          const dx = (food.x + food.width / 2) - (this.x + this.width / 2);
+          const dy = (food.y + food.height / 2) - (this.y + this.height / 2);
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          if (distance < food.width / 2 + this.width / 2) {
+            food.markedForDeletion = true;
+            chonkMeter++; 
           }
         });
         if (input.keys.indexOf('ArrowRight') > -1) {
@@ -214,7 +229,7 @@ const Game = () => {
         this.y = this.gameHeight - this.height;
         this.frameX = 0;
         this.frameY = 0;
-        this.speed = 16;
+        this.speed = 13;
         this.frameCount = 0;
         this.markedForDeletion = false;
         this.sprite = sprite;
@@ -261,8 +276,8 @@ const Game = () => {
       constructor(gameWidth, gameHeight){
         this.gameWidth = gameWidth;
         this.gameHeight = gameHeight;
-        this.width = 100;
-        this.height = 100;
+        this.width = 70;
+        this.height = 70;
         this.x = gameWidth;
         this.y = Math.random() * (gameHeight /4) + gameHeight /4;
         this.speed = Math.random() * 4 + 2;
@@ -282,7 +297,7 @@ const Game = () => {
         //this.y += Math.random() * 5 - 2.5;
       }
       draw(){
-        //ctx.strokeRect(this.x, this.y, this.width, this.height)
+        // ctx.strokeRect(this.x, this.y, this.width, this.height)
         ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
       }
     }
@@ -310,6 +325,33 @@ const Game = () => {
         if (this.x < 0 - this.width) {
           this.markedForDeletion = true;
           score++;
+        }
+      }
+    
+      draw(context) {
+        // ctx.strokeRect(this.x, this.y, this.width, this.height)
+        context.drawImage(this.image, this.x, this.y, this.width, this.height);
+      }
+    }
+
+    class Food {
+      constructor(gameWidth, gameHeight) {
+        this.gameWidth = gameWidth;
+        this.gameHeight = gameHeight;
+        this.width = 50; // size of food
+        this.height = 50;
+        this.x = gameWidth;
+        this.y = gameHeight - this.height;
+        this.image = new Image();
+        this.image.src = food1;
+        this.speed = 4;
+        this.markedForDeletion = false;
+      }
+    
+      update() {
+        this.x -= this.speed;
+        if (this.x < 0 - this.width) {
+          this.markedForDeletion = true;
         }
       }
     
@@ -367,12 +409,31 @@ const Game = () => {
       trashObstacleArray = trashObstacleArray.filter((obstacle) => !obstacle.markedForDeletion);
     }
 
+    function handleFood(deltaTime) {
+      if (foodTimer > foodInterval + randomFoodInterval) {
+        foodArray.push(new Food(canvas.width, canvas.height));
+        randomFoodInterval = Math.random() * 1000 + 500;
+        foodTimer = 0;
+      } else {
+        foodTimer += deltaTime;
+      }
+      foodArray.forEach((food) => {
+        food.update();
+        food.draw(ctx);
+      });
+      foodArray = foodArray.filter((food) => !food.markedForDeletion);
+    }
+
     //Displays score and game over text
     function displayStatusText(context) {
       context.fillStyle = 'yellow';
       context.font = '40px Helvetica';
       context.textAlign = 'left';
       context.fillText('Score: ' + score, 50, 110);
+      context.fillStyle = 'yellow';
+      context.font = '40px Helvetica';
+      context.textAlign = 'left';
+      context.fillText('Chonk Meter: ' + chonkMeter, 50, 150);
       if (gameOver){
         context.textAlign = 'center';
         context.fillStyle = 'yellow';
@@ -387,7 +448,9 @@ const Game = () => {
       enemies = [];
       flyingEnemiesArray = [];
       trashObstacleArray = [];
+      foodArray = [];
       score = 0;
+      chonkMeter = 0;
       gameOver = false;
       animate(0);
     }
@@ -410,10 +473,11 @@ const Game = () => {
       background.update();
       animatedSprite(player, "walk", "walk");
       player.draw(ctx);
-      player.update(input, deltaTime, enemies, flyingEnemiesArray, trashObstacleArray);
+      player.update(input, deltaTime, enemies, flyingEnemiesArray, trashObstacleArray, foodArray);
       handleEnemies(deltaTime);
       handleFlyingEnemies(deltaTime);
       handleTrashObstacles(deltaTime);
+      handleFood(deltaTime);
       displayStatusText(ctx);
       if (!gameOver) requestAnimationFrame(animate);
     }
