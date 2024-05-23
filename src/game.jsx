@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import '../game_module/style.css';
 import playerImage from './assets/orangeCat/orangeCatSprite.png';
-import backgroundImage from '../game_module/background1.jpeg';
+import backgroundImage from '../game_module/City2.png';
 import enemyImage from '../game_module/Dog_Black.png';
 import animatedSprite from './SpriteAnimation.jsx';
 import flyingEnemy from '../game_module/bee_idle.gif';
@@ -64,6 +64,11 @@ const Game = () => {
           this.keys.splice(this.keys.indexOf(e.key), 1)
         }
       }
+
+      isAnyKeyPressed() {
+        return this.keys.length > 0;
+      }
+
       //Removes event listeners when component is unmounted
       removeEventListeners() {
         window.removeEventListener('keydown', this.handleKeyDown);
@@ -408,7 +413,7 @@ const Game = () => {
           this.vy = 0;
           //this.frameY = 0;
         }
-        if (this.y > this.gameHeight - this.height) this.y - this.gameHeight - this.height
+        if (this.y > this.gameHeight - this.height) this.y - this.gameHeight - this.height;
       }
       onGround() {
         return this.y >= this.gameHeight - this.height;
@@ -614,6 +619,11 @@ const Game = () => {
       const deltaTime = timeStamp - lastTime;
       lastTime = timeStamp;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      if (input.isAnyKeyPressed()) {
+        background.speed = 8;
+      } else {
+        background.speed = 0;
+      }
       background.draw(ctx);
       background.update();
       animatedSprite(player);
