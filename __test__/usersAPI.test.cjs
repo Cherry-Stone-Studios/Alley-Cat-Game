@@ -1,8 +1,6 @@
 const request = require("supertest");
 const { server } = require("../server.cjs");
-const { createUser } = require("../db/users.cjs");
 const { signToken } = require("../api/utils.cjs");
-require("supertest");
 
 // TO-DO: test the createUser function
 // to see if it correctly posts

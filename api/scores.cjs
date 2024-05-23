@@ -30,7 +30,7 @@ router.post("/", async (req, res) => {
     });
     // send a message upon creation of a high score, `Do you want to play again?`
     // along with the value of the score and name where name
-    res.send({
+    res.status(200).send({
       message: `Do you want to play again?`,
       ...highscore,
     });
@@ -55,21 +55,50 @@ router.get("/", async (req, res) => {
 
 router.get("/:username", async (req, res) => {
   const username = req.params.username;
-  console.log("SCORES USERNAME BY USERNAME", username);
   try {
     const userScores = await getScoresByUsername(username);
-    console.log(
-      "THIS IS MY USER SCORES FUNCTION THERE ARE MANY LIKE IT BUT THIS ONE IS MINE",
-      userScores
-    );
+
     res.status(200).send(userScores);
   } catch (err) {
     throw err;
   }
 });
 
+//UPDATE/PUT
 // PUT to /api/scores/:id
+router.put("/:id", async (req, res, next) => {
+  // grab the id from params -> this is the score we want to update
+  const id = parseInt(req.params.id);
+  const { value, created_on, username, guestname } = req.body;
 
+  try {
+    const updatedScore = await adminUpdateScore({
+      id,
+      value,
+      created_on,
+      username,
+      guestname,
+    });
+    res.send({ message: `Score updated successfully!`, ...updatedScore });
+  } catch (err) {
+    throw err;
+  }
+});
+
+//DELETE
 // DELETE to /api/scores/:id
+router.delete("/:id", async (req, res) => {
+  // grab the id from params -> this is the score we want to delete
+  const id = parseInt(req.params.id);
+
+  try {
+    await deleteScore(id);
+    res.send({
+      message: `The score has been deleted from the database.`,
+    });
+  } catch (err) {
+    throw err;
+  }
+});
 
 module.exports = router;

@@ -1,4 +1,4 @@
-const { createUser } = require("./users.cjs");
+const { createAdmin, createUser } = require("./users.cjs");
 const { createScore } = require("./scores.cjs");
 const prisma = require("../client.cjs");
 require("dotenv").config();
@@ -20,7 +20,6 @@ const seedUsers = async () => {
     email: "hannah@hannah.com",
     password: "Serendipity",
     date_of_birth: "1996-12-17",
-    is_admin: true,
   };
 
   const admin2 = {
@@ -29,7 +28,6 @@ const seedUsers = async () => {
     email: "Nakayla@Nakayla.com",
     password: "SevenNoms00",
     date_of_birth: "1996-12-17",
-    is_admin: true,
   };
 
   const admin3 = {
@@ -38,7 +36,6 @@ const seedUsers = async () => {
     email: "Chris@Chris.com",
     password: "artauds",
     date_of_birth: "1996-12-17",
-    is_admin: true,
   };
 
   log("Adding seeded users...");
@@ -69,9 +66,9 @@ const seedUsers = async () => {
   log("User creation complete...");
 
   // Push created users into "user" array
-  user.push(await createUser(admin1));
-  user.push(await createUser(admin2));
-  user.push(await createUser(admin3));
+  user.push(await createAdmin(admin1));
+  user.push(await createAdmin(admin2));
+  user.push(await createAdmin(admin3));
   user.push(await createUser(user1));
   user.push(await createUser(user2));
   user.push(await createUser(user3));

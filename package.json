@@ -11,9 +11,11 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules && jest",
     "seed:dev": "node ./db/seed.cjs",
     "postman": "npx prisma migrate reset -f && node ./db/seed.cjs && node app.cjs",
+    "prisma:restart": "npx prisma migrate dev --name init", 
     "server:dev": "nodemon app.cjs",
     "start": "node app.cjs",
-    "detect": "jest --detectOpenHandles"
+    "detect": "jest --detectOpenHandles",
+    "pull:request": "npm install && npx prisma migrate dev --name init && jest --detectOpenHandles"
   },
   "dependencies": {
     "@prisma/client": "^5.13.0",

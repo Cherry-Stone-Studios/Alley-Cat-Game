@@ -1,30 +1,28 @@
 const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
-// const { requireAdmin } = require("./utils.cjs");
 const bcrypt = require("bcrypt");
 require("dotenv").config;
 const log = console.log;
 const { requireUser } = require("./utils.cjs");
-const { UNSAFE_NavigationContext } = require("react-router-dom");
+// const { UNSAFE_NavigationContext } = require("react-router-dom");
+// const { useReducer } = require("react");
 
 const {
   createUser,
   getAllUsers,
   getUserById,
-  adminUpdatesUser,
   userUpdatesUser,
   deleteUser,
   getUserByUsername,
 } = require("../db/users.cjs");
-const { useReducer } = require("react");
+
 // USING JWT TO SIGN USER WITH TOKEN THAT LASTS 2 WEEKS
 const signToken = async ({ id, username }) => {
   const user = { id, username };
   const token = jwt.sign(user, process.env.JWT_SECRET, {
     expiresIn: "2w",
   });
-  console.log("TOKEN", token);
 
   return token;
 };
@@ -48,7 +46,6 @@ router.post("/register", async (req, res) => {
       id: singleUser.id,
       username: singleUser.username,
     });
-    console.log("TOKEN", token);
     // Send back the token w/ message
     res.send({
       message: `Thank you for registering, wonderful to meet you ${singleUser.name}.`,
@@ -98,7 +95,7 @@ router.post("/login", async (req, res) => {
       }
     }
   } catch (err) {
-    console.log(err);
+    throw err;
   }
 });
 
@@ -141,7 +138,7 @@ router.get("/:username", async (req, res) => {
 //UPDATE USER BY ID
 // PUT /api/users/:id
 router.put("/:id", requireUser, async (req, res, next) => {
-  // grab the id from params -> this is the username we want to update
+  // grab the id from params -> this is the user we want to update
   const id = parseInt(req.params.id);
   const { name, username, email, password } = req.body;
 
@@ -165,7 +162,7 @@ router.put("/:id", requireUser, async (req, res, next) => {
         email,
         password,
       });
-      res.send({ message: `User updated Successful`, ...singleUser });
+      res.send({ message: `User updated successfully!`, ...singleUser });
     } catch (err) {
       throw err;
     }
@@ -175,7 +172,7 @@ router.put("/:id", requireUser, async (req, res, next) => {
 //DELETE USER
 // DELETE /api/users/:id
 router.delete("/:id", requireUser, async (req, res) => {
-  // grab the id from params -> this is the username we want to update
+  // grab the id from params -> this is the user we want to delete
   const id = parseInt(req.params.id);
 
   // grab the id from body -> this is the user who is interacting with our app
@@ -184,13 +181,13 @@ router.delete("/:id", requireUser, async (req, res) => {
   // check to see if the two usernames are a match
   const matchedId = id === currId;
 
-  // if they are not a match, send back an unauthoraized message
+  // if they are not a match, send back an unauthorized message
   if (!matchedId) {
     res.status(401);
-    // if they are a match, run the deleteUser with the Id of current user
+    // if they are a match, run deleteUser with the ID of current user
   } else
     try {
-      singleUser = await deleteUser(id);
+      const singleUser = await deleteUser(id);
       res.send({
         message: `${singleUser} has been deleted from our database.`,
       });
@@ -198,4 +195,5 @@ router.delete("/:id", requireUser, async (req, res) => {
       throw err;
     }
 });
+
 module.exports = router;
