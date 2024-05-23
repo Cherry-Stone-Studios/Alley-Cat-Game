@@ -94,14 +94,18 @@ const Game = () => {
         this.spriteDirection = 'right';
         this.currAction = 'walk';
         this.stateChange = true;
+        this.jumpCount = 0; // Add jump count for double jump
       }
+    
       //Resets player position and frame Y to initial values upon restart
-      restart(){
+      restart() {
         this.x = 10;
         this.y = this.gameHeight - this.height;
         this.frameY = 0;
         this.vy = 0;
+        this.jumpCount = 0; // Reset jump count
       }
+    
       //Draws the player on the canvas the game is using
       draw(context) {
         context.drawImage(
@@ -113,86 +117,114 @@ const Game = () => {
           this.x,
           this.y,
           this.width,
-          this.height,
+          this.height
         );
       }
-
+    
       //Can put animations based on speed. Ex: Speed 0 = idle.
       //Updates player position and handles collisions with enemies
-      update(input, deltaTime, enemies, flyingEnemiesArray, trashObstacleArray ,foodArray) {
-        enemies.forEach(enemy => {
-          const dx = (enemy.x + enemy.width/0.8) - (this.x + this.width/0.8);
-          const dy = (enemy.y + enemy.height/0.8) - (this.y + this.height/0.8);
-          const distance = Math.sqrt(dx*dx+dy*dy);
-          if (distance < enemy.width/2.5 + this.width/2.5){
-            gameOver = true;
-            this.currAction = 'death';
-          }
-        })
-        flyingEnemiesArray.forEach(flyingenemy => {
-          const dx = (flyingenemy.x + flyingenemy.width/0.8) - (this.x + this.width/0.8);
-          const dy = (flyingenemy.y + flyingenemy.height/0.5) - (this.y + this.height/0.5);
-          const distance = Math.sqrt(dx*dx+dy*dy);
-          if (distance < flyingenemy.width/2.5 + this.width/2.5){
-            gameOver = true;
-            this.currAction = 'death';
-
-          }
-        })
-        trashObstacleArray.forEach(obstacle => {
-          const dx = (obstacle.x + obstacle.width / 1) - (this.x + this.width / 1.2);
-          const dy = (obstacle.y + obstacle.height / 1.8) - (this.y + this.height / 2);
-          const distance = Math.sqrt(dx * dx + dy * dy);
-          if (distance < obstacle.width / 3 + this.width / 3) {
-            gameOver = true;
-            this.currAction = 'death';
-
-          }
-        });
-        foodArray.forEach(food => {
-          const dx = (food.x + food.width / 2) - (this.x + this.width / 2);
-          const dy = (food.y + food.height / 2) - (this.y + this.height / 2);
-          const distance = Math.sqrt(dx * dx + dy * dy);
-          if (distance < food.width / 2 + this.width / 2) {
-            food.markedForDeletion = true;
-            chonkMeter++; 
-          }
-        });
+      update(input, deltaTime, enemies, flyingEnemiesArray, trashObstacleArray, foodArray) {
+        // Handle collisions
+        this.handleCollisions(enemies, flyingEnemiesArray, trashObstacleArray, foodArray);
+    
+        // Handle horizontal movement
         if (input.keys.indexOf('ArrowRight') > -1) {
-          this.speed = 5;
-          this.currAction = 'walk';
+            this.speed = 5;
+            this.currAction = 'walk';
         } else if (input.keys.indexOf('ArrowLeft') > -1) {
-          this.speed = -5;
-          this.currAction = 'walk';
-        } else if (input.keys.indexOf('ArrowUp') > -1 && this.onGround()) {
-          this.vy -= 32;
+            this.speed = -5;
+            this.currAction = 'walk';
         } else {
-          this.speed = 0;
-          this.currAction = 'idle';
+            this.speed = 0;
+            this.currAction = 'idle';
         }
-        if (input.keys.indexOf('ArrowUp') > -1 && this.onGround()) {
-          if (input.keys.indexOf('ArrowRight') > -1) {
-            this.vy -= 32; 
-          }}
-        
+    
+        // Handle jumping and double jumping
+        if (input.keys.indexOf('ArrowUp') > -1 && !this.jumpPressed) {
+            if (this.onGround() && this.jumpCount === 0) {
+                this.vy = -32; // Initial jump velocity
+                this.jumpCount = 1;
+                this.jumpPressed = true;
+            } else if (this.jumpCount === 1) {
+                this.vy = -32; // Double jump velocity
+                this.jumpCount = 2;
+                this.jumpPressed = true;
+            }
+        }
+    
+        if (input.keys.indexOf('ArrowUp') === -1) {
+            this.jumpPressed = false;
+        }
+    
+        // Apply vertical velocity (gravity)
+        this.vy += this.weight;
+    
+        // Ensure player stays within game bounds vertically
+        this.y += this.vy;
+        if (this.y > this.gameHeight - this.height) {
+            this.y = this.gameHeight - this.height;
+            this.vy = 0;
+            this.jumpCount = 0; // Reset jump count when on ground
+        }
+    
+        // Apply horizontal movement
         this.x += this.speed;
-
         if (this.x < 0) this.x = 0;
         else if (this.x > this.gameWidth - this.width) this.x = this.gameWidth - this.width;
-        this.y += this.vy;
-        if (!this.onGround()) {
-          this.vy += this.weight
-          //this.frameY = 1;
-        } else {
-          this.vy = 0;
-          //this.frameY = 0;
-        }
-        if (this.y > this.gameHeight - this.height) this.y - this.gameHeight - this.height
-      }
-      //Checks if player is on ground or in air
-      onGround() {
+    
+        // Log to debug
+        console.log(`x: ${this.x}, y: ${this.y}, vy: ${this.vy}, jumpCount: ${this.jumpCount}`);
+    }
+    
+    handleCollisions(enemies, flyingEnemiesArray, trashObstacleArray, foodArray) {
+        // Handle collisions with enemies
+        enemies.forEach(enemy => {
+            const dx = (enemy.x + enemy.width / 0.5) - (this.x + this.width / 0.5);
+            const dy = (enemy.y + enemy.height / 0.5) - (this.y + this.height / 0.5);
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance < enemy.width / 2 + this.width / 2) {
+                gameOver = true;
+                this.currAction = 'death';
+            }
+        });
+    
+        // Handle collisions with flying enemies
+        flyingEnemiesArray.forEach(flyingenemy => {
+            const dx = (flyingenemy.x + flyingenemy.width / 0.5) - (this.x + this.width / 1.5);
+            const dy = (flyingenemy.y + flyingenemy.height / 0.5) - (this.y + this.height / 0.5);
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance < flyingenemy.width / 2.75 + this.width / 2.75) {
+                gameOver = true;
+                this.currAction = 'death';
+            }
+        });
+    
+        // Handle collisions with trash obstacles
+        trashObstacleArray.forEach(obstacle => {
+            const dx = (obstacle.x + obstacle.width / 1) - (this.x + this.width / 1.2);
+            const dy = (obstacle.y + obstacle.height / 1.8) - (this.y + this.height / 2);
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance < obstacle.width / 2.75 + this.width / 2.75) {
+                gameOver = true;
+                this.currAction = 'death';
+            }
+        });
+    
+        // Handle collisions with food
+        foodArray.forEach(food => {
+            const dx = (food.x + food.width / 2) - (this.x + this.width / 2);
+            const dy = (food.y + food.height / 2) - (this.y + this.height / 2);
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance < food.width / 2 + this.width / 2) {
+                food.markedForDeletion = true;
+                chonkMeter++;
+            }
+        });
+    }
+    
+    onGround() {
         return this.y >= this.gameHeight - this.height;
-      }
+    }
     }
     
     //Represents our game's background
