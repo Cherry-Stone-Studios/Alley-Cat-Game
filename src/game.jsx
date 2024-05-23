@@ -128,51 +128,6 @@ const Game = () => {
     
       //Can put animations based on speed. Ex: Speed 0 = idle.
       //Updates player position and handles collisions with enemies
-          this.gameWidth = gameWidth;
-          this.gameHeight = gameHeight;
-          this.width = 120; // size of cats
-          this.height = 100;
-          this.spriteWidth = 47;
-          this.spriteHeight = 30;
-          this.x = 10;
-          this.y = this.gameHeight - this.height;
-          this.image = new Image();
-          this.image.src = playerImage;
-          this.frameX = 0;
-          this.frameY = 0; // Row that cat starts out as
-          this.frameCount = 0;
-          this.speed = 0;
-          this.vy = 0;
-          this.weight = 2;
-          this.sprite = sprite; // Identity: ex 'orangeCat'
-          this.spriteDirection = 'right';
-          this.currAction = 'walk';
-          this.stateChange = true;
-          this.jumpCount = 0; // Initialize jump count
-      }
-  
-      restart() {
-          this.x = 10;
-          this.y = this.gameHeight - this.height;
-          this.frameY = 0;
-          this.vy = 0;
-          this.jumpCount = 0; // Reset jump count on restart
-      }
-  
-      draw(context) {
-          context.drawImage(
-              this.image,
-              this.frameX * this.spriteWidth,
-              this.frameY * this.spriteHeight,
-              this.spriteWidth,
-              this.spriteHeight,
-              this.x,
-              this.y,
-              this.width,
-              this.height,
-          );
-      }
-
   
       update(input, deltaTime, enemies, flyingEnemiesArray, trashObstacleArray, foodArray) {
         // Handle collisions
@@ -225,57 +180,6 @@ const Game = () => {
     
         // Log to debug
         console.log(`x: ${this.x}, y: ${this.y}, vy: ${this.vy}, jumpCount: ${this.jumpCount}`);
-    }
-    
-    handleCollisions(enemies, flyingEnemiesArray, trashObstacleArray, foodArray) {
-        // Handle collisions with enemies
-        enemies.forEach(enemy => {
-            const dx = (enemy.x + enemy.width / 0.5) - (this.x + this.width / 0.5);
-            const dy = (enemy.y + enemy.height / 0.5) - (this.y + this.height / 0.5);
-            const distance = Math.sqrt(dx * dx + dy * dy);
-            if (distance < enemy.width / 2 + this.width / 2) {
-                gameOver = true;
-                this.currAction = 'death';
-            }
-        });
-    
-        // Handle collisions with flying enemies
-        flyingEnemiesArray.forEach(flyingenemy => {
-            const dx = (flyingenemy.x + flyingenemy.width / 0.5) - (this.x + this.width / 1.5);
-            const dy = (flyingenemy.y + flyingenemy.height / 0.5) - (this.y + this.height / 0.5);
-            const distance = Math.sqrt(dx * dx + dy * dy);
-            if (distance < flyingenemy.width / 2.75 + this.width / 2.75) {
-                gameOver = true;
-                this.currAction = 'death';
-            }
-        });
-    
-        // Handle collisions with trash obstacles
-        trashObstacleArray.forEach(obstacle => {
-            const dx = (obstacle.x + obstacle.width / 1) - (this.x + this.width / 1.2);
-            const dy = (obstacle.y + obstacle.height / 1.8) - (this.y + this.height / 2);
-            const distance = Math.sqrt(dx * dx + dy * dy);
-            if (distance < obstacle.width / 2.75 + this.width / 2.75) {
-                gameOver = true;
-                this.currAction = 'death';
-            }
-        });
-    
-        // Handle collisions with food
-        foodArray.forEach(food => {
-            const dx = (food.x + food.width / 2) - (this.x + this.width / 2);
-            const dy = (food.y + food.height / 2) - (this.y + this.height / 2);
-            const distance = Math.sqrt(dx * dx + dy * dy);
-            if (distance < food.width / 2 + this.width / 2) {
-                food.markedForDeletion = true;
-                chonkMeter++;
-            }
-        });
-    }
-    
-    onGround() {
-        return this.y >= this.gameHeight - this.height;
-    }
     }
     
     handleCollisions(enemies, flyingEnemiesArray, trashObstacleArray, foodArray) {
