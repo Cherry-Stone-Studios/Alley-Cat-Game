@@ -121,19 +121,19 @@ const Game = () => {
       //Updates player position and handles collisions with enemies
       update(input, deltaTime, enemies, flyingEnemiesArray, trashObstacleArray ,foodArray) {
         enemies.forEach(enemy => {
-          const dx = (enemy.x + enemy.width/0.5) - (this.x + this.width/0.5);
-          const dy = (enemy.y + enemy.height/0.5) - (this.y + this.height/0.5);
+          const dx = (enemy.x + enemy.width/0.8) - (this.x + this.width/0.8);
+          const dy = (enemy.y + enemy.height/0.8) - (this.y + this.height/0.8);
           const distance = Math.sqrt(dx*dx+dy*dy);
-          if (distance < enemy.width/2 + this.width/2){
+          if (distance < enemy.width/2.5 + this.width/2.5){
             gameOver = true;
             this.currAction = 'death';
           }
         })
         flyingEnemiesArray.forEach(flyingenemy => {
-          const dx = (flyingenemy.x + flyingenemy.width/0.5) - (this.x + this.width/1.5);
+          const dx = (flyingenemy.x + flyingenemy.width/0.8) - (this.x + this.width/0.8);
           const dy = (flyingenemy.y + flyingenemy.height/0.5) - (this.y + this.height/0.5);
           const distance = Math.sqrt(dx*dx+dy*dy);
-          if (distance < flyingenemy.width/2.75 + this.width/2.75){
+          if (distance < flyingenemy.width/2.5 + this.width/2.5){
             gameOver = true;
             this.currAction = 'death';
 
@@ -143,7 +143,7 @@ const Game = () => {
           const dx = (obstacle.x + obstacle.width / 1) - (this.x + this.width / 1.2);
           const dy = (obstacle.y + obstacle.height / 1.8) - (this.y + this.height / 2);
           const distance = Math.sqrt(dx * dx + dy * dy);
-          if (distance < obstacle.width / 2.75 + this.width / 2.75) {
+          if (distance < obstacle.width / 3 + this.width / 3) {
             gameOver = true;
             this.currAction = 'death';
 
@@ -178,7 +178,7 @@ const Game = () => {
         this.x += this.speed;
 
         if (this.x < 0) this.x = 0;
-        else if (this.x > this.gameWidth - this.width) this.x = this.gameWidth - this.width
+        else if (this.x > this.gameWidth - this.width) this.x = this.gameWidth - this.width;
         this.y += this.vy;
         if (!this.onGround()) {
           this.vy += this.weight
@@ -194,7 +194,7 @@ const Game = () => {
         return this.y >= this.gameHeight - this.height;
       }
     }
-
+    
     //Represents our game's background
     class Background {
       constructor(gameWidth, gameHeight) {
