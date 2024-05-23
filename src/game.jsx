@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import '../game_module/style.css';
 import playerImage from './assets/orangeCat/orangeCatSprite.png';
-import backgroundImage from '../game_module/background1.jpeg';
+import backgroundImage from '../game_module/City2.png';
 import enemyImage from '../game_module/Dog_Black.png';
 import animatedSprite from './SpriteAnimation.jsx';
 import flyingEnemy from '../game_module/bee_idle.gif';
@@ -64,6 +64,11 @@ const Game = () => {
           this.keys.splice(this.keys.indexOf(e.key), 1)
         }
       }
+
+      isAnyKeyPressed() {
+        return this.keys.length > 0;
+      }
+
       //Removes event listeners when component is unmounted
       removeEventListeners() {
         window.removeEventListener('keydown', this.handleKeyDown);
@@ -92,14 +97,20 @@ const Game = () => {
         this.weight = 2;
         this.sprite = sprite; //Identity: ex 'orangeCat'
         this.spriteDirection = 'right';
+        this.currAction = 'walk';
+        this.stateChange = true;
+        this.jumpCount = 0; // Add jump count for double jump
       }
+    
       //Resets player position and frame Y to initial values upon restart
-      restart(){
+      restart() {
         this.x = 10;
         this.y = this.gameHeight - this.height;
         this.frameY = 0;
         this.vy = 0;
+        this.jumpCount = 0; // Reset jump count
       }
+    
       //Draws the player on the canvas the game is using
       draw(context) {
         context.drawImage(
@@ -111,79 +122,214 @@ const Game = () => {
           this.x,
           this.y,
           this.width,
-          this.height,
+          this.height
         );
       }
-
+    
       //Can put animations based on speed. Ex: Speed 0 = idle.
       //Updates player position and handles collisions with enemies
-      update(input, deltaTime, enemies, flyingEnemiesArray, trashObstacleArray ,foodArray) {
-        enemies.forEach(enemy => {
-          const dx = (enemy.x + enemy.width/0.5) - (this.x + this.width/0.5);
-          const dy = (enemy.y + enemy.height/0.5) - (this.y + this.height/0.5);
-          const distance = Math.sqrt(dx*dx+dy*dy);
-          if (distance < enemy.width/2 + this.width/2){
-            gameOver = true;
-          }
-        })
-        flyingEnemiesArray.forEach(flyingenemy => {
-          const dx = (flyingenemy.x + flyingenemy.width/0.5) - (this.x + this.width/1.5);
-          const dy = (flyingenemy.y + flyingenemy.height/0.5) - (this.y + this.height/0.5);
-          const distance = Math.sqrt(dx*dx+dy*dy);
-          if (distance < flyingenemy.width/2.75 + this.width/2.75){
-            gameOver = true;
-          }
-        })
-        trashObstacleArray.forEach(obstacle => {
-          const dx = (obstacle.x + obstacle.width / 1) - (this.x + this.width / 1.2);
-          const dy = (obstacle.y + obstacle.height / 1.8) - (this.y + this.height / 2);
-          const distance = Math.sqrt(dx * dx + dy * dy);
-          if (distance < obstacle.width / 2.75 + this.width / 2.75) {
-            gameOver = true;
-          }
-        });
-        foodArray.forEach(food => {
-          const dx = (food.x + food.width / 2) - (this.x + this.width / 2);
-          const dy = (food.y + food.height / 2) - (this.y + this.height / 2);
-          const distance = Math.sqrt(dx * dx + dy * dy);
-          if (distance < food.width / 2 + this.width / 2) {
-            food.markedForDeletion = true;
-            chonkMeter++; 
-          }
-        });
-        if (input.keys.indexOf('ArrowRight') > -1) {
-          this.speed = 5;
-        } else if (input.keys.indexOf('ArrowLeft') > -1) {
-          this.speed = -5;
-        } else if (input.keys.indexOf('ArrowUp') > -1 && this.onGround()) {
-          this.vy -= 32;
-        } else {
+          this.gameWidth = gameWidth;
+          this.gameHeight = gameHeight;
+          this.width = 120; // size of cats
+          this.height = 100;
+          this.spriteWidth = 47;
+          this.spriteHeight = 30;
+          this.x = 10;
+          this.y = this.gameHeight - this.height;
+          this.image = new Image();
+          this.image.src = playerImage;
+          this.frameX = 0;
+          this.frameY = 0; // Row that cat starts out as
+          this.frameCount = 0;
           this.speed = 0;
-        }
-        if (input.keys.indexOf('ArrowUp') > -1 && this.onGround()) {
-          if (input.keys.indexOf('ArrowRight') > -1) {
-            this.vy -= 32; 
-          }}
-        
-        this.x += this.speed;
-
-        if (this.x < 0) this.x = 0;
-        else if (this.x > this.gameWidth - this.width) this.x = this.gameWidth - this.width
-        this.y += this.vy;
-        if (!this.onGround()) {
-          this.vy += this.weight
-          //this.frameY = 1;
-        } else {
           this.vy = 0;
-          //this.frameY = 0;
+          this.weight = 2;
+          this.sprite = sprite; // Identity: ex 'orangeCat'
+          this.spriteDirection = 'right';
+          this.currAction = 'walk';
+          this.stateChange = true;
+          this.jumpCount = 0; // Initialize jump count
+      }
+  
+      restart() {
+          this.x = 10;
+          this.y = this.gameHeight - this.height;
+          this.frameY = 0;
+          this.vy = 0;
+          this.jumpCount = 0; // Reset jump count on restart
+      }
+  
+      draw(context) {
+          context.drawImage(
+              this.image,
+              this.frameX * this.spriteWidth,
+              this.frameY * this.spriteHeight,
+              this.spriteWidth,
+              this.spriteHeight,
+              this.x,
+              this.y,
+              this.width,
+              this.height,
+          );
+      }
+
+  
+      update(input, deltaTime, enemies, flyingEnemiesArray, trashObstacleArray, foodArray) {
+        // Handle collisions
+        this.handleCollisions(enemies, flyingEnemiesArray, trashObstacleArray, foodArray);
+    
+        // Handle horizontal movement
+        if (input.keys.indexOf('ArrowRight') > -1) {
+            this.speed = 5;
+            this.currAction = 'walk';
+        } else if (input.keys.indexOf('ArrowLeft') > -1) {
+            this.speed = -5;
+            this.currAction = 'walk';
+        } else {
+            this.speed = 0;
+            this.currAction = 'idle';
         }
-        if (this.y > this.gameHeight - this.height) this.y - this.gameHeight - this.height
-      }
-      //Checks if player is on ground or in air
-      onGround() {
-        return this.y >= this.gameHeight - this.height;
-      }
+    
+        // Handle jumping and double jumping
+        if (input.keys.indexOf('ArrowUp') > -1 && !this.jumpPressed) {
+            if (this.onGround() && this.jumpCount === 0) {
+                this.vy = -32; // Initial jump velocity
+                this.jumpCount = 1;
+                this.jumpPressed = true;
+            } else if (this.jumpCount === 1) {
+                this.vy = -32; // Double jump velocity
+                this.jumpCount = 2;
+                this.jumpPressed = true;
+            }
+        }
+    
+        if (input.keys.indexOf('ArrowUp') === -1) {
+            this.jumpPressed = false;
+        }
+    
+        // Apply vertical velocity (gravity)
+        this.vy += this.weight;
+    
+        // Ensure player stays within game bounds vertically
+        this.y += this.vy;
+        if (this.y > this.gameHeight - this.height) {
+            this.y = this.gameHeight - this.height;
+            this.vy = 0;
+            this.jumpCount = 0; // Reset jump count when on ground
+        }
+    
+        // Apply horizontal movement
+        this.x += this.speed;
+        if (this.x < 0) this.x = 0;
+        else if (this.x > this.gameWidth - this.width) this.x = this.gameWidth - this.width;
+    
+        // Log to debug
+        console.log(`x: ${this.x}, y: ${this.y}, vy: ${this.vy}, jumpCount: ${this.jumpCount}`);
     }
+    
+    handleCollisions(enemies, flyingEnemiesArray, trashObstacleArray, foodArray) {
+        // Handle collisions with enemies
+        enemies.forEach(enemy => {
+            const dx = (enemy.x + enemy.width / 0.5) - (this.x + this.width / 0.5);
+            const dy = (enemy.y + enemy.height / 0.5) - (this.y + this.height / 0.5);
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance < enemy.width / 2 + this.width / 2) {
+                gameOver = true;
+                this.currAction = 'death';
+            }
+        });
+    
+        // Handle collisions with flying enemies
+        flyingEnemiesArray.forEach(flyingenemy => {
+            const dx = (flyingenemy.x + flyingenemy.width / 0.5) - (this.x + this.width / 1.5);
+            const dy = (flyingenemy.y + flyingenemy.height / 0.5) - (this.y + this.height / 0.5);
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance < flyingenemy.width / 2.75 + this.width / 2.75) {
+                gameOver = true;
+                this.currAction = 'death';
+            }
+        });
+    
+        // Handle collisions with trash obstacles
+        trashObstacleArray.forEach(obstacle => {
+            const dx = (obstacle.x + obstacle.width / 1) - (this.x + this.width / 1.2);
+            const dy = (obstacle.y + obstacle.height / 1.8) - (this.y + this.height / 2);
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance < obstacle.width / 2.75 + this.width / 2.75) {
+                gameOver = true;
+                this.currAction = 'death';
+            }
+        });
+    
+        // Handle collisions with food
+        foodArray.forEach(food => {
+            const dx = (food.x + food.width / 2) - (this.x + this.width / 2);
+            const dy = (food.y + food.height / 2) - (this.y + this.height / 2);
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance < food.width / 2 + this.width / 2) {
+                food.markedForDeletion = true;
+                chonkMeter++;
+            }
+        });
+    }
+    
+    onGround() {
+        return this.y >= this.gameHeight - this.height;
+    }
+    }
+    
+    handleCollisions(enemies, flyingEnemiesArray, trashObstacleArray, foodArray) {
+        // Handle collisions with enemies
+        enemies.forEach(enemy => {
+            const dx = (enemy.x + enemy.width / 0.5) - (this.x + this.width / 0.5);
+            const dy = (enemy.y + enemy.height / 0.5) - (this.y + this.height / 0.5);
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance < enemy.width / 2 + this.width / 2) {
+                gameOver = true;
+                this.currAction = 'death';
+            }
+        });
+    
+        // Handle collisions with flying enemies
+        flyingEnemiesArray.forEach(flyingenemy => {
+            const dx = (flyingenemy.x + flyingenemy.width / 0.5) - (this.x + this.width / 1.5);
+            const dy = (flyingenemy.y + flyingenemy.height / 0.5) - (this.y + this.height / 0.5);
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance < flyingenemy.width / 2.75 + this.width / 2.75) {
+                gameOver = true;
+                this.currAction = 'death';
+            }
+        });
+    
+        // Handle collisions with trash obstacles
+        trashObstacleArray.forEach(obstacle => {
+            const dx = (obstacle.x + obstacle.width / 1) - (this.x + this.width / 1.2);
+            const dy = (obstacle.y + obstacle.height / 1.8) - (this.y + this.height / 2);
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance < obstacle.width / 2.75 + this.width / 2.75) {
+                gameOver = true;
+                this.currAction = 'death';
+            }
+        });
+    
+        // Handle collisions with food
+        foodArray.forEach(food => {
+            const dx = (food.x + food.width / 2) - (this.x + this.width / 2);
+            const dy = (food.y + food.height / 2) - (this.y + this.height / 2);
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance < food.width / 2 + this.width / 2) {
+                food.markedForDeletion = true;
+                chonkMeter++;
+            }
+        });
+    }
+    
+    onGround() {
+        return this.y >= this.gameHeight - this.height;
+    }
+
+  }
+
 
     //Represents our game's background
     class Background {
@@ -229,25 +375,27 @@ const Game = () => {
         this.y = this.gameHeight - this.height;
         this.frameX = 0;
         this.frameY = 0;
-        this.speed = 13;
+        this.currAction = Math.random() < 0.5 ? 'walk' : 'attack';
+        this.speed = this.currAction === 'walk' ? 13 : 5;
         this.frameCount = 0;
         this.markedForDeletion = false;
         this.sprite = sprite;
         this.spriteDirection = 'left';
         this.weight = 1;
         this.vy = 0;
+        this.stateChange = true;
       }
       //Draws the enemy on the canvas
       draw(context) {
-        // context.strokeStyle = 'white';
-        // context.strokeRect(this.x, this.y, this.width, this.height);
-        // context.beginPath();
-        // context.arc(this.x + this.width / 2, this.y + this.height / 2, this.width / 2, 0, Math.PI * 2);
-        // context.stroke();
-        // context.strokeStyle = 'blue';
-        // context.beginPath();
-        // context.arc(this.x, this.y, this.height / 2, this.width / 2, 0, Math.PI * 2);
-        // context.stroke();
+        context.strokeStyle = 'white';
+        context.strokeRect(this.x, this.y, this.width, this.height);
+        context.beginPath();
+        context.arc(this.x + this.width / 2, this.y + this.height / 2, this.width / 2, 0, Math.PI * 2);
+        context.stroke();
+        context.strokeStyle = 'blue';
+        context.beginPath();
+        context.arc(this.x, this.y, this.height / 2, this.width / 2, 0, Math.PI * 2);
+        context.stroke();
         context.drawImage(this.image, this.frameX * this.spriteWidth, this.frameY * this.spriteHeight, this.spriteWidth, this.spriteHeight, this.x, this.y, this.width, this.height);
       }
       //Updates enemy position and marks for deletion if off-screen
@@ -265,7 +413,7 @@ const Game = () => {
           this.vy = 0;
           //this.frameY = 0;
         }
-        if (this.y > this.gameHeight - this.height) this.y - this.gameHeight - this.height
+        if (this.y > this.gameHeight - this.height) this.y - this.gameHeight - this.height;
       }
       onGround() {
         return this.y >= this.gameHeight - this.height;
@@ -372,7 +520,7 @@ const Game = () => {
         enemyTimer += deltaTime;
       }
       enemies.forEach(enemy => {
-        animatedSprite(enemy, "walk", "walk");
+        animatedSprite(enemy);
         enemy.draw(ctx);
         enemy.update(deltaTime);
       });
@@ -438,6 +586,8 @@ const Game = () => {
         context.textAlign = 'center';
         context.fillStyle = 'yellow';
         context.fillText('GAME OVER, try again!', canvas.width/2, 200);
+        context.fillText('Press Enter to Restart', canvas.width/2, 250);
+
       }
     }
 
@@ -456,7 +606,7 @@ const Game = () => {
     }
 
     const input = new InputHandler();
-    const player = new Player(canvas.width, canvas.height, 'blackCat');
+    const player = new Player(canvas.width, canvas.height, 'orangeCat');
     const background = new Background(canvas.width, canvas.height);
 
     let lastTime = 0;
@@ -469,9 +619,14 @@ const Game = () => {
       const deltaTime = timeStamp - lastTime;
       lastTime = timeStamp;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      if (input.isAnyKeyPressed()) {
+        background.speed = 8;
+      } else {
+        background.speed = 0;
+      }
       background.draw(ctx);
       background.update();
-      animatedSprite(player, "walk", "walk");
+      animatedSprite(player);
       player.draw(ctx);
       player.update(input, deltaTime, enemies, flyingEnemiesArray, trashObstacleArray, foodArray);
       handleEnemies(deltaTime);
