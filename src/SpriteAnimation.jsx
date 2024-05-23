@@ -16,7 +16,7 @@ const characterSprite = [
     },
     animationStates: [
       { name: "walk", frames: 5, row: 0, speed: 6 },
-      { name: "idle", frames: 3, row: 1, speed: 10 },
+      { name: "idle", frames: 3, row: 1, speed: 19 },
       { name: "attack", frames: 3, row: 2, speed: 10 },
       { name: "death", frames: 3, row: 3, speed: 10 },
       { name: "hurt", frames: 1, row: 4, speed: 10 },
@@ -33,7 +33,7 @@ const characterSprite = [
     },
     animationStates: [
       { name: "walk", frames: 5, row: 0, speed: 6 },
-      { name: "idle", frames: 3, row: 1, speed: 10 },
+      { name: "idle", frames: 3, row: 1, speed: 19 },
       { name: "attack", frames: 3, row: 2, speed: 10 },
       { name: "death", frames: 3, row: 3, speed: 10 },
       { name: "hurt", frames: 1, row: 4, speed: 10 },
@@ -69,32 +69,8 @@ const characterSprite = [
   },
 ];
 
-const animatedSprite = (player, currState, prevState) => {
-  let isCat = true; // Flag to check if the player is a cat
 
-  characterSprite.forEach((animal) => {
-    if (animal.sprite === player.sprite) {
-      isCat = false; // The player is not a cat
-      if (animal.sprite.startsWith('doberman') || animal.sprite.startsWith('shiba')) {
-        // Set the initial random state if not already set
-        if (!player.randomState) {
-          player.randomState = Math.random() < 0.8 ? "walk" : "attack"; // 80% chance for "walk", 20% for "attack"
-        }
-        animatedSpriteHelper(player, player.randomState, prevState);
-        return; // Exit the loop once the state is set
-      }
-      // For cats, use the original animation behavior
-      animatedSpriteHelper(player, currState, prevState);
-    }
-  });
-
-  if (isCat) {
-    // For cats, use the original animation behavior
-    animatedSpriteHelper(player, currState, prevState);
-  }
-};
-
-const animatedSpriteHelper = (player, currState, prevState) => {
+const animatedSprite = (player) => {
   let currRow = 0;
   let maxFrames = 0;
   let speed = 0;
@@ -102,7 +78,7 @@ const animatedSpriteHelper = (player, currState, prevState) => {
   characterSprite.forEach((animal) => {
     if (animal.sprite === player.sprite) {
       animal.animationStates.forEach((state) => {
-        if (state.name === currState) {
+        if (state.name === player.currAction) {
           currRow = state.row;
           maxFrames = state.frames;
           speed = state.speed;
@@ -114,13 +90,18 @@ const animatedSpriteHelper = (player, currState, prevState) => {
       player.height = animal.SpriteDimensions.height;
       player.spriteWidth = animal.SpriteDimensions.spriteWidth;
       player.spriteHeight = animal.SpriteDimensions.spriteHeight;
+      player.frameY = currRow;
     }
   });
 
-  if (currState !== prevState) {
+  if (player.stateChange) {
     player.frameCount = 0;
-    player.frameY = currRow;
+    player.stateChange = false;    
   }
+
+  
+
+  
 
   if (player.spriteDirection === 'right') {
     player.frameCount += 1;
