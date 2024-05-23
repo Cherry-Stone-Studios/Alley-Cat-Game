@@ -17,6 +17,7 @@ const {
   deleteUser,
   getUserByUsername,
 } = require("../db/users.cjs");
+
 const { useReducer } = require("react");
 // USING JWT TO SIGN USER WITH TOKEN THAT LASTS 2 WEEKS
 const signToken = async ({ id, username }) => {
@@ -127,12 +128,12 @@ router.get("/:id", async (req, res) => {
 });
 
 // READ/GET ALL USERS BY USERNAME
-// GET /api/users/:username
-router.get("/:username", async (req, res) => {
+// GET /api/users/username/:username
+router.get("/username/:username", async (req, res) => {
   const username = req.params.username;
   try {
-    singleUser = await getUserByUsername(username);
-    res.status(200).send(singleUser);
+    user = await getUserByUsername(username);
+    res.send(user);
   } catch (err) {
     throw err;
   }
@@ -184,16 +185,18 @@ router.delete("/:id", requireUser, async (req, res) => {
   // check to see if the two usernames are a match
   const matchedId = id === currId;
 
-  // if they are not a match, send back an unauthoraized message
+  // if they are not a match, send back an unauthorized message
   if (!matchedId) {
     res.status(401);
     // if they are a match, run the deleteUser with the Id of current user
   } else
     try {
-      singleUser = await deleteUser(id);
-      res.send({
-        message: `${singleUser} has been deleted from our database.`,
-      });
+      const deletedUser = await deleteUser(id);
+      res
+        .send({
+          message: `You have successfully deleted your account. An alley can be a dangerous place for a stay, stay safe!`,
+        })
+        .status(200);
     } catch (err) {
       throw err;
     }
