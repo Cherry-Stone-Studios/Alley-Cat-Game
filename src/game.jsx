@@ -229,7 +229,7 @@ const Game = () => {
         this.y = this.gameHeight - this.height;
         this.frameX = 0;
         this.frameY = 0;
-        this.speed = 13;
+        this.speed = 12;
         this.frameCount = 0;
         this.markedForDeletion = false;
         this.sprite = sprite;
