@@ -11,6 +11,6 @@ router.use("/users", require("./users.cjs"));
 router.use("/scores", require("./scores.cjs"));
 
 // accessing all admin routes (only accessible as ADMIN)
-// router.use('/admin', requireAdmin, require('./admin.cjs'));
+// router.use("/admin", requireAdmin, require("./admin.cjs"));
 
 module.exports = router;

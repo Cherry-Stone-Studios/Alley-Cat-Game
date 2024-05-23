@@ -48,7 +48,6 @@ const createScore = async ({ value, created_on, username, guestname }) => {
           name: username,
         },
       });
-      console.log("USER SCORES", userNewScore);
       return userNewScore;
     } else if (guestname.length > 0) {
       const unregisteredNewScore = await prisma.scores.create({
@@ -58,7 +57,6 @@ const createScore = async ({ value, created_on, username, guestname }) => {
           guestname: guestname,
         },
       });
-      console.log("GUEST SCORES", unregisteredNewScore);
 
       return unregisteredNewScore;
     } else if (!ifUserExists === true) {
@@ -69,7 +67,6 @@ const createScore = async ({ value, created_on, username, guestname }) => {
           guestname: username,
         },
       });
-      console.log("OOPSIE SCORES", oopsieHighScore);
 
       return oopsieHighScore;
     }
