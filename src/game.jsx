@@ -92,6 +92,8 @@ const Game = () => {
         this.weight = 2;
         this.sprite = sprite; //Identity: ex 'orangeCat'
         this.spriteDirection = 'right';
+        this.currAction = 'walk';
+        this.stateChange = true;
       }
       //Resets player position and frame Y to initial values upon restart
       restart(){
@@ -124,6 +126,7 @@ const Game = () => {
           const distance = Math.sqrt(dx*dx+dy*dy);
           if (distance < enemy.width/2 + this.width/2){
             gameOver = true;
+            this.currAction = 'death';
           }
         })
         flyingEnemiesArray.forEach(flyingenemy => {
@@ -132,6 +135,8 @@ const Game = () => {
           const distance = Math.sqrt(dx*dx+dy*dy);
           if (distance < flyingenemy.width/2.75 + this.width/2.75){
             gameOver = true;
+            this.currAction = 'death';
+
           }
         })
         trashObstacleArray.forEach(obstacle => {
@@ -140,6 +145,8 @@ const Game = () => {
           const distance = Math.sqrt(dx * dx + dy * dy);
           if (distance < obstacle.width / 2.75 + this.width / 2.75) {
             gameOver = true;
+            this.currAction = 'death';
+
           }
         });
         foodArray.forEach(food => {
@@ -153,12 +160,15 @@ const Game = () => {
         });
         if (input.keys.indexOf('ArrowRight') > -1) {
           this.speed = 5;
+          this.currAction = 'walk';
         } else if (input.keys.indexOf('ArrowLeft') > -1) {
           this.speed = -5;
+          this.currAction = 'walk';
         } else if (input.keys.indexOf('ArrowUp') > -1 && this.onGround()) {
           this.vy -= 32;
         } else {
           this.speed = 0;
+          this.currAction = 'idle';
         }
         if (input.keys.indexOf('ArrowUp') > -1 && this.onGround()) {
           if (input.keys.indexOf('ArrowRight') > -1) {
@@ -229,25 +239,27 @@ const Game = () => {
         this.y = this.gameHeight - this.height;
         this.frameX = 0;
         this.frameY = 0;
-        this.speed = 13;
+        this.currAction = Math.random() < 0.5 ? 'walk' : 'attack';
+        this.speed = this.currAction === 'walk' ? 13 : 5;
         this.frameCount = 0;
         this.markedForDeletion = false;
         this.sprite = sprite;
         this.spriteDirection = 'left';
         this.weight = 1;
         this.vy = 0;
+        this.stateChange = true;
       }
       //Draws the enemy on the canvas
       draw(context) {
-        // context.strokeStyle = 'white';
-        // context.strokeRect(this.x, this.y, this.width, this.height);
-        // context.beginPath();
-        // context.arc(this.x + this.width / 2, this.y + this.height / 2, this.width / 2, 0, Math.PI * 2);
-        // context.stroke();
-        // context.strokeStyle = 'blue';
-        // context.beginPath();
-        // context.arc(this.x, this.y, this.height / 2, this.width / 2, 0, Math.PI * 2);
-        // context.stroke();
+        context.strokeStyle = 'white';
+        context.strokeRect(this.x, this.y, this.width, this.height);
+        context.beginPath();
+        context.arc(this.x + this.width / 2, this.y + this.height / 2, this.width / 2, 0, Math.PI * 2);
+        context.stroke();
+        context.strokeStyle = 'blue';
+        context.beginPath();
+        context.arc(this.x, this.y, this.height / 2, this.width / 2, 0, Math.PI * 2);
+        context.stroke();
         context.drawImage(this.image, this.frameX * this.spriteWidth, this.frameY * this.spriteHeight, this.spriteWidth, this.spriteHeight, this.x, this.y, this.width, this.height);
       }
       //Updates enemy position and marks for deletion if off-screen
@@ -372,7 +384,7 @@ const Game = () => {
         enemyTimer += deltaTime;
       }
       enemies.forEach(enemy => {
-        animatedSprite(enemy, "walk", "walk");
+        animatedSprite(enemy);
         enemy.draw(ctx);
         enemy.update(deltaTime);
       });
@@ -438,6 +450,8 @@ const Game = () => {
         context.textAlign = 'center';
         context.fillStyle = 'yellow';
         context.fillText('GAME OVER, try again!', canvas.width/2, 200);
+        context.fillText('Press Enter to Restart', canvas.width/2, 250);
+
       }
     }
 
@@ -456,7 +470,7 @@ const Game = () => {
     }
 
     const input = new InputHandler();
-    const player = new Player(canvas.width, canvas.height, 'blackCat');
+    const player = new Player(canvas.width, canvas.height, 'orangeCat');
     const background = new Background(canvas.width, canvas.height);
 
     let lastTime = 0;
@@ -471,7 +485,7 @@ const Game = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       background.draw(ctx);
       background.update();
-      animatedSprite(player, "walk", "walk");
+      animatedSprite(player);
       player.draw(ctx);
       player.update(input, deltaTime, enemies, flyingEnemiesArray, trashObstacleArray, foodArray);
       handleEnemies(deltaTime);
