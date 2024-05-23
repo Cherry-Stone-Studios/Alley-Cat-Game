@@ -1,12 +1,38 @@
 const request = require("supertest");
 const { server } = require("../server.cjs");
-const { createUser } = require("../db/users.cjs");
-const { signToken } = require("../api/utils.cjs");
+const { createUser, getUserById } = require("../db/users.cjs");
+const { signToken, requireUser } = require("../api/utils.cjs");
+const { response } = require("express");
 require("supertest");
 
-// TO-DO: test the createUser function
-// to see if it correctly posts
-// new user information to the db
+const getToken = async ({ id, username }) => {
+  const tokenData = await signToken({
+    id: id,
+    username: username,
+  });
+  return tokenData;
+};
+
+// test to get all users from DB
+describe("GET /api/users/", () => {
+  it("return a response it got all users", async () => {
+    await request(server).get("/api/users").expect(200);
+  });
+});
+// test to get specific user by id
+describe("GET /api/user/:id", () => {
+  it("should return a response it got one user", async () => {
+    await request(server).get("/api/users/36").expect(200);
+  });
+});
+// test to get specific user by username
+describe("GET /api/user/:username", () => {
+  it("should return a response it got one user", async () => {
+    await request(server).get("/api/users/Serendipity").expect(200);
+  });
+});
+
+//test the createUser function
 describe("POST /api/users/register", () => {
   const regUser = {
     id: 10,
@@ -36,7 +62,7 @@ describe("POST /api/users/register", () => {
 });
 
 describe("POST /api/users/login", () => {
-  const user = {
+  let user = {
     id: 1,
     name: "Anusha Delightful",
     username: "nooshydeli",
@@ -47,69 +73,121 @@ describe("POST /api/users/login", () => {
 
   test("should login in a user", async () => {
     let token = await signToken({
-      id: regUser.id,
-      username: regUser.username,
+      id: user.id,
+      username: user.username,
     });
     return request(server)
-      .post("/api/users/register")
+      .post("/api/users/login")
       .set("Accept", "application/json")
-      .send(regUser)
+      .send(user)
       .expect(200)
       .then(({ body }) => {
         user = body.data;
         token = token;
-        message = `Thank you for registering, wonderful to meet you ${regUser.name}.`;
+        message = `Successfully Logged in!`;
       });
   });
 });
 
-// test("Successfully Login user", async () => {
+// Test that the User must be logged in to their account to update info
+describe("PUT /api/users/2", () => {
+  test("should update info of a user", async () => {
+    let user = {
+      id: 1,
+      name: "Anusha Delightful",
+      username: "nooshydeli",
+      email: "nooshydeli@charmelions.com",
+      password: "charming",
+      date_of_birth: "2000-01-01",
+    };
 
-//   await createUser(user);
+    let info = {
+      username: "nooshydelightful",
+      email: "nooshydelightful@charmelions.com",
+    };
 
-//   const token = await signToken({ id: user.id, username: user.username });
+    const token = await getToken({
+      id: user.username,
+      username: info.username,
+    });
 
-//   try {
-//     await request(server).post("/api/users/login").send(user);
-//     expect(server.response.send).toMatchObject({
-//       message: `${user.username} Sucessfully Logged In!`,
-//       token,
-//     });
-//   } catch (err) {
-//     throw err;
-//   }
-// });
-
-describe("GET /api/users/", () => {
-  it("return a response it got all users", async () => {
-    await request(server).get("/api/users").expect(200);
+    return request(server)
+      .put("/api/users/2")
+      .set("Authorization", `Bearer ${token}`)
+      .send(info)
+      .expect(401)
+      .then(({ body }) => {
+        info = body.data;
+        message = `unathorized`;
+      });
   });
 });
 
-describe("GET /api/user/:id", () => {
-  it("should return a response it got one user", async () => {
-    await request(server).get("/api/users/36").expect(200);
+// test for the User attempting to updated their own information
+
+describe("PUT /api/users/1", () => {
+  test("should update info of a user", async () => {
+    let user = {
+      id: 1,
+      name: "Anusha Delightful",
+      username: "nooshydeli",
+      email: "nooshydeli@charmelions.com",
+      password: "charming",
+      date_of_birth: "2000-01-01",
+    };
+
+    let info = {
+      username: "nooshydelightful",
+      email: "nooshydelightful@charmelions.com",
+    };
+
+    const token = await getToken({ id: user.id, username: user.username });
+
+    console.log(`THIS BE THE TOKEN`, token);
+    return request(server)
+      .put(`/api/users/${user.id}`)
+      .set("Authorization", `Bearer ${token}`)
+      .send(info)
+      .then(({ body }) => {
+        info = body.data;
+        message = `Login Successful`;
+      });
   });
 });
-
-describe("GET /api/user/:username", () => {
-  it("should return a response it got one user", async () => {
-    await request(server).get("/api/users/Serendipity").expect(200);
-  });
-});
-
-// TO-DO: test the userUpdatesUser function
-// to see if it correctly checks
-// if the user requesting the changes
-// IS the user to which the changes are being applied
-// so that users can be logged in and update their information in our db
 
 // TO-DO: test the deleteUser function
-// to see if it correctly checks
-// if the user requesting the changes
-// IS the user to which the delete request is being made from
-// OR if the body has sent an is_admin signature
-// so that users can be logged in and update their information in our db
+describe("DELETE /api/users/:id", () => {
+  test("should delete a user", async () => {
+    const user = {
+      id: 1,
+      name: "Anusha Delightful",
+      username: "nooshydeli",
+      email: "nooshydeli@charmelions.com",
+      password: "charming",
+      date_of_birth: "2000-01-01",
+    };
+
+    const { name, username, email, password, date_of_birth } = user;
+
+    const DBuser = await createUser({
+      name,
+      username,
+      email,
+      password,
+      date_of_birth,
+    });
+
+    const token = await getToken({
+      id: DBuser.id,
+      username: DBuser.username,
+    });
+
+    return request(server)
+      .delete(`/api/users/1`)
+      .set("Authorization", `Bearer ${token}`)
+      .expect(200);
+  });
+});
 
 // TO-DO: MOVE TO adminAPI.test.cjs
 // TO-DO: test the UTILS on getting users
