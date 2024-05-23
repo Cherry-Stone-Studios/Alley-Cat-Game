@@ -118,12 +118,15 @@ const Game = () => {
               this.height,
           );
       }
+
   
       update(input, deltaTime, enemies, flyingEnemiesArray, trashObstacleArray, foodArray) {
         // Handle collisions
         this.handleCollisions(enemies, flyingEnemiesArray, trashObstacleArray, foodArray);
     
         // Handle horizontal movement
+
+
         if (input.keys.indexOf('ArrowRight') > -1) {
             this.speed = 5;
             this.currAction = 'walk';
@@ -134,6 +137,7 @@ const Game = () => {
             this.speed = 0;
             this.currAction = 'idle';
         }
+
     
         // Handle jumping and double jumping
         if (input.keys.indexOf('ArrowUp') > -1 && !this.jumpPressed) {
@@ -156,6 +160,7 @@ const Game = () => {
         this.vy += this.weight;
     
         // Ensure player stays within game bounds vertically
+
         this.y += this.vy;
         if (this.y > this.gameHeight - this.height) {
             this.y = this.gameHeight - this.height;
@@ -221,7 +226,9 @@ const Game = () => {
     onGround() {
         return this.y >= this.gameHeight - this.height;
     }
+
   }
+
 
     //Represents our game's background
     class Background {
