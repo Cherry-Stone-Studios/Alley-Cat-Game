@@ -11,13 +11,14 @@ const requireUser = (req, res, next) => {
 };
 
 // if user is admin -> grant access
-const requireAdmin = (req, res, next) => {
-  if (req.body.is_admin === true) {
-    next();
-  } else {
-    res.sendStatus(401);
-  }
-};
+// const requireAdmin = (req, res, next) => {
+//   if (req.user) {
+//     console.log(req.user);
+//     next();
+//   } else {
+//     res.sendStatus(401);
+//   }
+// };
 
 // USING JWT TO SIGN USER WITH TOKEN THAT LASTS 2 WEEKS
 const signToken = async ({ id, username }) => {
@@ -29,7 +30,7 @@ const signToken = async ({ id, username }) => {
   return token;
 };
 module.exports = {
-  requireAdmin,
+  // requireAdmin,
   requireUser,
   signToken,
 };

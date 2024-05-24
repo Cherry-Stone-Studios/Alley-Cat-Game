@@ -48,6 +48,7 @@ const createScore = async ({ value, created_on, username, guestname }) => {
           name: username,
         },
       });
+
       return userNewScore;
     } else if (guestname.length > 0) {
       const unregisteredNewScore = await prisma.scores.create({
@@ -60,6 +61,7 @@ const createScore = async ({ value, created_on, username, guestname }) => {
 
       return unregisteredNewScore;
     } else if (!ifUserExists === true) {
+      // this should transform any scores in the db that have a username that aren't tied to users to be written to the guest column
       const oopsieHighScore = await prisma.scores.create({
         data: {
           value,
@@ -99,12 +101,20 @@ const getScoresByUsername = async (username) => {
 };
 
 // Update/PATCH
-const adminUpdateScore = async ({ value, created_on, username, guestname }) => {
+const adminUpdateScore = async ({
+  id,
+  value,
+  created_on,
+  username,
+  guestname,
+}) => {
   try {
     const date = getDate(created_on);
 
     const updatedScore = await prisma.scores.update({
+      where: { id },
       data: {
+        id,
         value,
         created_on: date,
         name: username,
@@ -117,13 +127,32 @@ const adminUpdateScore = async ({ value, created_on, username, guestname }) => {
   }
 };
 
+const deletedUserUpdatedScores = async (username) => {
+  try {
+    const newName = username;
+
+    await prisma.scores.updateMany({
+      where: { name: username },
+      data: {
+        name: null,
+        guestname: newName,
+      },
+    });
+    return await prisma.scores.findMany({
+      where: { guestname: username },
+    });
+  } catch (err) {
+    throw err;
+  }
+};
+
 // Delete
 
-const deleteScore = async ({ id }) => {
+const deleteScore = async (id) => {
   try {
     await prisma.scores.delete({
       where: {
-        id: parseInt(id),
+        id: id,
       },
     });
   } catch (err) {
@@ -136,5 +165,6 @@ module.exports = {
   getAllScores,
   getScoresByUsername,
   adminUpdateScore,
+  deletedUserUpdatedScores,
   deleteScore,
 };

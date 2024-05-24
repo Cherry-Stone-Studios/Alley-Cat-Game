@@ -57,7 +57,7 @@ const getUsersFriends = async ({ id }) => {
   }
 };
 
-// Delete
+// Delete one friend
 
 const removeFriend = async ({ id, friendid }) => {
   try {
@@ -86,8 +86,24 @@ const removeFriend = async ({ id, friendid }) => {
   }
 };
 
+// Delete All Friends
+
+const deleteAllFriends = async ({ id }) => {
+  try {
+    const removedFriends = await prisma.friends.deleteMany({
+      where: {
+        id,
+      },
+    });
+    return removedFriends;
+  } catch (err) {
+    throw err;
+  }
+};
+
 module.exports = {
   addFriend,
   getUsersFriends,
   removeFriend,
+  deleteAllFriends,
 };

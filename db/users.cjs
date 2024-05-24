@@ -3,6 +3,8 @@ const prisma = require("../client.cjs");
 const bcrypt = require("bcrypt");
 const { doesContainBadWords } = require("deep-profanity-filter");
 const { wordFilter } = require("../moderation/filter.cjs");
+const { deletedUserUpdatedScores } = require("./scores.cjs");
+const { deleteAllFriends } = require("./friends.cjs");
 
 const getAge = (date_of_birth) => {
   let today = new Date();
@@ -64,6 +66,36 @@ const createUser = async ({
       });
       return newUser;
     }
+  } catch (err) {
+    throw err;
+  }
+};
+
+const createAdmin = async ({
+  name,
+  username,
+  email,
+  password,
+  date_of_birth,
+}) => {
+  try {
+    const plainTextPassword = password;
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(plainTextPassword, saltRounds);
+    const dob = getDOB(date_of_birth);
+
+    const newAdmin = await prisma.user.create({
+      data: {
+        name,
+        username,
+        email,
+        password: hashedPassword,
+        date_of_birth: dob,
+        is_admin: true,
+        nyan_unlocked: true,
+      },
+    });
+    return newAdmin;
   } catch (err) {
     throw err;
   }
@@ -173,19 +205,29 @@ const userUpdatesUser = async ({ id, name, username, email, password }) => {
 
 const deleteUser = async (id) => {
   try {
-    const deletedUser = await prisma.user.delete({
+    // translate the user ID into a username
+    const user = await getUserById(id);
+    let username = user.username;
+    // transform the user scores into guest scores
+    const transmutatedScores = await deletedUserUpdatedScores(username);
+    // delete all the person's friends
+    await deleteAllFriends(id);
+
+    // delete the user's account
+    await prisma.user.delete({
       where: {
         id,
       },
     });
-    return deletedUser;
-    console.log("THIS IS THE DELETED USER", deletedUser);
+    // return the transmutated scores back to the DB as guest scores
+    return transmutatedScores;
   } catch (err) {
     throw err;
   }
 };
 
 module.exports = {
+  createAdmin,
   createUser,
   getAllUsers,
   getUserByUsername,
