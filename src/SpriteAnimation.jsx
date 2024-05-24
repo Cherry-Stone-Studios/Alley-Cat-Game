@@ -3,6 +3,10 @@ import orangeCatImage from './assets/orangeCat/orangeCatSprite.png';
 import blackCatImage from './assets/blackCat/blackCatSprite.png';
 import dobermanDogImage from './assets/dogDoberman/dobermanDogSprite.png';
 import shibaDogImage from './assets/dogShiba/shibaDogSprite.png';
+import blackCrowImage from './assets/birdSprites/blackCrowSprite.png';
+import regularPigeonImage from './assets/birdSprites/regularPigeonSprite.png';
+
+
 
 const characterSprite = [
   {
@@ -67,6 +71,32 @@ const characterSprite = [
       { name: "attack", frames: 3, row: 1, speed: 6 },
     ],
   },
+  {
+    sprite: "blackCrow",
+    imgSource: blackCrowImage,
+    SpriteDimensions: {
+      width: 95,
+      height: 75,
+      spriteWidth: 33,
+      spriteHeight: 20,
+    },
+    animationStates: [
+      { name: "walk", frames: 5, row: 0, speed: 6 },
+    ],
+  },
+  {
+    sprite: "regularPigeon",
+    imgSource: regularPigeonImage,
+    SpriteDimensions: {
+      width: 100,
+      height: 80,
+      spriteWidth: 32,
+      spriteHeight: 20,
+    },
+    animationStates: [
+      { name: "walk", frames: 5, row: 0, speed: 6 },
+    ],
+  },
 ];
 
 
@@ -99,9 +129,6 @@ const animatedSprite = (player) => {
     player.stateChange = false;    
   }
 
-  
-
-  
 
   if (player.spriteDirection === 'right') {
     player.frameCount += 1;
