@@ -32,11 +32,11 @@ const addFriend = async ({ id, friendid }) => {
 
 // Read/GET
 
-const getUsersFriends = async ({ id }) => {
+const getUsersFriends = async (id) => {
   try {
     const user = await prisma.user.findUnique({
       where: {
-        id,
+        id: id,
       },
       include: {
         friends: {
@@ -59,28 +59,24 @@ const getUsersFriends = async ({ id }) => {
 
 // Delete one friend
 
-const removeFriend = async ({ id, friendid }) => {
+const removeFriend = async (id, friendid) => {
   try {
-    const removedFriend = await prisma.user.update({
+    await prisma.user.update({
       where: {
         id,
       },
       data: {
         friends: {
-          disconnect: {
-            friendsOf: {
-              disconnect: {
-                id: friendid,
-              },
-            },
+          deleteMany: {
+            friendsOfId: friendid,
           },
         },
       },
-      include: {
-        friends: true,
-      },
     });
-    return removedFriend;
+
+    const newfriends = await getUsersFriends(id);
+
+    return newfriends;
   } catch (err) {
     throw err;
   }
