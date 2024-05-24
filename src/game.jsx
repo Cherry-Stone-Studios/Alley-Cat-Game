@@ -25,7 +25,7 @@ const Game = () => {
     let randomFlyingEnemyInterval = Math.random() * 1000 + 500;
     let trashObstacleArray = [];
     let trashObstacleTimer = 0;
-    const trashObstacleInterval = 6000;
+    const trashObstacleInterval = 10000;
     let randomTrashObstacleInterval = Math.random() * 1000 + 500;
     let foodArray = [];
     let foodTimer = 0;
@@ -176,10 +176,14 @@ const Game = () => {
         // Apply horizontal movement
         this.x += this.speed;
         if (this.x < 0) this.x = 0;
-        else if (this.x > this.gameWidth - this.width) this.x = this.gameWidth - this.width;
+        else if (this.x > this.gameWidth/1.5 - this.width) this.x = this.gameWidth/1.5 - this.width;
     
         // Log to debug
         console.log(`x: ${this.x}, y: ${this.y}, vy: ${this.vy}, jumpCount: ${this.jumpCount}`);
+    }
+
+    isHalfwayAcross() {
+      return this.x >= this.gameWidth /4;
     }
     
     handleCollisions(enemies, flyingEnemiesArray, trashObstacleArray, foodArray) {
@@ -188,7 +192,7 @@ const Game = () => {
             const dx = (enemy.x + enemy.width / 0.5) - (this.x + this.width / 0.5);
             const dy = (enemy.y + enemy.height / 0.5) - (this.y + this.height / 0.5);
             const distance = Math.sqrt(dx * dx + dy * dy);
-            if (distance < enemy.width / 2 + this.width / 2) {
+            if (distance < enemy.width / 2.75 + this.width / 2.75) {
                 gameOver = true;
                 this.currAction = 'death';
             }
@@ -196,8 +200,8 @@ const Game = () => {
     
         // Handle collisions with flying enemies
         flyingEnemiesArray.forEach(flyingenemy => {
-            const dx = (flyingenemy.x + flyingenemy.width / 0.5) - (this.x + this.width / 1.5);
-            const dy = (flyingenemy.y + flyingenemy.height / 0.5) - (this.y + this.height / 0.5);
+            const dx = (flyingenemy.x + flyingenemy.width / 0.8) - (this.x + this.width / 0.8);
+            const dy = (flyingenemy.y + flyingenemy.height / 0.8) - (this.y + this.height / 0.8);
             const distance = Math.sqrt(dx * dx + dy * dy);
             if (distance < flyingenemy.width / 2.75 + this.width / 2.75) {
                 gameOver = true;
@@ -280,7 +284,7 @@ const Game = () => {
         this.frameX = 0;
         this.frameY = 0;
         this.currAction = Math.random() < 0.5 ? 'walk' : 'attack';
-        this.speed = this.currAction === 'walk' ? 13 : 5;
+        this.speed = this.currAction === 'walk' ? 8 : 5;
         this.frameCount = 0;
         this.markedForDeletion = false;
         this.sprite = sprite;
@@ -523,7 +527,12 @@ const Game = () => {
       const deltaTime = timeStamp - lastTime;
       lastTime = timeStamp;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      if (input.isAnyKeyPressed()) {
+      // if (input.isAnyKeyPressed()) {
+      //   background.speed = 8;
+      // } else {
+      //   background.speed = 0;
+      // }
+      if (player.isHalfwayAcross() && input.isAnyKeyPressed()) {
         background.speed = 8;
       } else {
         background.speed = 0;
