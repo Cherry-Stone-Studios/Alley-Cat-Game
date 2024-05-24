@@ -135,14 +135,22 @@ const Game = () => {
     
         // Handle horizontal movement
         if (input.keys.indexOf('ArrowRight') > -1) {
-            this.speed = 5;
-            this.currAction = 'walk';
+          if (this.onGround()) {
+            this.speed = 5; // Normal speed on ground
+          } else {
+            this.speed = 9; // Increased speed during jump
+          }
+          this.currAction = 'walk';
         } else if (input.keys.indexOf('ArrowLeft') > -1) {
-            this.speed = -5;
-            this.currAction = 'walk';
+          if (this.onGround()) {
+            this.speed = -5; // Normal speed on ground
+          } else {
+            this.speed = -9; // Increased speed during jump
+          }
+          this.currAction = 'walk';
         } else {
-            this.speed = 0;
-            this.currAction = 'idle';
+          this.speed = 0;
+          this.currAction = 'idle';
         }
     
         // Handle jumping and double jumping
@@ -183,54 +191,70 @@ const Game = () => {
     }
 
     isHalfwayAcross() {
-      return this.x >= this.gameWidth /4;
+      return this.x >= this.gameWidth /3;
     }
     
     handleCollisions(enemies, flyingEnemiesArray, trashObstacleArray, foodArray) {
-        // Handle collisions with enemies
-        enemies.forEach(enemy => {
-            const dx = (enemy.x + enemy.width / 0.5) - (this.x + this.width / 0.5);
-            const dy = (enemy.y + enemy.height / 0.5) - (this.y + this.height / 0.5);
-            const distance = Math.sqrt(dx * dx + dy * dy);
-            if (distance < enemy.width / 2.75 + this.width / 2.75) {
-                gameOver = true;
-                this.currAction = 'death';
-            }
-        });
+      // Function to check for circular collision
+      const checkCircularCollision = (circle1, circle2) => {
+        const dx = circle1.x - circle2.x;
+        const dy = circle1.y - circle2.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        return distance < (circle1.radius + circle2.radius);
+      };
     
-        // Handle collisions with flying enemies
-        flyingEnemiesArray.forEach(flyingenemy => {
-            const dx = (flyingenemy.x + flyingenemy.width / 0.8) - (this.x + this.width / 0.8);
-            const dy = (flyingenemy.y + flyingenemy.height / 0.8) - (this.y + this.height / 0.8);
-            const distance = Math.sqrt(dx * dx + dy * dy);
-            if (distance < flyingenemy.width / 2.75 + this.width / 2.75) {
-                gameOver = true;
-                this.currAction = 'death';
-            }
-        });
+      // Define the player's circular hitbox
+      const playerHitbox = {
+        x: this.x + this.width / 2,
+        y: this.y + this.height / 2,
+        radius: Math.min(this.width, this.height) / 2.75
+      };
     
-        // Handle collisions with trash obstacles
-        trashObstacleArray.forEach(obstacle => {
-            const dx = (obstacle.x + obstacle.width / 1) - (this.x + this.width / 1.2);
-            const dy = (obstacle.y + obstacle.height / 1.8) - (this.y + this.height / 2);
-            const distance = Math.sqrt(dx * dx + dy * dy);
-            if (distance < obstacle.width / 2.75 + this.width / 2.75) {
-                gameOver = true;
-                this.currAction = 'death';
-            }
-        });
+      // Handle collisions with enemies
+      enemies.forEach(enemy => {
+        // Define the enemy's circular hitbox closer to the front
+        const enemyHitbox = {
+          x: enemy.x + enemy.width * 0.8, // Adjust position to focus more on the front
+          y: enemy.y + enemy.height / 2,
+          radius: Math.min(enemy.width, enemy.height) / 2.75
+        };
     
-        // Handle collisions with food
-        foodArray.forEach(food => {
-            const dx = (food.x + food.width / 2) - (this.x + this.width / 2);
-            const dy = (food.y + food.height / 2) - (this.y + this.height / 2);
-            const distance = Math.sqrt(dx * dx + dy * dy);
-            if (distance < food.width / 2 + this.width / 2) {
-                food.markedForDeletion = true;
-                chonkMeter++;
-            }
-        });
-    }
+        if (checkCircularCollision(playerHitbox, enemyHitbox)) {
+          gameOver = true;
+          this.currAction = 'death';
+          this.deathFrameCounter = 4; // Set death frame counter
+        }
+      });
+    
+      // Handle collisions with flying enemies
+      flyingEnemiesArray.forEach(flyingenemy => {
+        // Define the flying enemy's circular hitbox closer to the front
+        const flyingEnemyHitbox = {
+          x: flyingenemy.x + flyingenemy.width * 0.8, // Adjust position if needed
+          y: flyingenemy.y + flyingenemy.height / 2,
+          radius: Math.min(flyingenemy.width, flyingenemy.height) / 2.75
+        };
+    
+        if (checkCircularCollision(playerHitbox, flyingEnemyHitbox)) {
+          gameOver = true;
+          this.currAction = 'death';
+          this.deathFrameCounter = 4; // Set death frame counter
+        }
+      });
+    // Handle collisions with food
+    foodArray.forEach(food => {
+        const foodHitbox = {
+            x: food.x + food.width / 2,
+            y: food.y + food.height / 2,
+            radius: Math.min(food.width, food.height) / 2
+        };
+
+        if (checkCircularCollision(playerHitbox, foodHitbox)) {
+            food.markedForDeletion = true;
+            chonkMeter++;
+        }
+    });
+}
     
     onGround() {
         return this.y >= this.gameHeight - this.height;
@@ -340,13 +364,13 @@ const Game = () => {
         this.frameX = 0;
         this.frameY = 0;
         this.y = Math.random() * (gameHeight /4) + gameHeight /4;
-        this.speed = Math.random() * 4 + 3;
         this.image = new Image();
         this.sprite = sprite;
         this.image.src = flyingEnemy;
         this.markedForDeletion = false;
         this.spriteDirection = 'left';
         this.currAction = 'walk';
+        this.speed = Math.random() * 11 + 1;
         this.stateChange = true;
         this.frameCount = 0;
       }
