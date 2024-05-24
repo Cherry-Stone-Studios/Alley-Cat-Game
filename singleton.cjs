@@ -9,7 +9,126 @@ const prismaMock = require("./client.cjs");
 
 beforeEach(() => {
   mockClear(prismaMock);
-  createPrismaMock({}, Prisma.dmmf.datamodel, prismaMock);
+  createPrismaMock(
+    {
+      user: [
+        {
+          id: 11,
+          name: "Anusha Delightful",
+          username: "nooshydelightful",
+          email: "nooshydelightful@charmelions.com",
+          password: "charming",
+          date_of_birth: "2000-01-01T00:00:00.000Z",
+        },
+        {
+          id: 12,
+          name: "Nakayla Amazing",
+          username: "nakaylisamazing",
+          email: "nakaylamazing@cherrystonestudios.com",
+          password: "rabbitrabbit",
+          date_of_birth: "2000-01-01T00:00:00.000Z",
+        },
+        {
+          id: 13,
+          name: "Valentino S. Cool",
+          username: "valentinocoolcat",
+          email: "valentinocoolcat@cherrystonestudios.com",
+          password: "catsaredope",
+          date_of_birth: "2000-01-01T00:00:00.000Z",
+        },
+        {
+          id: 14,
+          name: "Chris Rocks",
+          username: "kimmybones",
+          email: "kimmybones@cherrystonestudios.com",
+          password: "kimmybones",
+          date_of_birth: "2000-01-01T00:00:00.000Z",
+        },
+        {
+          id: 15,
+          name: "Hannah Wins",
+          username: "hannah",
+          email: "hannah@cherrystonestudios.com",
+          password: "prismaprincess",
+          date_of_birth: "2000-01-01T00:00:00.000Z",
+        },
+      ],
+      scores: [
+        {
+          id: 11,
+          value: 1000,
+          created_on: "2000-01-01T00:00:00.000Z",
+          name: "nooshydelightful",
+          guestname: "",
+        },
+        {
+          id: 12,
+          value: 1000,
+          created_on: "2000-01-01T00:00:00.000Z",
+          name: "nakaylisamazing",
+          guestname: "",
+        },
+        {
+          id: 13,
+          value: 1000,
+          created_on: "2000-01-01T00:00:00.000Z",
+          name: "valentinocoolcat",
+          guestname: "",
+        },
+        {
+          id: 14,
+          value: 1000,
+          created_on: "2000-01-01T00:00:00.000Z",
+          name: "kimmybones",
+          guestname: "",
+        },
+        {
+          id: 15,
+          value: 1000,
+          created_on: "2000-01-01T00:00:00.000Z",
+          name: "hannah",
+          guestname: "",
+        },
+        {
+          id: 16,
+          value: 1000,
+          created_on: "2000-01-01T00:00:00.000Z",
+          name: "",
+          guestname: "justlikedavid",
+        },
+        {
+          id: 17,
+          value: 2000,
+          created_on: "2000-01-01T00:00:00.000Z",
+          name: "nakaylisamazing",
+          guestname: "",
+        },
+        {
+          id: 18,
+          value: 3000,
+          created_on: "2000-01-01T00:00:00.000Z",
+          name: "nakaylisamazing",
+          guestname: "",
+        },
+        {
+          id: 19,
+          value: 2000,
+          created_on: "2000-01-01T00:00:00.000Z",
+          name: "nooshydelightful",
+          guestname: "",
+        },
+        {
+          id: 20,
+          value: 3000,
+          created_on: "2000-01-01T00:00:00.000Z",
+          name: "nooshydelightful",
+          guestname: "",
+        },
+      ],
+    },
+    Prisma.dmmf.datamodel,
+    prismaMock
+  );
 });
 
 module.exports = { prismaMock };

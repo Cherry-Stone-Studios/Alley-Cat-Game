@@ -126,7 +126,7 @@ const getUserByUsername = async (username) => {
   }
 };
 
-const getUserById = async ({ id }) => {
+const getUserById = async (id) => {
   try {
     const userById = await prisma.user.findUnique({
       where: {

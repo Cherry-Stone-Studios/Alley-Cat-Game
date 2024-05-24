@@ -59,11 +59,11 @@ server.use(async (req, res, next) => {
 
     try {
       const verifiedToken = jwt.verify(token, process.env.JWT_SECRET);
-      console.log(verifiedToken);
       const id = verifiedToken.id;
+
       if (id) {
         const user = await getUserById(id);
-        req.user = { id: user.id, username: user.username };
+        req.user = { id: user.id };
       }
     } catch (error) {
       console.error("JWT verification error:", error);

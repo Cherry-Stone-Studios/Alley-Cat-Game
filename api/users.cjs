@@ -5,6 +5,7 @@ const bcrypt = require("bcrypt");
 require("dotenv").config;
 const log = console.log;
 const { requireUser } = require("./utils.cjs");
+// const { useReducer } = require("react");
 // const { UNSAFE_NavigationContext } = require("react-router-dom");
 // const { useReducer } = require("react");
 
@@ -17,7 +18,6 @@ const {
   getUserByUsername,
 } = require("../db/users.cjs");
 
-const { useReducer } = require("react");
 // USING JWT TO SIGN USER WITH TOKEN THAT LASTS 2 WEEKS
 const signToken = async ({ id, username }) => {
   const user = { id, username };
@@ -48,9 +48,10 @@ router.post("/register", async (req, res) => {
       username: singleUser.username,
     });
     // Send back the token w/ message
-    res.send({
+    res.status(200).send({
       message: `Thank you for registering, wonderful to meet you ${singleUser.name}.`,
       token,
+      ...singleUser,
     });
   } catch (err) {
     throw err;
@@ -88,7 +89,7 @@ router.post("/login", async (req, res) => {
       } else {
         // this is a valid login --> sign token
         const token = await signToken({ id: user.id, username: user.username });
-        res.send({
+        res.status(200).send({
           message: `${user.username} Sucessfully Logged In!`,
           token,
           ...user,
@@ -130,7 +131,7 @@ router.get("/username/:username", async (req, res) => {
   const username = req.params.username;
   try {
     user = await getUserByUsername(username);
-    res.send(user);
+    res.status(200).send(user);
   } catch (err) {
     throw err;
   }
@@ -163,7 +164,9 @@ router.put("/:id", requireUser, async (req, res, next) => {
         email,
         password,
       });
-      res.send({ message: `User updated successfully!`, ...singleUser });
+      res
+        .status(200)
+        .send({ message: `User updated successfully!`, ...singleUser });
     } catch (err) {
       throw err;
     }
@@ -189,11 +192,9 @@ router.delete("/:id", requireUser, async (req, res) => {
   } else
     try {
       const deletedUser = await deleteUser(id);
-      res
-        .send({
-          message: `You have successfully deleted your account. An alley can be a dangerous place for a stay, stay safe!`,
-        })
-        .status(200);
+      res.status(200).send({
+        message: `You have successfully deleted your account. An alley can be a dangerous place for a stay, stay safe!`,
+      });
     } catch (err) {
       throw err;
     }

@@ -64,7 +64,7 @@ router.get("/:username", async (req, res) => {
   }
 });
 
-//UPDATE/PUT
+// UPDATE/PUT
 // PUT to /api/scores/:id
 router.put("/:id", async (req, res, next) => {
   // grab the id from params -> this is the score we want to update
@@ -79,7 +79,9 @@ router.put("/:id", async (req, res, next) => {
       username,
       guestname,
     });
-    res.send({ message: `Score updated successfully!`, ...updatedScore });
+    res
+      .status(200)
+      .send({ message: `Score updated successfully!`, ...updatedScore });
   } catch (err) {
     throw err;
   }
@@ -93,7 +95,7 @@ router.delete("/:id", async (req, res) => {
 
   try {
     await deleteScore(id);
-    res.send({
+    res.status(200).send({
       message: `The score has been deleted from the database.`,
     });
   } catch (err) {

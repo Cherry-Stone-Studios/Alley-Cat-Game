@@ -24,4 +24,15 @@ router.put("/users/:id", async (req, res) => {
   }
 });
 
+// TO-DO: MOVE TO adminAPI.test.cjs
+// TO-DO: test the UTILS on getting users
+// to see if it correctly checks
+// if the body has sent an is_admin signature
+// so that only admins can get our user db
+
+// TO-DO: test the adminUpdatesUser function
+// to see if it correctly checks
+// if the body has sent an is_admin signature
+// so that only admins can update users in our db
+
 module.exports = router;

@@ -1,66 +1,135 @@
 const request = require("supertest");
 const { server } = require("../server.cjs");
-const { createUser, getUserById } = require("../db/users.cjs");
-const { signToken, requireUser } = require("../api/utils.cjs");
-const { response } = require("express");
+const { createUser } = require("../db/users.cjs");
+const { signToken } = require("../api/utils.cjs");
 require("supertest");
 
-const getToken = async ({ id, username }) => {
+const getToken = async ({ id }) => {
   const tokenData = await signToken({
     id: id,
-    username: username,
   });
   return tokenData;
 };
 
 // test to get all users from DB
+// passed: Jest, GitHub
 describe("GET /api/users/", () => {
-  it("return a response it got all users", async () => {
-    await request(server).get("/api/users").expect(200);
-  });
-});
-// test to get specific user by id
-describe("GET /api/user/:id", () => {
-  it("should return a response it got one user", async () => {
-    await request(server).get("/api/users/36").expect(200);
-  });
-});
-// test to get specific user by username
-describe("GET /api/user/:username", () => {
-  it("should return a response it got one user", async () => {
-    await request(server).get("/api/users/Serendipity").expect(200);
+  it("Return a response it got all users", async () => {
+    const response = await request(server).get("/api/users").expect(200);
+
+    expect(response.body).toMatchObject([
+      {
+        date_of_birth: "2000-01-01T00:00:00.000Z",
+        email: "nooshydelightful@charmelions.com",
+        id: 11,
+        name: "Anusha Delightful",
+        password: "charming",
+        username: "nooshydelightful",
+      },
+      {
+        date_of_birth: "2000-01-01T00:00:00.000Z",
+        email: "nakaylamazing@cherrystonestudios.com",
+        id: 12,
+        name: "Nakayla Amazing",
+        password: "rabbitrabbit",
+        username: "nakaylisamazing",
+      },
+      {
+        date_of_birth: "2000-01-01T00:00:00.000Z",
+        email: "valentinocoolcat@cherrystonestudios.com",
+        id: 13,
+        name: "Valentino S. Cool",
+        password: "catsaredope",
+        username: "valentinocoolcat",
+      },
+      {
+        date_of_birth: "2000-01-01T00:00:00.000Z",
+        email: "kimmybones@cherrystonestudios.com",
+        id: 14,
+        name: "Chris Rocks",
+        password: "kimmybones",
+        username: "kimmybones",
+      },
+      {
+        date_of_birth: "2000-01-01T00:00:00.000Z",
+        email: "hannah@cherrystonestudios.com",
+        id: 15,
+        name: "Hannah Wins",
+        password: "prismaprincess",
+        username: "hannah",
+      },
+    ]);
   });
 });
 
-//test the createUser function
+// test to get specific user by id
+// passed: Jest, Github
+describe("GET /api/users/:id", () => {
+  it("Return a response it got one user at ID", async () => {
+    const response = await request(server).get("/api/users/11").expect(200);
+
+    expect(response.body).toMatchObject({
+      id: 11,
+      name: "Anusha Delightful",
+      username: "nooshydelightful",
+      email: "nooshydelightful@charmelions.com",
+      date_of_birth: "2000-01-01T00:00:00.000Z",
+    });
+  });
+});
+
+// test to get specific user by username
+// passed: Jest, GitHub
+describe("GET /api/users/:username", () => {
+  it("Return a response it got one user at username", async () => {
+    const response = await request(server)
+      .get("/api/users/username/nooshydelightful")
+      .expect(200);
+
+    expect(response.body).toMatchObject({
+      id: 11,
+      name: "Anusha Delightful",
+      username: "nooshydelightful",
+      email: "nooshydelightful@charmelions.com",
+      password: "charming",
+      date_of_birth: "2000-01-01T00:00:00.000Z",
+    });
+  });
+});
+
+// test the createUser function
+// passed: Jest, GitHub
 describe("POST /api/users/register", () => {
-  const regUser = {
-    id: 10,
-    name: "Sandy",
-    username: "sandycheeks",
-    email: "sandy@sandy.com",
-    password: "Sandy",
+  const user = {
+    name: "Enyo",
+    username: "Enyo",
+    email: "Enyo@cherrystonestudios.com",
+    password: "Enyo",
     date_of_birth: "2000-01-01",
   };
 
-  test("should register a new user", async () => {
+  test("Create a new user through Register", async () => {
     let token = await signToken({
-      id: regUser.id,
-      username: regUser.username,
+      id: user.id,
     });
-    return request(server)
+    const response = await request(server)
       .post("/api/users/register")
       .set("Accept", "application/json")
-      .send(regUser)
-      .expect(200)
-      .then(({ body }) => {
-        user = body.data;
-        token = token;
-        message = `Thank you for registering, wonderful to meet you ${regUser.name}.`;
-      });
+      .set("Authorization", `Bearer ${token}`)
+      .send(user)
+      .expect(200);
+
+    expect(response.body).toMatchObject({
+      name: "Enyo",
+      username: "Enyo",
+      email: "Enyo@cherrystonestudios.com",
+      date_of_birth: "2000-01-01T00:00:00.000Z",
+      message: `Thank you for registering, wonderful to meet you ${user.name}.`,
+    });
   });
 });
 
+// passed: Jest, GitHub
 describe("POST /api/users/login", () => {
   let user = {
     id: 1,
@@ -71,10 +140,9 @@ describe("POST /api/users/login", () => {
     date_of_birth: "2000-01-01",
   };
 
-  test("should login in a user", async () => {
+  test("Login in a user to their account with a token", async () => {
     let token = await signToken({
       id: user.id,
-      username: user.username,
     });
     return request(server)
       .post("/api/users/login")
@@ -89,11 +157,12 @@ describe("POST /api/users/login", () => {
   });
 });
 
-// Test that the User must be logged in to their account to update info
-describe("PUT /api/users/2", () => {
-  test("should update info of a user", async () => {
-    let user = {
-      id: 1,
+// Test that the User must be logged in to their own account to update info
+// passed: Jest, GitHub
+describe("PUT /api/users/11", () => {
+  test("Try to update info of a user", async () => {
+    const user = {
+      id: 11,
       name: "Anusha Delightful",
       username: "nooshydeli",
       email: "nooshydeli@charmelions.com",
@@ -101,20 +170,19 @@ describe("PUT /api/users/2", () => {
       date_of_birth: "2000-01-01",
     };
 
-    let info = {
+    const logininfo = {
       username: "nooshydelightful",
       email: "nooshydelightful@charmelions.com",
     };
 
     const token = await getToken({
-      id: user.username,
-      username: info.username,
+      id: user.id,
     });
 
     return request(server)
-      .put("/api/users/2")
+      .put("/api/users/10")
       .set("Authorization", `Bearer ${token}`)
-      .send(info)
+      .send(logininfo)
       .expect(401)
       .then(({ body }) => {
         info = body.data;
@@ -123,79 +191,66 @@ describe("PUT /api/users/2", () => {
   });
 });
 
-// test for the User attempting to updated their own information
-
-describe("PUT /api/users/1", () => {
-  test("should update info of a user", async () => {
-    let user = {
-      id: 1,
-      name: "Anusha Delightful",
-      username: "nooshydeli",
-      email: "nooshydeli@charmelions.com",
-      password: "charming",
-      date_of_birth: "2000-01-01",
-    };
-
-    let info = {
-      username: "nooshydelightful",
-      email: "nooshydelightful@charmelions.com",
-    };
-
-    const token = await getToken({ id: user.id, username: user.username });
-
-    console.log(`THIS BE THE TOKEN`, token);
-    return request(server)
-      .put(`/api/users/${user.id}`)
-      .set("Authorization", `Bearer ${token}`)
-      .send(info)
-      .then(({ body }) => {
-        info = body.data;
-        message = `Login Successful`;
-      });
-  });
-});
-
-// TO-DO: test the deleteUser function
-describe("DELETE /api/users/:id", () => {
-  test("should delete a user", async () => {
+// Test for a user attempting to update their own information
+// passed: Jest, GitHub
+describe("PUT /api/users/11", () => {
+  test("Update a users own info", async () => {
     const user = {
-      id: 1,
+      id: 11,
       name: "Anusha Delightful",
-      username: "nooshydeli",
+      username: "nooshyisamazing",
       email: "nooshydeli@charmelions.com",
-      password: "charming",
-      date_of_birth: "2000-01-01",
+      password: "spectacular",
     };
-
-    const { name, username, email, password, date_of_birth } = user;
-
-    const DBuser = await createUser({
-      name,
-      username,
-      email,
-      password,
-      date_of_birth,
-    });
 
     const token = await getToken({
-      id: DBuser.id,
-      username: DBuser.username,
+      id: user.id,
     });
 
-    return request(server)
-      .delete(`/api/users/1`)
+    const response = await request(server)
+      .put(`/api/users/${user.id}`)
       .set("Authorization", `Bearer ${token}`)
+      .send(user)
       .expect(200);
+
+    expect(response.body).toMatchObject({
+      id: 11,
+      name: "Anusha Delightful",
+      username: "nooshyisamazing",
+      email: "nooshydeli@charmelions.com",
+      message: "User updated successfully!",
+    });
   });
 });
 
-// TO-DO: MOVE TO adminAPI.test.cjs
-// TO-DO: test the UTILS on getting users
-// to see if it correctly checks
-// if the body has sent an is_admin signature
-// so that only admins can get our user db
+// test the deleteUser function
+// passed: Jest, GitHub
+describe("DELETE /api/users/:id", () => {
+  test("Delete a user", async () => {
+    const superfly = {
+      name: "Superfly",
+      username: "Superfly",
+      email: "Superfly@Superfly.com",
+      password: "Superfly",
+      date_of_birth: "2000-01-01",
+    };
 
-// TO-DO: test the adminUpdatesUser function
-// to see if it correctly checks
-// if the body has sent an is_admin signature
-// so that only admins can update users in our db
+    // const { name, username, email, password, date_of_birth } = newUser;
+
+    const createdUser = await createUser(superfly);
+
+    const token = await getToken({
+      id: createdUser.id,
+    });
+
+    const response = await request(server)
+      .delete(`/api/users/${createdUser.id}`)
+      .set("Authorization", `Bearer ${token}`)
+      .expect(200);
+
+    expect(response.body).toMatchObject({
+      message:
+        "You have successfully deleted your account. An alley can be a dangerous place for a stay, stay safe!",
+    });
+  });
+});
