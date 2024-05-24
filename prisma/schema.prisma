@@ -33,7 +33,7 @@ model friends {
   friendsOf   user @relation("friendsof", fields: [friendsOfId], references: [id])
   friendsOfId Int
 
-  @@id([friendsId, friendsOfId])
+  @@id(name: "friendsconnection", [friendsId, friendsOfId])
 }
 
 model scores {

@@ -3,34 +3,28 @@ const router = express.Router();
 require("dotenv").config;
 
 const {
-  createScore,
-  getAllScores,
-  getScoresByUsername,
-  adminUpdateScore,
-  deleteScore,
-} = require("../db/scores.cjs");
+  addFriend,
+  getUsersFriends,
+  removeFriend,
+} = require("../db/friends.cjs");
 
 // CREATE/POST
 
 // POST to /api/users/friends
 
 router.post("/", async (req, res) => {
-  // given a value, created_on date, username, and guestname on body
-  const { value, created_on, username, guestname } = req.body;
+  // given a user and friend ID on the body
+  const { id, friendid } = req.body;
 
   try {
     // create a new high score with the createScore function
-    const highscore = await createScore({
-      value,
-      created_on,
-      username,
-      guestname,
+    const newFriend = await addFriend({
+      id,
+      friendid,
     });
-    // send a message upon creation of a high score, `Do you want to play again?`
-    // along with the value of the score and name where name
+    // send a confirmation message and a spread of the new friend just added
     res.status(200).send({
-      message: `Do you want to play again?`,
-      ...highscore,
+      ...newFriend,
     });
     // }
   } catch (err) {
@@ -38,63 +32,34 @@ router.post("/", async (req, res) => {
   }
 });
 
-// GET to /api/scores/
+// GET to /api/users/friends/:id
+// where id is the user's ID
 
-router.get("/", async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
-    const scores = await getAllScores();
-    res.status(200).send(scores);
-  } catch (err) {
-    throw err;
-  }
-});
+    const id = parseInt(req.body.id);
 
-// GET to /api/scores/:username
-
-router.get("/:username", async (req, res) => {
-  const username = req.params.username;
-  try {
-    const userScores = await getScoresByUsername(username);
-
-    res.status(200).send(userScores);
-  } catch (err) {
-    throw err;
-  }
-});
-
-// UPDATE/PUT
-// PUT to /api/scores/:id
-router.put("/:id", async (req, res, next) => {
-  // grab the id from params -> this is the score we want to update
-  const id = parseInt(req.params.id);
-  const { value, created_on, username, guestname } = req.body;
-
-  try {
-    const updatedScore = await adminUpdateScore({
-      id,
-      value,
-      created_on,
-      username,
-      guestname,
-    });
-    res
-      .status(200)
-      .send({ message: `Score updated successfully!`, ...updatedScore });
+    const friends = await getUsersFriends(id);
+    res.status(200).send(friends);
   } catch (err) {
     throw err;
   }
 });
 
 //DELETE
-// DELETE to /api/scores/:id
-router.delete("/:id", async (req, res) => {
-  // grab the id from params -> this is the score we want to delete
-  const id = parseInt(req.params.id);
+// DELETE to /api/users/friends
 
+router.delete("/", async (req, res) => {
+  // given a user and friend ID on the body
+  const id = parseInt(req.body.id);
+  const friendid = parseInt(req.body.friendid);
+  console.log("THIS IS THE ID AND FRIEND ID", id, friendid);
   try {
-    await deleteScore(id);
+    const remainingFriends = await removeFriend(id, friendid);
+    console.log("THIS IS THE REMAINING FRIENDS LIST", remainingFriends);
     res.status(200).send({
-      message: `The score has been deleted from the database.`,
+      message: `Friend removed successfully. We hope you find some new friends soon!`,
+      remainingFriends,
     });
   } catch (err) {
     throw err;
