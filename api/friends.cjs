@@ -53,10 +53,10 @@ router.delete("/", async (req, res) => {
   // given a user and friend ID on the body
   const id = parseInt(req.body.id);
   const friendid = parseInt(req.body.friendid);
-  console.log("THIS IS THE ID AND FRIEND ID", id, friendid);
+
   try {
     const remainingFriends = await removeFriend(id, friendid);
-    console.log("THIS IS THE REMAINING FRIENDS LIST", remainingFriends);
+
     res.status(200).send({
       message: `Friend removed successfully. We hope you find some new friends soon!`,
       remainingFriends,
