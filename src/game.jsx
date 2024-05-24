@@ -4,7 +4,7 @@ import playerImage from './assets/orangeCat/orangeCatSprite.png';
 import backgroundImage from '../game_module/City2.png';
 import enemyImage from '../game_module/Dog_Black.png';
 import animatedSprite from './SpriteAnimation.jsx';
-import flyingEnemy from '../game_module/bee_idle.gif';
+import flyingEnemy from './assets/birdSprites/blackCrowSprite.png';
 import trashObstacle from '../game_module/trashcan.png';
 import food1 from '../game_module/goldieSprite.png';
 
@@ -295,15 +295,15 @@ const Game = () => {
       }
       //Draws the enemy on the canvas
       draw(context) {
-        context.strokeStyle = 'white';
-        context.strokeRect(this.x, this.y, this.width, this.height);
-        context.beginPath();
-        context.arc(this.x + this.width / 2, this.y + this.height / 2, this.width / 2, 0, Math.PI * 2);
-        context.stroke();
-        context.strokeStyle = 'blue';
-        context.beginPath();
-        context.arc(this.x, this.y, this.height / 2, this.width / 2, 0, Math.PI * 2);
-        context.stroke();
+        // context.strokeStyle = 'white';
+        // context.strokeRect(this.x, this.y, this.width, this.height);
+        // context.beginPath();
+        // context.arc(this.x + this.width / 2, this.y + this.height / 2, this.width / 2, 0, Math.PI * 2);
+        // context.stroke();
+        // context.strokeStyle = 'blue';
+        // context.beginPath();
+        // context.arc(this.x, this.y, this.height / 2, this.width / 2, 0, Math.PI * 2);
+        // context.stroke();
         context.drawImage(this.image, this.frameX * this.spriteWidth, this.frameY * this.spriteHeight, this.spriteWidth, this.spriteHeight, this.x, this.y, this.width, this.height);
       }
       //Updates enemy position and marks for deletion if off-screen
@@ -329,17 +329,26 @@ const Game = () => {
     }
 
     class FlyingEnemy {
-      constructor(gameWidth, gameHeight){
+      constructor(gameWidth, gameHeight, sprite){
         this.gameWidth = gameWidth;
         this.gameHeight = gameHeight;
-        this.width = 70;
-        this.height = 70;
+        this.spriteWidth = 33;
+        this.spriteHeight = 15;
+        this.width = 55;
+        this.height = 55;
         this.x = gameWidth;
+        this.frameX = 0;
+        this.frameY = 0;
         this.y = Math.random() * (gameHeight /4) + gameHeight /4;
-        this.speed = Math.random() * 4 + 2;
+        this.speed = Math.random() * 4 + 3;
         this.image = new Image();
+        this.sprite = sprite;
         this.image.src = flyingEnemy;
         this.markedForDeletion = false;
+        this.spriteDirection = 'left';
+        this.currAction = 'walk';
+        this.stateChange = true;
+        this.frameCount = 0;
       }
       update(){
         this.x -= this.speed;
@@ -352,9 +361,9 @@ const Game = () => {
         //this.x += Math.random() * 15 - 2.5;
         //this.y += Math.random() * 5 - 2.5;
       }
-      draw(){
+      draw(context){
         // ctx.strokeRect(this.x, this.y, this.width, this.height)
-        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+        context.drawImage(this.image, this.frameX * this.spriteWidth, this.frameY * this.spriteHeight, this.spriteWidth, this.spriteHeight, this.x, this.y, this.width, this.height);
       }
     }
 
@@ -437,15 +446,17 @@ const Game = () => {
 
     function handleFlyingEnemies(deltaTime) {
       if (flyingEnemyTimer > flyingEnemyInterval + randomFlyingEnemyInterval) {
-        flyingEnemiesArray.push(new FlyingEnemy(canvas.width, canvas.height));
+        const flyingEnemyType = Math.random() < 0.5? 'blackCrow' : 'regularPigeon';
+        flyingEnemiesArray.push(new FlyingEnemy(canvas.width, canvas.height, flyingEnemyType));
         randomFlyingEnemyInterval = Math.random() * 1000 + 500;
         flyingEnemyTimer = 0;
       } else {
         flyingEnemyTimer += deltaTime;
       }
-      flyingEnemiesArray.forEach((enemy) => {
-        enemy.update();
+      flyingEnemiesArray.forEach(enemy => {
+        animatedSprite(enemy);
         enemy.draw(ctx);
+        enemy.update(deltaTime);
       });
       flyingEnemiesArray = flyingEnemiesArray.filter((enemy) => !enemy.markedForDeletion);
     }
