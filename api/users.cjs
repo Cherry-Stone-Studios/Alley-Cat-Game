@@ -4,10 +4,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 require("dotenv").config;
 const log = console.log;
-const { requireUser } = require("./utils.cjs");
-// const { useReducer } = require("react");
-// const { UNSAFE_NavigationContext } = require("react-router-dom");
-// const { useReducer } = require("react");
+const { requireUser, signToken } = require("./utils.cjs");
 
 const {
   createUser,
@@ -17,16 +14,6 @@ const {
   deleteUser,
   getUserByUsername,
 } = require("../db/users.cjs");
-
-// USING JWT TO SIGN USER WITH TOKEN THAT LASTS 2 WEEKS
-const signToken = async ({ id, username }) => {
-  const user = { id, username };
-  const token = jwt.sign(user, process.env.JWT_SECRET, {
-    expiresIn: "2w",
-  });
-
-  return token;
-};
 
 // CREATE/POST
 // POST /api/users/register

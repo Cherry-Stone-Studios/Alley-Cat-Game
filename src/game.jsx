@@ -4,7 +4,7 @@ import playerImage from './assets/orangeCat/orangeCatSprite.png';
 import backgroundImage from '../game_module/City2.png';
 import enemyImage from '../game_module/Dog_Black.png';
 import animatedSprite from './SpriteAnimation.jsx';
-import flyingEnemy from '../game_module/bee_idle.gif';
+import flyingEnemy from './assets/birdSprites/blackCrowSprite.png';
 import trashObstacle from '../game_module/trashcan.png';
 import food1 from '../game_module/goldieSprite.png';
 
@@ -25,7 +25,7 @@ const Game = () => {
     let randomFlyingEnemyInterval = Math.random() * 1000 + 500;
     let trashObstacleArray = [];
     let trashObstacleTimer = 0;
-    const trashObstacleInterval = 6000;
+    const trashObstacleInterval = 10000;
     let randomTrashObstacleInterval = Math.random() * 1000 + 500;
     let foodArray = [];
     let foodTimer = 0;
@@ -135,14 +135,22 @@ const Game = () => {
     
         // Handle horizontal movement
         if (input.keys.indexOf('ArrowRight') > -1) {
-            this.speed = 5;
-            this.currAction = 'walk';
+          if (this.onGround()) {
+            this.speed = 5; // Normal speed on ground
+          } else {
+            this.speed = 9; // Increased speed during jump
+          }
+          this.currAction = 'walk';
         } else if (input.keys.indexOf('ArrowLeft') > -1) {
-            this.speed = -5;
-            this.currAction = 'walk';
+          if (this.onGround()) {
+            this.speed = -5; // Normal speed on ground
+          } else {
+            this.speed = -9; // Increased speed during jump
+          }
+          this.currAction = 'walk';
         } else {
-            this.speed = 0;
-            this.currAction = 'idle';
+          this.speed = 0;
+          this.currAction = 'idle';
         }
     
         // Handle jumping and double jumping
@@ -176,57 +184,77 @@ const Game = () => {
         // Apply horizontal movement
         this.x += this.speed;
         if (this.x < 0) this.x = 0;
-        else if (this.x > this.gameWidth - this.width) this.x = this.gameWidth - this.width;
+        else if (this.x > this.gameWidth/1.5 - this.width) this.x = this.gameWidth/1.5 - this.width;
     
         // Log to debug
         console.log(`x: ${this.x}, y: ${this.y}, vy: ${this.vy}, jumpCount: ${this.jumpCount}`);
     }
+
+    isHalfwayAcross() {
+      return this.x >= this.gameWidth /3;
+    }
     
     handleCollisions(enemies, flyingEnemiesArray, trashObstacleArray, foodArray) {
-        // Handle collisions with enemies
-        enemies.forEach(enemy => {
-            const dx = (enemy.x + enemy.width / 0.5) - (this.x + this.width / 0.5);
-            const dy = (enemy.y + enemy.height / 0.5) - (this.y + this.height / 0.5);
-            const distance = Math.sqrt(dx * dx + dy * dy);
-            if (distance < enemy.width / 2 + this.width / 2) {
-                gameOver = true;
-                this.currAction = 'death';
-            }
-        });
+      // Function to check for circular collision
+      const checkCircularCollision = (circle1, circle2) => {
+        const dx = circle1.x - circle2.x;
+        const dy = circle1.y - circle2.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        return distance < (circle1.radius + circle2.radius);
+      };
     
-        // Handle collisions with flying enemies
-        flyingEnemiesArray.forEach(flyingenemy => {
-            const dx = (flyingenemy.x + flyingenemy.width / 0.5) - (this.x + this.width / 1.5);
-            const dy = (flyingenemy.y + flyingenemy.height / 0.5) - (this.y + this.height / 0.5);
-            const distance = Math.sqrt(dx * dx + dy * dy);
-            if (distance < flyingenemy.width / 2.75 + this.width / 2.75) {
-                gameOver = true;
-                this.currAction = 'death';
-            }
-        });
+      // Define the player's circular hitbox
+      const playerHitbox = {
+        x: this.x + this.width / 2,
+        y: this.y + this.height / 2,
+        radius: Math.min(this.width, this.height) / 2.75
+      };
     
-        // Handle collisions with trash obstacles
-        trashObstacleArray.forEach(obstacle => {
-            const dx = (obstacle.x + obstacle.width / 1) - (this.x + this.width / 1.2);
-            const dy = (obstacle.y + obstacle.height / 1.8) - (this.y + this.height / 2);
-            const distance = Math.sqrt(dx * dx + dy * dy);
-            if (distance < obstacle.width / 2.75 + this.width / 2.75) {
-                gameOver = true;
-                this.currAction = 'death';
-            }
-        });
+      // Handle collisions with enemies
+      enemies.forEach(enemy => {
+        // Define the enemy's circular hitbox closer to the front
+        const enemyHitbox = {
+          x: enemy.x + enemy.width * 0.8, // Adjust position to focus more on the front
+          y: enemy.y + enemy.height / 2,
+          radius: Math.min(enemy.width, enemy.height) / 2.75
+        };
     
-        // Handle collisions with food
-        foodArray.forEach(food => {
-            const dx = (food.x + food.width / 2) - (this.x + this.width / 2);
-            const dy = (food.y + food.height / 2) - (this.y + this.height / 2);
-            const distance = Math.sqrt(dx * dx + dy * dy);
-            if (distance < food.width / 2 + this.width / 2) {
-                food.markedForDeletion = true;
-                chonkMeter++;
-            }
-        });
-    }
+        if (checkCircularCollision(playerHitbox, enemyHitbox)) {
+          gameOver = true;
+          this.currAction = 'death';
+          this.deathFrameCounter = 4; // Set death frame counter
+        }
+      });
+    
+      // Handle collisions with flying enemies
+      flyingEnemiesArray.forEach(flyingenemy => {
+        // Define the flying enemy's circular hitbox closer to the front
+        const flyingEnemyHitbox = {
+          x: flyingenemy.x + flyingenemy.width * 0.8, // Adjust position if needed
+          y: flyingenemy.y + flyingenemy.height / 2,
+          radius: Math.min(flyingenemy.width, flyingenemy.height) / 2.75
+        };
+    
+        if (checkCircularCollision(playerHitbox, flyingEnemyHitbox)) {
+          gameOver = true;
+          this.currAction = 'death';
+          this.deathFrameCounter = 4; // Set death frame counter
+        }
+      });
+    // Handle collisions with food
+    foodArray.forEach(food => {
+        const foodHitbox = {
+            x: food.x + food.width / 2,
+            y: food.y + food.height / 2,
+            radius: Math.min(food.width, food.height) / 2
+        };
+
+        if (checkCircularCollision(playerHitbox, foodHitbox)) {
+            food.markedForDeletion = true;
+            chonkMeter++;
+        }
+    });
+}
     
     onGround() {
         return this.y >= this.gameHeight - this.height;
@@ -280,7 +308,7 @@ const Game = () => {
         this.frameX = 0;
         this.frameY = 0;
         this.currAction = Math.random() < 0.5 ? 'walk' : 'attack';
-        this.speed = this.currAction === 'walk' ? 13 : 5;
+        this.speed = this.currAction === 'walk' ? 8 : 5;
         this.frameCount = 0;
         this.markedForDeletion = false;
         this.sprite = sprite;
@@ -291,15 +319,15 @@ const Game = () => {
       }
       //Draws the enemy on the canvas
       draw(context) {
-        context.strokeStyle = 'white';
-        context.strokeRect(this.x, this.y, this.width, this.height);
-        context.beginPath();
-        context.arc(this.x + this.width / 2, this.y + this.height / 2, this.width / 2, 0, Math.PI * 2);
-        context.stroke();
-        context.strokeStyle = 'blue';
-        context.beginPath();
-        context.arc(this.x, this.y, this.height / 2, this.width / 2, 0, Math.PI * 2);
-        context.stroke();
+        // context.strokeStyle = 'white';
+        // context.strokeRect(this.x, this.y, this.width, this.height);
+        // context.beginPath();
+        // context.arc(this.x + this.width / 2, this.y + this.height / 2, this.width / 2, 0, Math.PI * 2);
+        // context.stroke();
+        // context.strokeStyle = 'blue';
+        // context.beginPath();
+        // context.arc(this.x, this.y, this.height / 2, this.width / 2, 0, Math.PI * 2);
+        // context.stroke();
         context.drawImage(this.image, this.frameX * this.spriteWidth, this.frameY * this.spriteHeight, this.spriteWidth, this.spriteHeight, this.x, this.y, this.width, this.height);
       }
       //Updates enemy position and marks for deletion if off-screen
@@ -325,17 +353,26 @@ const Game = () => {
     }
 
     class FlyingEnemy {
-      constructor(gameWidth, gameHeight){
+      constructor(gameWidth, gameHeight, sprite){
         this.gameWidth = gameWidth;
         this.gameHeight = gameHeight;
-        this.width = 70;
-        this.height = 70;
+        this.spriteWidth = 33;
+        this.spriteHeight = 15;
+        this.width = 55;
+        this.height = 55;
         this.x = gameWidth;
+        this.frameX = 0;
+        this.frameY = 0;
         this.y = Math.random() * (gameHeight /4) + gameHeight /4;
-        this.speed = Math.random() * 4 + 2;
         this.image = new Image();
+        this.sprite = sprite;
         this.image.src = flyingEnemy;
         this.markedForDeletion = false;
+        this.spriteDirection = 'left';
+        this.currAction = 'walk';
+        this.speed = Math.random() * 11 + 1;
+        this.stateChange = true;
+        this.frameCount = 0;
       }
       update(){
         this.x -= this.speed;
@@ -348,9 +385,9 @@ const Game = () => {
         //this.x += Math.random() * 15 - 2.5;
         //this.y += Math.random() * 5 - 2.5;
       }
-      draw(){
+      draw(context){
         // ctx.strokeRect(this.x, this.y, this.width, this.height)
-        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+        context.drawImage(this.image, this.frameX * this.spriteWidth, this.frameY * this.spriteHeight, this.spriteWidth, this.spriteHeight, this.x, this.y, this.width, this.height);
       }
     }
 
@@ -433,15 +470,17 @@ const Game = () => {
 
     function handleFlyingEnemies(deltaTime) {
       if (flyingEnemyTimer > flyingEnemyInterval + randomFlyingEnemyInterval) {
-        flyingEnemiesArray.push(new FlyingEnemy(canvas.width, canvas.height));
+        const flyingEnemyType = Math.random() < 0.5? 'blackCrow' : 'regularPigeon';
+        flyingEnemiesArray.push(new FlyingEnemy(canvas.width, canvas.height, flyingEnemyType));
         randomFlyingEnemyInterval = Math.random() * 1000 + 500;
         flyingEnemyTimer = 0;
       } else {
         flyingEnemyTimer += deltaTime;
       }
-      flyingEnemiesArray.forEach((enemy) => {
-        enemy.update();
+      flyingEnemiesArray.forEach(enemy => {
+        animatedSprite(enemy);
         enemy.draw(ctx);
+        enemy.update(deltaTime);
       });
       flyingEnemiesArray = flyingEnemiesArray.filter((enemy) => !enemy.markedForDeletion);
     }
@@ -523,7 +562,12 @@ const Game = () => {
       const deltaTime = timeStamp - lastTime;
       lastTime = timeStamp;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      if (input.isAnyKeyPressed()) {
+      // if (input.isAnyKeyPressed()) {
+      //   background.speed = 8;
+      // } else {
+      //   background.speed = 0;
+      // }
+      if (player.isHalfwayAcross() && input.isAnyKeyPressed()) {
         background.speed = 8;
       } else {
         background.speed = 0;

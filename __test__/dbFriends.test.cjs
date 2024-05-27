@@ -51,15 +51,34 @@ test("Should create, request, and remove a friend from a user", async () => {
     friendid: 12,
   };
 
-  const removalRequest = {
+  const friendRequest2 = {
     id: 11,
-    friendid: 12,
+    friendid: 13,
+  };
+
+  const friendRequest3 = {
+    id: 11,
+    friendid: 14,
   };
 
   await addFriend(friendRequest1);
-  const removedFriend = await removeFriend(removalRequest);
+  await addFriend(friendRequest2);
+  await addFriend(friendRequest3);
+
+  const removedFriend = await removeFriend(11, 12);
 
   expect(removedFriend).toMatchObject({
-    friends: [],
+    friends: [
+      {
+        friendsId: 11,
+        friendsOf: { scores: [{ value: 1000 }], username: "valentinocoolcat" },
+        friendsOfId: 13,
+      },
+      {
+        friendsId: 11,
+        friendsOf: { scores: [{ value: 1000 }], username: "kimmybones" },
+        friendsOfId: 14,
+      },
+    ],
   });
 });

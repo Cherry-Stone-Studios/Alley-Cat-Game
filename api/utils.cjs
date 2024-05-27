@@ -29,6 +29,7 @@ const signToken = async ({ id, username }) => {
 
   return token;
 };
+
 module.exports = {
   // requireAdmin,
   requireUser,
