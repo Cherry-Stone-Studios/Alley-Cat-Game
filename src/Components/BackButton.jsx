@@ -1,17 +1,18 @@
-import React from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const BackButton = () => {
-  const history = useHistory();
-
-  const handleBack = () => {
-    history.goBack();
+  const navigate = useNavigate();
+  const clickHandler = () => {
+    if (!history.state.idx) navigate("/");
+    if (window.location.pathname !== "/") navigate(-1);
   };
 
   return (
-    <button onClick={handleBack} disabled={history.length <= 1}>
-      GO BACK
-    </button>
+    <>
+      <button id="BackButton" onClick={clickHandler}>
+        Go Back
+      </button>
+    </>
   );
 };
 
