@@ -10,7 +10,7 @@ const {
 const { createScore } = require("../db/scores.cjs");
 const { addFriend } = require("../db/friends.cjs");
 
-// passed: Jest, GitHub
+// passed: Jest, Postman, GitHub
 test("Should create a valid new user", async () => {
   const user1 = {
     name: "PuppyFace",
@@ -29,7 +29,7 @@ test("Should create a valid new user", async () => {
   });
 });
 
-// passed: Jest, GitHub
+// passed: Jest, Postman, GitHub
 test("Creating a user with a name too long throws an error", async () => {
   const user2 = {
     id: 20,
@@ -45,7 +45,7 @@ test("Creating a user with a name too long throws an error", async () => {
   );
 });
 
-// passed: Jest, GitHub
+// passed: Jest, Postman, GitHub
 test("Creating a user with a username too long throws an error", async () => {
   const user3 = {
     id: 30,
@@ -59,7 +59,7 @@ test("Creating a user with a username too long throws an error", async () => {
   await expect(createUser(user3)).rejects.toThrow(`Your username is too long!`);
 });
 
-// passed: Jest, GitHub
+// passed: Jest, Postman, GitHub
 test("Creating a user with a naughty username throws an error", async () => {
   const user7 = {
     id: 70,
@@ -75,7 +75,7 @@ test("Creating a user with a naughty username throws an error", async () => {
   );
 });
 
-// passed: Jest, GitHub
+// passed: Jest, Postman, GitHub
 test("Creating a user with a email too long throws an error", async () => {
   const user4 = {
     id: 40,
@@ -90,7 +90,7 @@ test("Creating a user with a email too long throws an error", async () => {
   await expect(createUser(user4)).rejects.toThrow(`Your email is too long!`);
 });
 
-// passed: Jest, GitHub
+// passed: Jest, Postman, GitHub
 test("Creating a user with a password too long throws an error", async () => {
   const user5 = {
     id: 50,
@@ -105,7 +105,7 @@ test("Creating a user with a password too long throws an error", async () => {
   await expect(createUser(user5)).rejects.toThrow(`Your password is too long!`);
 });
 
-// passed: Jest, GitHub
+// passed: Jest, Postman, GitHub
 test("Creating an underage user throws an error", async () => {
   const user6 = {
     id: 60,
@@ -121,7 +121,7 @@ test("Creating an underage user throws an error", async () => {
   );
 });
 
-// passed: Jest, GitHub
+// passed: Jest, Postman, GitHub
 test("Get information on all users", async () => {
   const allUsers = await getAllUsers();
 
@@ -169,7 +169,7 @@ test("Get information on all users", async () => {
   ]);
 });
 
-// passed: Jest, GitHub
+// passed: Jest, Postman, GitHub
 test("Get info by username for a single registered user", async () => {
   const user = {
     username: "nooshydelightful",
@@ -186,7 +186,7 @@ test("Get info by username for a single registered user", async () => {
   });
 });
 
-// passed: Jest, GitHub
+// passed: Jest, Postman, GitHub
 test("Get info by ID for a single registered user", async () => {
   const user = {
     id: 11,
@@ -203,7 +203,7 @@ test("Get info by ID for a single registered user", async () => {
   });
 });
 
-// passed: Jest, GitHub
+// passed: Jest, Postman, GitHub
 test("An admin updates the user", async () => {
   const user1 = {
     name: "PuppyFace",
@@ -241,7 +241,7 @@ test("An admin updates the user", async () => {
   });
 });
 
-// passed: Jest, GitHub
+// passed: Jest, Postman, GitHub
 test("A user updates the user", async () => {
   const user1 = {
     id: 30,

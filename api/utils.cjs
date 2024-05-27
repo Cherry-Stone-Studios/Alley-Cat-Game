@@ -1,8 +1,8 @@
-const jwt = require("jsonwebtoken");
 require("dotenv").config;
+const jwt = require("jsonwebtoken");
 
 // if user is register -> grant access
-const requireUser = (req, res, next) => {
+const requireUser = async (req, res, next) => {
   if (req.user) {
     next();
   } else {
@@ -11,14 +11,15 @@ const requireUser = (req, res, next) => {
 };
 
 // if user is admin -> grant access
-// const requireAdmin = (req, res, next) => {
-//   if (req.user) {
-//     console.log(req.user);
-//     next();
-//   } else {
-//     res.sendStatus(401);
-//   }
-// };
+const requireAdmin = async (req, res, next) => {
+  if (req.user.is_admin) {
+    next();
+  } else {
+    res.status(401).send({
+      message: `This alley is just for dogs! You do not have permission to access this area.`,
+    });
+  }
+};
 
 // USING JWT TO SIGN USER WITH TOKEN THAT LASTS 2 WEEKS
 const signToken = async ({ id, username }) => {
@@ -31,7 +32,7 @@ const signToken = async ({ id, username }) => {
 };
 
 module.exports = {
-  // requireAdmin,
+  requireAdmin,
   requireUser,
   signToken,
 };

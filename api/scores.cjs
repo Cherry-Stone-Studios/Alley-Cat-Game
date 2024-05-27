@@ -8,7 +8,6 @@ const {
   createScore,
   getAllScores,
   getScoresByUsername,
-  adminUpdateScore,
   deleteScore,
 } = require("../db/scores.cjs");
 
@@ -59,45 +58,6 @@ router.get("/:username", async (req, res) => {
     const userScores = await getScoresByUsername(username);
 
     res.status(200).send(userScores);
-  } catch (err) {
-    throw err;
-  }
-});
-
-// UPDATE/PUT
-// PUT to /api/scores/:id
-router.put("/:id", async (req, res, next) => {
-  // grab the id from params -> this is the score we want to update
-  const id = parseInt(req.params.id);
-  const { value, created_on, username, guestname } = req.body;
-
-  try {
-    const updatedScore = await adminUpdateScore({
-      id,
-      value,
-      created_on,
-      username,
-      guestname,
-    });
-    res
-      .status(200)
-      .send({ message: `Score updated successfully!`, ...updatedScore });
-  } catch (err) {
-    throw err;
-  }
-});
-
-//DELETE
-// DELETE to /api/scores/:id
-router.delete("/:id", async (req, res) => {
-  // grab the id from params -> this is the score we want to delete
-  const id = parseInt(req.params.id);
-
-  try {
-    await deleteScore(id);
-    res.status(200).send({
-      message: `The score has been deleted from the database.`,
-    });
   } catch (err) {
     throw err;
   }
