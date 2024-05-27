@@ -2,53 +2,68 @@ const request = require("supertest");
 const { server } = require("../server.cjs");
 const { signToken, requireUser, requireAdmin } = require("../api/utils.cjs");
 
-// Test that scores can be updated
+// Test that a user must be an admin in order to update a user
 // passed: Jest, Postman, GitHub
-// describe("PUT /api/admin/scores/11", () => {
-//   test("Try to update info of a score", async () => {
-//     const score = {
-//       id: 11,
-//       value: 10000,
-//       created_on: "2000-01-01",
-//       username: "nakaylisamazing",
-//       guestname: "",
-//     };
+describe("PUT /api/users/11", () => {
+  test("Try to update info of a user", async () => {
+    const user = {
+      id: 11,
+      name: "Anusha Delightful",
+      username: "nooshydeli",
+      email: "nooshydeli@charmelions.com",
+      password: "charming",
+      date_of_birth: "2000-01-01",
+    };
 
-//     const response = await request(server)
-//       .put("/api/scores/11")
-//       .send(score)
-//       .expect(200);
+    const logininfo = {
+      username: "nooshydelightful",
+      email: "nooshydelightful@charmelions.com",
+    };
 
-//     expect(response.body).toMatchObject({
-//       id: 11,
-//       value: 10000,
-//       created_on: "2000-01-01T00:00:00.000Z",
-//       name: "nakaylisamazing",
-//       guestname: "",
-//     });
-//   });
-// });
+    const token = await getToken({
+      id: user.id,
+    });
 
-// Test deleting a score
+    return request(server)
+      .put("/api/users/10")
+      .set("Authorization", `Bearer ${token}`)
+      .send(logininfo)
+      .expect(401)
+      .then(({ body }) => {
+        info = body.data;
+        message = `unathorized`;
+      });
+  });
+});
+
+// Test for a user attempting to update their own information
 // passed: Jest, Postman, GitHub
-// describe("DELETE /api/admin/scores/:id", () => {
-//   test("Delete a score", async () => {
-//     const deleteMe = {
-//       id: 77,
-//       value: 1000000,
-//       created_on: "2000-01-01",
-//       username: "Superfly",
-//       guestname: "",
-//     };
+describe("PUT /api/users/11", () => {
+  test("Update a users own info", async () => {
+    const user = {
+      id: 11,
+      name: "Anusha Delightful",
+      username: "nooshyisamazing",
+      email: "nooshydeli@charmelions.com",
+      password: "spectacular",
+    };
 
-//     const deletedScore = await createScore(deleteMe);
+    const token = await getToken({
+      id: user.id,
+    });
 
-//     const response = await request(server)
-//       .delete(`/api/admin/scores/${deletedScore.id}`)
-//       .expect(200);
+    const response = await request(server)
+      .put(`/api/users/${user.id}`)
+      .set("Authorization", `Bearer ${token}`)
+      .send(user)
+      .expect(200);
 
-//     expect(response.body).toMatchObject({
-//       message: "The score has been deleted from the database.",
-//     });
-//   });
-// });
+    expect(response.body).toMatchObject({
+      id: 11,
+      name: "Anusha Delightful",
+      username: "nooshyisamazing",
+      email: "nooshydeli@charmelions.com",
+      message: "User updated successfully!",
+    });
+  });
+});
