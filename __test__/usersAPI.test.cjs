@@ -1,8 +1,8 @@
+require("supertest");
 const request = require("supertest");
 const { server } = require("../server.cjs");
 const { createUser } = require("../db/users.cjs");
-const { signToken } = require("../api/utils.cjs");
-require("supertest");
+const { signToken, requireUser } = require("../api/utils.cjs");
 
 const getToken = async ({ id }) => {
   const tokenData = await signToken({
@@ -12,7 +12,7 @@ const getToken = async ({ id }) => {
 };
 
 // test to get all users from DB
-// passed: Jest, GitHub
+// passed: Jest, Postman, GitHub
 describe("GET /api/users/", () => {
   it("Return a response it got all users", async () => {
     const response = await request(server).get("/api/users").expect(200);
@@ -63,7 +63,7 @@ describe("GET /api/users/", () => {
 });
 
 // test to get specific user by id
-// passed: Jest, Github
+// passed: Jest, Postman, GitHub
 describe("GET /api/users/:id", () => {
   it("Return a response it got one user at ID", async () => {
     const response = await request(server).get("/api/users/11").expect(200);
@@ -79,7 +79,7 @@ describe("GET /api/users/:id", () => {
 });
 
 // test to get specific user by username
-// passed: Jest, GitHub
+// passed: Jest, Postman, GitHub
 describe("GET /api/users/:username", () => {
   it("Return a response it got one user at username", async () => {
     const response = await request(server)
@@ -98,7 +98,7 @@ describe("GET /api/users/:username", () => {
 });
 
 // test the createUser function
-// passed: Jest, GitHub
+// passed: Jest, Postman, GitHub
 describe("POST /api/users/register", () => {
   const user = {
     name: "Enyo",
@@ -129,7 +129,7 @@ describe("POST /api/users/register", () => {
   });
 });
 
-// passed: Jest, GitHub
+// passed: Jest, Postman, GitHub
 describe("POST /api/users/login", () => {
   let user = {
     id: 1,
@@ -158,7 +158,7 @@ describe("POST /api/users/login", () => {
 });
 
 // Test that the User must be logged in to their own account to update info
-// passed: Jest, GitHub
+// passed: Jest, Postman, GitHub
 describe("PUT /api/users/11", () => {
   test("Try to update info of a user", async () => {
     const user = {
@@ -192,7 +192,7 @@ describe("PUT /api/users/11", () => {
 });
 
 // Test for a user attempting to update their own information
-// passed: Jest, GitHub
+// passed: Jest, Postman, GitHub
 describe("PUT /api/users/11", () => {
   test("Update a users own info", async () => {
     const user = {
@@ -223,8 +223,8 @@ describe("PUT /api/users/11", () => {
   });
 });
 
-// test the deleteUser function
-// passed: Jest, GitHub
+// test the user deletes the user function
+// passed: Jest, Postman, GitHub
 describe("DELETE /api/users/:id", () => {
   test("Delete a user", async () => {
     const superfly = {
@@ -234,8 +234,6 @@ describe("DELETE /api/users/:id", () => {
       password: "Superfly",
       date_of_birth: "2000-01-01",
     };
-
-    // const { name, username, email, password, date_of_birth } = newUser;
 
     const createdUser = await createUser(superfly);
 

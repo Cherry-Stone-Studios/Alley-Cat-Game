@@ -6,7 +6,7 @@ const {
   deleteScore,
 } = require("../db/scores.cjs");
 
-// passed: Jest, GitHub
+// passed: Jest, Postman, GitHub
 test("Create a new score for a registered user", async () => {
   const testscore1 = {
     id: 21,
@@ -25,7 +25,7 @@ test("Create a new score for a registered user", async () => {
   });
 });
 
-// passed: Jest, GitHub
+// passed: Jest, Postman, GitHub
 test("Create a new score for an unregistered user", async () => {
   const testscore2 = {
     id: 21,
@@ -44,7 +44,7 @@ test("Create a new score for an unregistered user", async () => {
   });
 });
 
-// passed: Jest, GitHub
+// passed: Jest, Postman, GitHub
 test("Create a new score for an unregistered user using the username field", async () => {
   const testscore3 = {
     id: 21,
@@ -63,7 +63,7 @@ test("Create a new score for an unregistered user using the username field", asy
   });
 });
 
-// passed: Jest, GitHub
+// passed: Jest, Postman, GitHub
 test("Creating a score with a naughty name throws an error", async () => {
   const testscore4 = {
     id: 77,
@@ -78,7 +78,7 @@ test("Creating a score with a naughty name throws an error", async () => {
   );
 });
 
-// passed: Jest, GitHub
+// passed: Jest, Postman, GitHub
 test("Creating a score with a naughty name throws an error", async () => {
   const testscore5 = {
     id: 77,
@@ -93,7 +93,7 @@ test("Creating a score with a naughty name throws an error", async () => {
   );
 });
 
-// passed: Jest, GitHub
+// passed: Jest, Postman, GitHub
 test("Creating a score with a naughty name throws an error", async () => {
   const testscore6 = {
     id: 77,
@@ -108,7 +108,7 @@ test("Creating a score with a naughty name throws an error", async () => {
   );
 });
 
-// passed: Jest, GitHub
+// passed: Jest, Postman, GitHub
 test("Creating a score with a naughty name throws an error", async () => {
   const testscore7 = {
     id: 77,
@@ -123,7 +123,7 @@ test("Creating a score with a naughty name throws an error", async () => {
   );
 });
 
-// passed: Jest, GitHub
+// passed: Jest, Postman, GitHub
 test("Creating a score with a long name throws an error", async () => {
   const testscore8 = {
     id: 77,
@@ -138,7 +138,7 @@ test("Creating a score with a long name throws an error", async () => {
   );
 });
 
-// passed: Jest, GitHub
+// passed: Jest, Postman, GitHub
 test("Creating a score with a name that belongs to a user throws an error", async () => {
   const testscore9 = {
     id: 21,
@@ -153,7 +153,7 @@ test("Creating a score with a name that belongs to a user throws an error", asyn
   );
 });
 
-// passed: Jest, GitHub
+// passed: Jest, Postman, GitHub
 test("Get scores for a registered user", async () => {
   const user = {
     username: "nooshydelightful",
@@ -184,7 +184,7 @@ test("Get scores for a registered user", async () => {
   ]);
 });
 
-// passed: Jest, GitHub
+// passed: Jest, Postman, GitHub
 test("An admin updates the score", async () => {
   const adminUpdatedField = {
     id: 11,
@@ -204,7 +204,7 @@ test("An admin updates the score", async () => {
   });
 });
 
-// passed: Jest, GitHub
+// passed: Jest, Postman, GitHub
 test("A score gets deleted", async () => {
   const deleteme = {
     id: 21,
@@ -223,7 +223,7 @@ test("A score gets deleted", async () => {
   await expect(deleteScore(scoreID)).toMatchObject({});
 });
 
-// passed: Jest, GitHub
+// passed: Jest, Postman, GitHub
 test("Get all scores for high scores", async () => {
   const allScores = await getAllScores();
 

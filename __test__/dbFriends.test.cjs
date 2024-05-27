@@ -4,7 +4,7 @@ const {
   removeFriend,
 } = require("../db/friends.cjs");
 
-// passed: Jest, GitHub
+// passed: Jest, Postman, GitHub
 test("Should create 2 users and send a request from user1 to user2", async () => {
   const friendRequest1 = {
     id: 11,
@@ -22,7 +22,7 @@ test("Should create 2 users and send a request from user1 to user2", async () =>
   });
 });
 
-// passed: Jest, GitHub
+// passed: Jest, Postman, GitHub
 test("Should get information for a user's friend", async () => {
   const friendRequest1 = {
     id: 11,
@@ -44,7 +44,7 @@ test("Should get information for a user's friend", async () => {
   });
 });
 
-// passed: Jest, GitHub
+// passed: Jest, Postman, GitHub
 test("Should create, request, and remove a friend from a user", async () => {
   const friendRequest1 = {
     id: 11,

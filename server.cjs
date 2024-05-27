@@ -6,11 +6,14 @@ const express = require("express");
 const path = require("path");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
-const jwt = require("jsonwebtoken");
-const { getUserById } = require("./db/users.cjs");
+const { authCheck } = require("./middleware/authorization.cjs");
 
 // Create the express server
 const server = express();
+
+// run the authorization middleware on the server
+
+server.use(authCheck);
 
 // Middleware to parse JSON requests
 // Middleware to parse URL-encoded data
@@ -43,35 +46,6 @@ server.use(morgan("dev"));
 
 server.get("/", function (req, res) {
   res.send("Hello world! Cool game coming soon!!");
-});
-
-server.use(async (req, res, next) => {
-  const prefix = "Bearer ";
-  const auth = req.header("Authorization");
-
-  if (!auth) {
-    next();
-  }
-  // else if auth header contains Bearer**
-  // create a token for the user
-  else if (auth.startsWith(prefix)) {
-    const token = auth.slice(prefix.length);
-
-    try {
-      const verifiedToken = jwt.verify(token, process.env.JWT_SECRET);
-      const id = verifiedToken.id;
-
-      if (id) {
-        const user = await getUserById(id);
-        req.user = { id: user.id };
-      }
-    } catch (error) {
-      console.error("JWT verification error:", error);
-    }
-    next();
-  } else {
-    next();
-  }
 });
 
 // API routes

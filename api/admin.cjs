@@ -1,38 +1,89 @@
 const express = require("express");
 const router = express.Router();
-const { adminUpdatesUser, getAllUsers } = require("./users.cjs");
+const { requireAdmin } = require("./utils.cjs");
+const { adminUpdateScore, deleteScore } = require("../db/scores.cjs");
+const { adminUpdatesUser, deleteUser } = require("../db/users.cjs");
 
-// Admin accessed endpoints
-// TODO : IMPORT "requireAdmin" function to routes that only admin will reach
-// GET ALL USERS FOR ADMIN
-router.get("/users", async (req, res) => {
+// Update a user by id
+// PUT to /api/admin/users/:id
+
+router.put("/:id", requireAdmin, async (req, res, next) => {
+  // grab the id from params -> this is the user we want to update
+  const { id, name, username, email, password } = req.body;
+
   try {
-    const users = await getAllUsers();
-    res.status(201).send(users);
+    const updatedUser = await adminUpdatesUser({
+      id,
+      name,
+      username,
+      email,
+      password,
+      date_of_birth,
+      is_admin,
+      nyan_unlocked,
+    });
+    res
+      .status(200)
+      .send({ message: `User updated successfully!`, ...updatedUser });
   } catch (err) {
     throw err;
   }
 });
 
-// UPDATE USER BY USER ID FOR ADMIN
-router.put("/users/:id", async (req, res) => {
-  const userId = parseInt(req.params.id);
+// Update a score by the score ID
+// PUT to /api/admin/scores/:id
+router.put("/scores/:id", requireAdmin, async (req, res, next) => {
+  // grab the id from params -> this is the score we want to update
+  const id = parseInt(req.params.id);
+  const { value, created_on, username, guestname } = req.body;
+
   try {
-    singleUser = await adminUpdatesUser(userId);
+    const updatedScore = await adminUpdateScore({
+      id,
+      value,
+      created_on,
+      username,
+      guestname,
+    });
+    res
+      .status(200)
+      .send({ message: `Score updated successfully!`, ...updatedScore });
   } catch (err) {
     throw err;
   }
 });
 
-// TO-DO: MOVE TO adminAPI.test.cjs
-// TO-DO: test the UTILS on getting users
-// to see if it correctly checks
-// if the body has sent an is_admin signature
-// so that only admins can get our user db
+// Delete a user's profile
+// DELETE /api/admin/users/:id
+router.delete("/users/:id", requireAdmin, async (req, res) => {
+  // grab the id from params -> this is the user we want to delete
+  const id = parseInt(req.params.id);
 
-// TO-DO: test the adminUpdatesUser function
-// to see if it correctly checks
-// if the body has sent an is_admin signature
-// so that only admins can update users in our db
+  try {
+    const deletedUser = await deleteUser(id);
+    console.log("THIS IS THE ADMIN DELETED USER", deletedUser);
+    res.status(200).send({
+      message: `You have successfully deleted the user's account.`,
+    });
+  } catch (err) {
+    throw err;
+  }
+});
+
+// Delete a score from the DB
+// DELETE /api/admin/scores/:id
+router.delete("/scores/:id", requireAdmin, async (req, res) => {
+  // grab the id from params -> this is the score we want to delete
+  const id = parseInt(req.params.id);
+
+  try {
+    await deleteScore(id);
+    res.status(200).send({
+      message: `The score has been deleted from the database.`,
+    });
+  } catch (err) {
+    throw err;
+  }
+});
 
 module.exports = router;

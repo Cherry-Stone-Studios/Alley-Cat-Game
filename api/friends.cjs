@@ -37,9 +37,10 @@ router.post("/", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
   try {
-    const id = parseInt(req.body.id);
+    const id = parseInt(req.params.id);
 
     const friends = await getUsersFriends(id);
+
     res.status(200).send(friends);
   } catch (err) {
     throw err;
