@@ -15,9 +15,10 @@
     "server:dev": "nodemon app.cjs",
     "start": "node app.cjs",
     "detect": "jest --detectOpenHandles",
-    "pull:request": "npm install && npx prisma migrate dev --name init && jest --detectOpenHandles"
+    "pull:request": "npm install && npx prisma migrate dev --name init && jest --detectOpenHandles",
+    "seed": "npm install && npx prisma migrate reset && node ./db/seed.js"
   },
-  "dependencies": {
+   "dependencies": {
     "@prisma/client": "^5.13.0",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
