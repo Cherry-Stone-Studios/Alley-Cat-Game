@@ -14,7 +14,7 @@ import catScratch from "../game_module/catscratch.gif";
 import curiousCat from "../game_module/curiouscat.gif";
 import flyingCat from "../game_module/flyingcat.jpg";
 import pixelCat from "../game_module/pixel-cat.gif";
-import tvBackground from "../game_module/8bittv.png";
+import tvBackground from "../game_module/arcade.webp";
 
 const Game = () => {
   useEffect(() => {
@@ -690,9 +690,7 @@ const Game = () => {
 
   return (
     <div>
-      <img className="pixelcat" src={pixelCat}/>
-      <img className="curiouscat" src={curiousCat}/>
-      <img className="catscratch" src={catScratch}/>
+      <img className="arcade" src={tvBackground}/>
       <canvas id="canvas1"></canvas>
     </div>
   );
