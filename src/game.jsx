@@ -7,6 +7,8 @@ import animatedSprite from "./SpriteAnimation.jsx";
 import flyingEnemy from "./assets/birdSprites/blackCrowSprite.png";
 import trashObstacle from "../game_module/trashcan.png";
 import food1 from "../game_module/goldieSprite.png";
+import backgroundMusic from "../game_module/running90s.mp3";
+import gameoverMeow from "../game_module/angrycatmeow.mp3";
 
 const Game = () => {
   useEffect(() => {
@@ -31,6 +33,14 @@ const Game = () => {
     let foodTimer = 0;
     const foodInterval = 6000;
     let randomFoodInterval = Math.random() * 1000 + 500;
+
+    const bgMusic = new Audio(backgroundMusic);
+    bgMusic.loop = true;
+    bgMusic.volume = 0.5;
+    bgMusic.play();
+    const angryMeow = new Audio(gameoverMeow);
+    angryMeow.volume = 0.8;
+    angryMeow.loop = false;
 
     //Handles any keyboard inputs from the player
     class InputHandler {
@@ -602,6 +612,8 @@ const Game = () => {
         context.fillStyle = "yellow";
         context.fillText("GAME OVER, try again!", canvas.width / 2, 200);
         context.fillText("Press Enter to Restart", canvas.width / 2, 250);
+        bgMusic.pause();
+        angryMeow.play();
       }
     }
 
@@ -616,6 +628,7 @@ const Game = () => {
       score = 0;
       chonkMeter = 0;
       gameOver = false;
+      bgMusic.play();
       animate(0);
     }
 
