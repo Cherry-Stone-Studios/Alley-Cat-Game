@@ -1,4 +1,3 @@
-require("supertest");
 const request = require("supertest");
 const { server } = require("../server.cjs");
 const { createUser } = require("../db/users.cjs");
@@ -23,7 +22,6 @@ describe("GET /api/users/", () => {
         email: "nooshydelightful@charmelions.com",
         id: 11,
         name: "Anusha Delightful",
-        password: "charming",
         username: "nooshydelightful",
       },
       {
@@ -31,7 +29,6 @@ describe("GET /api/users/", () => {
         email: "nakaylamazing@cherrystonestudios.com",
         id: 12,
         name: "Nakayla Amazing",
-        password: "rabbitrabbit",
         username: "nakaylisamazing",
       },
       {
@@ -39,7 +36,6 @@ describe("GET /api/users/", () => {
         email: "valentinocoolcat@cherrystonestudios.com",
         id: 13,
         name: "Valentino S. Cool",
-        password: "catsaredope",
         username: "valentinocoolcat",
       },
       {
@@ -47,7 +43,6 @@ describe("GET /api/users/", () => {
         email: "kimmybones@cherrystonestudios.com",
         id: 14,
         name: "Chris Rocks",
-        password: "kimmybones",
         username: "kimmybones",
       },
       {
@@ -55,7 +50,6 @@ describe("GET /api/users/", () => {
         email: "hannah@cherrystonestudios.com",
         id: 15,
         name: "Hannah Wins",
-        password: "prismaprincess",
         username: "hannah",
       },
     ]);
@@ -91,7 +85,6 @@ describe("GET /api/users/:username", () => {
       name: "Anusha Delightful",
       username: "nooshydelightful",
       email: "nooshydelightful@charmelions.com",
-      password: "charming",
       date_of_birth: "2000-01-01T00:00:00.000Z",
     });
   });
@@ -109,7 +102,7 @@ describe("POST /api/users/register", () => {
   };
 
   test("Create a new user through Register", async () => {
-    let token = await signToken({
+    let token = await getToken({
       id: user.id,
     });
     const response = await request(server)
@@ -131,29 +124,51 @@ describe("POST /api/users/register", () => {
 
 // passed: Jest, Postman, GitHub
 describe("POST /api/users/login", () => {
-  let user = {
-    id: 1,
-    name: "Anusha Delightful",
-    username: "nooshydeli",
-    email: "nooshydeli@charmelions.com",
-    password: "charming",
-    date_of_birth: "2000-01-01",
-  };
+  test("Login a user to their account with a token", async () => {
+    const login = {
+      username: "nooshydelightful",
+      password: "prismaprincess",
+    };
 
-  test("Login in a user to their account with a token", async () => {
-    let token = await signToken({
-      id: user.id,
+    let token = await getToken({
+      id: 11,
     });
-    return request(server)
+
+    const response = await request(server)
       .post("/api/users/login")
       .set("Accept", "application/json")
-      .send(user)
-      .expect(200)
-      .then(({ body }) => {
-        user = body.data;
-        token = token;
-        message = `Successfully Logged in!`;
-      });
+      .set("Authorization", `Bearer ${token}`)
+      .send(login)
+      .expect(200);
+
+    expect(response.body).toMatchObject({
+      message: `Welcome nooshydelightful, you're logged in!`,
+    });
+  });
+});
+
+// passed: Jest
+describe("POST /api/users/login", () => {
+  test("Attempt to login with the wrong credentials", async () => {
+    const login = {
+      username: "nooshydelightful",
+      password: "charming",
+    };
+
+    let token = await getToken({
+      id: 11,
+    });
+
+    const response = await request(server)
+      .post("/api/users/login")
+      .set("Accept", "application/json")
+      .set("Authorization", `Bearer ${token}`)
+      .send(login)
+      .expect(200);
+
+    expect(response.body).toMatchObject({
+      message: `Sorry, you have provided invalid credendials for successful login. Try again.`,
+    });
   });
 });
 
@@ -179,15 +194,15 @@ describe("PUT /api/users/11", () => {
       id: user.id,
     });
 
-    return request(server)
+    const response = await request(server)
       .put("/api/users/10")
       .set("Authorization", `Bearer ${token}`)
       .send(logininfo)
-      .expect(401)
-      .then(({ body }) => {
-        info = body.data;
-        message = `unathorized`;
-      });
+      .expect(401);
+
+    expect(response.body).toMatchObject({
+      message: `Unathorized access detected!`,
+    });
   });
 });
 

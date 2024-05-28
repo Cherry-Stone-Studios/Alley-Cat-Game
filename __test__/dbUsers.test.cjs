@@ -131,7 +131,6 @@ test("Get information on all users", async () => {
       name: "Anusha Delightful",
       username: "nooshydelightful",
       email: "nooshydelightful@charmelions.com",
-      password: "charming",
       date_of_birth: "2000-01-01T00:00:00.000Z",
     },
     {
@@ -139,7 +138,6 @@ test("Get information on all users", async () => {
       name: "Nakayla Amazing",
       username: "nakaylisamazing",
       email: "nakaylamazing@cherrystonestudios.com",
-      password: "rabbitrabbit",
       date_of_birth: "2000-01-01T00:00:00.000Z",
     },
     {
@@ -147,7 +145,6 @@ test("Get information on all users", async () => {
       name: "Valentino S. Cool",
       username: "valentinocoolcat",
       email: "valentinocoolcat@cherrystonestudios.com",
-      password: "catsaredope",
       date_of_birth: "2000-01-01T00:00:00.000Z",
     },
     {
@@ -155,7 +152,6 @@ test("Get information on all users", async () => {
       name: "Chris Rocks",
       username: "kimmybones",
       email: "kimmybones@cherrystonestudios.com",
-      password: "kimmybones",
       date_of_birth: "2000-01-01T00:00:00.000Z",
     },
     {
@@ -163,7 +159,6 @@ test("Get information on all users", async () => {
       name: "Hannah Wins",
       username: "hannah",
       email: "hannah@cherrystonestudios.com",
-      password: "prismaprincess",
       date_of_birth: "2000-01-01T00:00:00.000Z",
     },
   ]);
