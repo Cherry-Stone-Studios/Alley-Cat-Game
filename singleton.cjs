@@ -2,10 +2,15 @@
 const { default: createPrismaMock } = require("prisma-mock");
 const { mockClear, mockDeep } = require("jest-mock-extended");
 const { Prisma } = require("@prisma/client");
+const bcrypt = require("bcrypt");
 
 jest.mock("./client.cjs", () => mockDeep());
 
 const prismaMock = require("./client.cjs");
+
+const plainTextPassword = "prismaprincess";
+const saltRounds = 10;
+const hashedPassword = bcrypt.hashSync(plainTextPassword, saltRounds);
 
 beforeEach(() => {
   mockClear(prismaMock);
@@ -17,7 +22,7 @@ beforeEach(() => {
           name: "Anusha Delightful",
           username: "nooshydelightful",
           email: "nooshydelightful@charmelions.com",
-          password: "charming",
+          password: hashedPassword,
           date_of_birth: "2000-01-01T00:00:00.000Z",
         },
         {
@@ -25,7 +30,7 @@ beforeEach(() => {
           name: "Nakayla Amazing",
           username: "nakaylisamazing",
           email: "nakaylamazing@cherrystonestudios.com",
-          password: "rabbitrabbit",
+          password: hashedPassword,
           date_of_birth: "2000-01-01T00:00:00.000Z",
         },
         {
@@ -33,7 +38,7 @@ beforeEach(() => {
           name: "Valentino S. Cool",
           username: "valentinocoolcat",
           email: "valentinocoolcat@cherrystonestudios.com",
-          password: "catsaredope",
+          password: hashedPassword,
           date_of_birth: "2000-01-01T00:00:00.000Z",
         },
         {
@@ -41,7 +46,7 @@ beforeEach(() => {
           name: "Chris Rocks",
           username: "kimmybones",
           email: "kimmybones@cherrystonestudios.com",
-          password: "kimmybones",
+          password: hashedPassword,
           date_of_birth: "2000-01-01T00:00:00.000Z",
         },
         {
@@ -49,8 +54,9 @@ beforeEach(() => {
           name: "Hannah Wins",
           username: "hannah",
           email: "hannah@cherrystonestudios.com",
-          password: "prismaprincess",
+          password: hashedPassword,
           date_of_birth: "2000-01-01T00:00:00.000Z",
+          is_admin: true,
         },
       ],
       scores: [

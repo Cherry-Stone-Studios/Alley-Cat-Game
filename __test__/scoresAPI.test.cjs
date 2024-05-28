@@ -1,6 +1,5 @@
 const request = require("supertest");
 const { server } = require("../server.cjs");
-const { createScore } = require("../db/scores.cjs");
 
 // test to get all scores from DB
 // passed: Jest, GitHub

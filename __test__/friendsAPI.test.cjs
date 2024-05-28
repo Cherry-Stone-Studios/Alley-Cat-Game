@@ -1,4 +1,3 @@
-require("supertest");
 const request = require("supertest");
 const { server } = require("../server.cjs");
 const { addFriend } = require("../db/friends.cjs");

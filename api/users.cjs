@@ -51,7 +51,7 @@ router.post("/login", async (req, res) => {
   // We recieve a username and password on body
   const plainPassword = req.body.password;
   // has plainPassword for compare
-  const { username } = req.body;
+  const username = req.body.username;
   //Does this user exist?
   try {
     const user = await getUserByUsername(username);
@@ -77,7 +77,7 @@ router.post("/login", async (req, res) => {
         // this is a valid login --> sign token
         const token = await signToken({ id: user.id, username: user.username });
         res.status(200).send({
-          message: `${user.username} Sucessfully Logged In!`,
+          message: `Welcome ${user.username}, you're logged in!`,
           token,
           ...user,
         });
@@ -139,7 +139,7 @@ router.put("/:id", requireUser, async (req, res, next) => {
 
   // if they are not a match, send them a non-authorized error (401)
   if (!matchedId) {
-    res.sendStatus(401);
+    res.status(401).send({ message: `Unathorized access detected!` });
     //else if they are, run the updateUsers function
   } else {
     // update the user with given username from req.params
@@ -174,7 +174,7 @@ router.delete("/:id", requireUser, async (req, res) => {
 
   // if they are not a match, send back an unauthorized message
   if (!matchedId) {
-    res.status(401);
+    res.status(401).send({ message: `Unathorized access detected!` });
     // if they are a match, run deleteUser with the ID of current user
   } else
     try {

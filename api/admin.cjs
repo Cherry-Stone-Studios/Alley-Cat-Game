@@ -6,7 +6,6 @@ const { adminUpdatesUser, deleteUser } = require("../db/users.cjs");
 
 // Update a user by id
 // PUT to /api/admin/users/:id
-
 router.put("/users/:id", requireAdmin, async (req, res, next) => {
   // grab the id from the body -> this is the user we want to update
   const {

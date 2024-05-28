@@ -6,13 +6,13 @@ const requireUser = async (req, res, next) => {
   if (req.user) {
     next();
   } else {
-    res.sendStatus(401);
+    res.status(401).send({ message: `Unathorized access detected!` });
   }
 };
 
 // if user is admin -> grant access
 const requireAdmin = async (req, res, next) => {
-  if (req.user.is_admin) {
+  if (req.user?.is_admin) {
     next();
   } else {
     res.status(401).send({

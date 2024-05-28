@@ -109,19 +109,56 @@ const adminUpdateScore = async ({
   guestname,
 }) => {
   try {
+    const badName = doesContainBadWords(guestname, wordFilter);
     const date = getDate(created_on);
 
-    const updatedScore = await prisma.scores.update({
-      where: { id },
-      data: {
-        id,
-        value,
-        created_on: date,
-        name: username,
-        guestname,
-      },
-    });
-    return updatedScore;
+    const ifUserExists = await prisma.user
+      .count({
+        where: {
+          username,
+        },
+      })
+      .then(Boolean);
+
+    if (badName === true) {
+      throw Error(`That name is way too naughty!`);
+    } else if (guestname.length > 25) {
+      throw Error(`Guest names can't be so long!`);
+    } else if (ifUserExists && username.length > 0) {
+      const updatedUserScore = await prisma.scores.update({
+        where: { id },
+        data: {
+          value,
+          created_on: date,
+          name: username,
+        },
+      });
+
+      return updatedUserScore;
+    } else if (guestname.length > 0) {
+      const updatedGuestScore = await prisma.scores.update({
+        where: { id },
+        data: {
+          value,
+          created_on: date,
+          guestname: guestname,
+        },
+      });
+
+      return updatedGuestScore;
+    } else if (!ifUserExists === true) {
+      // this should transform any scores in the db that have a username that aren't tied to users to be written to the guest column
+      const oopsieHighScore = await prisma.scores.update({
+        where: { id },
+        data: {
+          value,
+          created_on: date,
+          guestname: username,
+        },
+      });
+
+      return oopsieHighScore;
+    }
   } catch (err) {
     throw err;
   }
