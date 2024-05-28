@@ -22,6 +22,7 @@ server.use(bodyParser.urlencoded({ extended: true }));
 
 // nodejs "file system" module where we are saving our morgan log
 const fs = require("fs");
+const { app } = require("faker/lib/locales/en");
 // creates a path in our "file system" to the file we are saving our morgan log in
 const accessLogStream = fs.createWriteStream(
   path.join(__dirname, "access.log"),
@@ -48,16 +49,23 @@ server.get("/", function (req, res) {
   res.send("Hello world! Cool game coming soon!!");
 });
 
-// API routes
-const apiRouter = require("./api/index.cjs");
-server.use("/api", apiRouter);
+// // API routes
+// const apiRouter = require("./api/index.cjs");
+// server.use("/api", apiRouter);
 
 // Serve static files from the 'dist' directory (assuming Vite build output is here)
-server.use(express.static(path.join(__dirname, "dist")));
+// server.use(express.static(path.join(__dirname, "dist")));
 
 // Catch-all route to serve index.html for client-side routing
-server.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "dist", "index.html"));
-});
+// server.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "dist", "index.html"));
+// });
+
+//<-----ROUTES------>
+//Frontend
+for (const path of [""])
+  server.use("/" + path, express.static('dist'));
+//Backend
+server.use("/api", require("./api/index.cjs"));
 
 module.exports = { server };
