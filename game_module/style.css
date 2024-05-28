@@ -1,5 +1,5 @@
 body {
-  background: black;
+  background: white;
 }
 
 #canvas1 {
@@ -12,4 +12,26 @@ body {
 
 #playerImage, #backgroundImage {
   display: none;
+}
+
+.pixelcat {
+  float: left;
+  height: 250px;
+  width: 250px;
+}
+
+.curiouscat {
+  float: left;
+  height: 250px;
+  width: 250px;
+  position: absolute;
+  transform: translate(75%, -20%);
+}
+
+.catscratch {
+  float: left;
+  height: 250px;
+  width: 250px;
+  position: absolute;
+  transform: translate(95%, 95%);
 }
