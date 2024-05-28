@@ -53,7 +53,7 @@ const apiRouter = require("./api/index.cjs");
 server.use("/api", apiRouter);
 
 // Serve static files from the 'dist' directory (assuming Vite build output is here)
-// server.use(express.static(path.join(__dirname, "dist")));
+server.use(express.static(path.join(__dirname, "dist")));
 
 // Catch-all route to serve index.html for client-side routing
 server.get("*", (req, res) => {
