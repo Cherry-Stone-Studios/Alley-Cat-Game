@@ -2,16 +2,12 @@
 import { Link } from "react-router-dom";
 import "./stylehome.css";
 
-export function Nav({userToken, onPauseBackgroundMusic}) {
-
+export function Nav({ userToken, onPauseBackgroundMusic }) {
   const handleItemClick = () => {
     if (onPauseBackgroundMusic) {
       onPauseBackgroundMusic();
     }
-  }
-
-export function Nav({ userToken }) {
-
+  };
   return (
     <>
       <div className="navBox">

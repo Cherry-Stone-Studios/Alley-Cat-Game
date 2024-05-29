@@ -4,7 +4,7 @@ body {
 
 @font-face {
   font-family: customfont;
-  src: url('./Pixeboy-z8XGD.ttf') format('truetype');
+  src: url('../assets/Pixeboy-z8XGD.ttf') format('truetype');
 }
 
 button {
