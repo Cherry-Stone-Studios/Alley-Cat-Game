@@ -3,7 +3,8 @@
 // jest-mock-extended for testing the database
 // supertest for testing the API functions
 // jest-fetch-mock for testing fetching the API
-require("jest-fetch-mock").enableMocks();
+// require("jest-fetch-mock").enableMocks();
+
 const { default: createPrismaMock } = require("prisma-mock");
 const { mockClear, mockDeep } = require("jest-mock-extended");
 // import the database
@@ -22,7 +23,7 @@ const hashedPassword = bcrypt.hashSync(plainTextPassword, saltRounds);
 
 beforeEach(() => {
   mockClear(prismaMock);
-  fetchMock.doMock();
+  // fetchMock.doMock();
   createPrismaMock(
     {
       user: [
