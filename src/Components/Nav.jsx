@@ -10,6 +10,8 @@ export function Nav({userToken, onPauseBackgroundMusic}) {
     }
   }
 
+export function Nav({ userToken }) {
+
   return (
     <>
       <div className="navBox">

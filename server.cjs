@@ -66,10 +66,13 @@ server.use(morgan("dev"));
 // });
 
 //<-----ROUTES------>
-//Frontend
-for (const path of ["", "login", "register", "logout", "user/:id", "game", "highscores", "terms", "privacy", "admin"])
-  server.use("/" + path, express.static('dist'));
 //Backend
 server.use("/api", require("./api/index.cjs"));
+
+//Frontend
+server.use(express.static('./dist'));
+server.get("*", (req, res) => {
+  res.sendFile(__dirname + "/dist/index.html");
+});
 
 module.exports = { server };
