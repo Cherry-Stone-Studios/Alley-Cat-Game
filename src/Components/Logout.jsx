@@ -1,7 +1,11 @@
-export function Logout() {
-  return (
-    <>
-      <h1>LOGOUT</h1>
-    </>
-  );
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
+export function Logout({ setUserToken }) {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setUserToken(null);
+    navigate("/login");
+  }, [navigate, setUserToken]);
 }

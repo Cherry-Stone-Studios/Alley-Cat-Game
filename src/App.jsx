@@ -40,7 +40,7 @@ function App() {
 
         <Route
           path="/logout"
-          element={<Logout userToken={userToken} setUserToken={setUserToken} />}
+          element={<Logout setUserToken={setUserToken} />}
         />
 
         <Route
