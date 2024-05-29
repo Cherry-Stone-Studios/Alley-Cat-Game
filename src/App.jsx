@@ -1,16 +1,16 @@
 import "./App.css";
 import { useEffect, useState } from "react";
-import { Home } from "./components/Home";
-import { Nav } from "./components/Nav";
-import { Login } from "./components/Login";
-import { Logout } from "./components/Logout";
-import { Register } from "./components/Register";
-import { Account } from "./components/Account";
-import Game from "./game";
-import { Scores } from "./components/Scores";
-import { Terms } from "./components/Terms";
-import { Privacy } from "./components/Privacy";
-import { Admin } from "./components/Admin";
+import { Home } from "./Components/Home.jsx";
+import { Nav } from "./Components/Nav.jsx";
+import { Login } from "./Components/Login.jsx";
+import { Logout } from "./Components/Logout.jsx";
+import { Register } from "./Components/Register.jsx";
+import { Account } from "./Components/Account.jsx";
+import Game from "./game.jsx";
+import { Scores } from "./Components/Scores.jsx";
+import { Terms } from "./Components/Terms.jsx";
+import { Privacy } from "./Components/Privacy.jsx";
+import { Admin } from "./Components/Admin.jsx";
 
 import Player from "./SpriteAnimation.jsx";
 
@@ -22,27 +22,40 @@ const ADMIN_API = `https://cherry-stone-studios.onrender.com/api/admin/`;
 const FRIENDS_API = `https://cherry-stone-studios.onrender.com/api/users/friends/`;
 
 function App() {
+  const [userToken, setUserToken] = useState(null);
+
   return (
     <>
       <Routes>
         {/* home, nav, login, logout, register, account, game, scores, terms, privacy, admin */}
         <Route path="/" element={<Home />} />
 
-        <Route path="/nav" element={<Nav />} />
+        <Route path="/nav" element={<Nav userToken={userToken} />} />
 
-        <Route path="/login" element={<Login />} />
+        <Route
+          path="/login"
+          element={<Login userToken={userToken} setUserToken={setUserToken} />}
+        />
 
-        <Route path="/logout" element={<Logout />} />
+        <Route
+          path="/logout"
+          element={<Logout userToken={userToken} setUserToken={setUserToken} />}
+        />
 
-        <Route path="/register" element={<Register />} />
+        <Route
+          path="/register"
+          element={
+            <Register userToken={userToken} setUserToken={setUserToken} />
+          }
+        />
 
-        <Route path="/user/:id" element={<Account />} />
+        <Route path="/user/:id" element={<Account userToken={userToken} />} />
 
         <Route path="/game" element={<Game />} />
         <Route path="/highscores" element={<Scores />} />
         <Route path="/terms" element={<Terms />} />
         <Route path="/privacy" element={<Privacy />} />
-        <Route path="/admin" element={<Admin />} />
+        <Route path="/admin" element={<Admin userToken={userToken} />} />
       </Routes>
     </>
   );

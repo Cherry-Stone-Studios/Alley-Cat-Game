@@ -1,28 +1,36 @@
 //install dotenv on server
 require("dotenv").config;
 
-// install and use Express
+// express node to create a server
 const express = require("express");
-const path = require("path");
-const morgan = require("morgan");
-const bodyParser = require("body-parser");
-const { authCheck } = require("./middleware/authorization.cjs");
-
 // Create the express server
 const server = express();
+// path to write record files to
+const path = require("path");
+// a local file system to record files to
+const fs = require("fs");
+// nodejs "file system" module where we are saving our morgan log
+const { app } = require("faker/lib/locales/en");
+// morgan node to log server requests
+const morgan = require("morgan");
+// bodyParser node to untangle json
+const bodyParser = require("body-parser");
+// cors node to allow front end to connect to backend even when urls are different
+const cors = require("cors");
+// import our authorization checks into the server
+const { authCheck } = require("./middleware/authorization.cjs");
 
 // run the authorization middleware on the server
-
 server.use(authCheck);
+
+// cors permits the browser to connect to our server
+server.use(cors());
 
 // Middleware to parse JSON requests
 // Middleware to parse URL-encoded data
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
 
-// nodejs "file system" module where we are saving our morgan log
-const fs = require("fs");
-const { app } = require("faker/lib/locales/en");
 // creates a path in our "file system" to the file we are saving our morgan log in
 const accessLogStream = fs.createWriteStream(
   path.join(__dirname, "access.log"),
@@ -42,12 +50,8 @@ server.use(
   )
 );
 
-// Use morgan for logging
+// Use morgan for additional logging on dev
 server.use(morgan("dev"));
-
-server.get("/", function (req, res) {
-  res.send("Hello world! Cool game coming soon!!");
-});
 
 // // API routes
 // const apiRouter = require("./api/index.cjs");
@@ -63,8 +67,7 @@ server.get("/", function (req, res) {
 
 //<-----ROUTES------>
 //Frontend
-for (const path of [""])
-  server.use("/" + path, express.static('dist'));
+for (const path of [""]) server.use("/" + path, express.static("dist"));
 //Backend
 server.use("/api", require("./api/index.cjs"));
 

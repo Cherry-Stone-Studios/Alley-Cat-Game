@@ -1,19 +1,28 @@
 /* global jest, beforeEach */
+// prisma-mock for creating a Pinnochio database
+// jest-mock-extended for testing the database
+// supertest for testing the API functions
+// jest-fetch-mock for testing fetching the API
+require("jest-fetch-mock").enableMocks();
 const { default: createPrismaMock } = require("prisma-mock");
 const { mockClear, mockDeep } = require("jest-mock-extended");
+// import the database
 const { Prisma } = require("@prisma/client");
+// import bcrypt to hash the passwords
 const bcrypt = require("bcrypt");
 
 jest.mock("./client.cjs", () => mockDeep());
 
 const prismaMock = require("./client.cjs");
 
+// establish a password to hash for Pinnochio users
 const plainTextPassword = "prismaprincess";
 const saltRounds = 10;
 const hashedPassword = bcrypt.hashSync(plainTextPassword, saltRounds);
 
 beforeEach(() => {
   mockClear(prismaMock);
+  fetchMock.doMock();
   createPrismaMock(
     {
       user: [
