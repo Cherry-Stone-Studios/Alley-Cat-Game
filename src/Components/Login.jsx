@@ -28,13 +28,11 @@ export function Login({ userToken, setUserToken }) {
 
       setUserToken(unpackedKey.token);
 
-      if (
-        unpackedKey.message ===
-        `Welcome ${unpackedkey.username}, you're logged in!`
-      ) {
+      if (unpackedKey.message == `Welcome ${username}, you're logged in!`) {
         console.log("Welcome back!");
       }
 
+      localStorage.setItem("token", unpackedKey.token);
       navigate("/");
     } catch (error) {
       setError(error.message);

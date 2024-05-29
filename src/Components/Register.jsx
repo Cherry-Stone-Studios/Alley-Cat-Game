@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import BackButton from "./BackButton";
 import { useState } from "react";
 const API_URL = "https://cherry-stone-studios.onrender.com";
@@ -10,6 +11,8 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [date_of_birth, setDate_of_birth] = useState("");
   const [confirm, setConfirm] = useState("");
+  const [token, setToken] = useState("");
+  const navigate = useNavigate();
 
   // States for checking the errors
   const [submitted, setSubmitted] = useState(false);
@@ -41,14 +44,13 @@ const Register = () => {
 
   // Handles the password input
   const handleConfirm = (event) => {
-    setPassword(event.target.value);
+    setConfirm(event.target.value);
     setSubmitted(false);
   };
 
   // Handles the date_of_birth input
   const handleDate_of_birth = (event) => {
-    setdate_of_birth(event.target.value);
-    console.log(event.target.value);
+    setDate_of_birth(event.target.value);
     setSubmitted(false);
   };
 
@@ -60,8 +62,7 @@ const Register = () => {
     const password2 = document.getElementById("retypedPassword");
 
     try {
-      console.log("IN THE HANDLE REGISTER FUNCTION");
-      const response = await fetch("/api/users", {
+      const response = await fetch(`${API_URL}/api/users/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -75,9 +76,14 @@ const Register = () => {
       console.log(response.body);
       const data = await response.json();
       console.log(`THIS IS THE NEW HOMIE DATA`, data);
+      if (response.ok) {
+        localStorage.setItem("token", data.token);
+        setToken(data.token);
+      }
     } catch (error) {
       throw error;
     }
+    navigate("/login");
   };
 
   return (
