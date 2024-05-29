@@ -63,7 +63,7 @@ server.get("/", function (req, res) {
 
 //<-----ROUTES------>
 //Frontend
-for (const path of [""])
+for (const path of ["", "login", "register", "logout", "user/:id", "game", "highscores", "terms", "privacy", "admin"])
   server.use("/" + path, express.static('dist'));
 //Backend
 server.use("/api", require("./api/index.cjs"));
