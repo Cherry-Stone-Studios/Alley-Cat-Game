@@ -26,13 +26,12 @@ export function Login({ userToken, setUserToken }) {
 
       const unpackedKey = await apiKeyResponse.json();
 
-      console.log("THIS IS THE UNPACKED KEY", unpackedKey);
-
       setUserToken(unpackedKey.token);
 
-      console.log("THIS IS THE USER TOKEN", userToken);
-
-      if (unpackedKey.message === "Login successful") {
+      if (
+        unpackedKey.message ===
+        `Welcome ${unpackedkey.username}, you're logged in!`
+      ) {
         console.log("Welcome back!");
       }
 
