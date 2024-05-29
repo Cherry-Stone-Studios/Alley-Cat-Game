@@ -1,15 +1,14 @@
 import "./index.css";
 import orangeCatImage from './assets/orangeCat/orangeCatSprite.png';
-import orangeSkinnyCatImage from './assets/orangeCat/orangeCatSprite.png';
+import orangeSkinnyCatImage from './assets/orangeCat/orangeThinCatSprite.png';
 import orangeChonkCatImage from './assets/orangeCat/orangeChonkCatSprite.png';
 import blackCatImage from './assets/blackCat/blackCatSprite.png';
-import blackSkinnyCatImage from './assets/blackCat/blackThinCatSprite .png'
+import blackSkinnyCatImage from './assets/blackCat/blackThinCatSprite .png';
+import blackChonkCatImage from './assets/blackCat/blackChonkCatSprite .png';
 import dobermanDogImage from './assets/dogDoberman/dobermanDogSprite.png';
 import shibaDogImage from './assets/dogShiba/shibaDogSprite.png';
 import blackCrowImage from './assets/birdSprites/blackCrowSprite.png';
 import regularPigeonImage from './assets/birdSprites/regularPigeonSprite.png';
-
-
 
 const characterSprite = [
   {
@@ -28,6 +27,11 @@ const characterSprite = [
       { name: "death", frames: 3, row: 3, speed: 10 },
       { name: "hurt", frames: 1, row: 4, speed: 10 },
     ],
+    stateTransitions: {
+      skinny: orangeSkinnyCatImage,
+      regular: orangeCatImage,
+      chonk: orangeChonkCatImage,
+    },
   },
   {
     sprite: "blackCat",
@@ -45,6 +49,11 @@ const characterSprite = [
       { name: "death", frames: 3, row: 3, speed: 10 },
       { name: "hurt", frames: 1, row: 4, speed: 10 },
     ],
+    stateTransitions: {
+      skinny: blackSkinnyCatImage,
+      regular: blackCatImage,
+      chonk: blackChonkCatImage,
+    },
   },
   {
     sprite: "dobermanDog",
@@ -110,6 +119,19 @@ const animatedSprite = (player) => {
 
   characterSprite.forEach((animal) => {
     if (animal.sprite === player.sprite) {
+      // Check if stateTransitions exist before attempting to access them
+      if (animal.stateTransitions) {
+        if (player.foodCount >= 16) {
+          player.image.src = animal.stateTransitions.chonk;
+        } else if (player.foodCount >= 8) {
+          player.image.src = animal.stateTransitions.regular;
+        } else {
+          player.image.src = animal.stateTransitions.skinny;
+        }
+      } else {
+        player.image.src = animal.imgSource;
+      }
+
       animal.animationStates.forEach((state) => {
         if (state.name === player.currAction) {
           currRow = state.row;
@@ -118,7 +140,7 @@ const animatedSprite = (player) => {
           return;
         }
       });
-      player.image.src = animal.imgSource;
+
       player.width = animal.SpriteDimensions.width;
       player.height = animal.SpriteDimensions.height;
       player.spriteWidth = animal.SpriteDimensions.spriteWidth;
@@ -131,7 +153,6 @@ const animatedSprite = (player) => {
     player.frameCount = 0;
     player.stateChange = false;    
   }
-
 
   if (player.spriteDirection === 'right') {
     player.frameCount += 1;
