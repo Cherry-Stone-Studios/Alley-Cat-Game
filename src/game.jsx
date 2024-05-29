@@ -116,6 +116,7 @@ const Game = () => {
         this.currAction = "walk";
         this.stateChange = true;
         this.jumpCount = 0; // Add jump count for double jump
+        this.foodCount = 0 
       }
 
       //Resets player position and frame Y to initial values upon restart
@@ -588,7 +589,7 @@ const Game = () => {
       );
     }
 
-    function handleFood(deltaTime) {
+    function handleFood(deltaTime, player) {
       if (foodTimer > foodInterval + randomFoodInterval) {
         foodArray.push(new Food(canvas.width, canvas.height));
         randomFoodInterval = Math.random() * 1000 + 500;
@@ -596,10 +597,22 @@ const Game = () => {
       } else {
         foodTimer += deltaTime;
       }
+    
       foodArray.forEach((food) => {
         food.update();
         food.draw(ctx);
       });
+    
+      player.handleCollisions([], [], [], foodArray);
+    
+      // Update player food count and state based on chonkMeter
+      player.foodCount = chonkMeter;
+    
+      if (player.foodCount === 8 || player.foodCount === 16) {
+        player.stateChange = true; // Trigger state change for animation
+      }
+    
+      // Remove marked food from the array
       foodArray = foodArray.filter((food) => !food.markedForDeletion);
     }
 
@@ -677,7 +690,7 @@ const Game = () => {
       handleEnemies(deltaTime);
       handleFlyingEnemies(deltaTime);
       handleTrashObstacles(deltaTime);
-      handleFood(deltaTime);
+      handleFood(deltaTime, player);
       displayStatusText(ctx);
       if (!gameOver) requestAnimationFrame(animate);
     }
