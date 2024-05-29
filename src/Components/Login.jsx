@@ -2,6 +2,7 @@
 import { Nav } from "./Nav";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import BackButton from "./BackButton";
 
 export function Login({ userToken, setUserToken }) {
   const [username, setUsername] = useState("");
@@ -28,13 +29,11 @@ export function Login({ userToken, setUserToken }) {
 
       setUserToken(unpackedKey.token);
 
-      if (
-        unpackedKey.message ===
-        `Welcome ${unpackedkey.username}, you're logged in!`
-      ) {
+      if (unpackedKey.message == `Welcome ${username}, you're logged in!`) {
         console.log("Welcome back!");
       }
 
+      localStorage.setItem("token", unpackedKey.token);
       navigate("/");
     } catch (error) {
       setError(error.message);
@@ -44,7 +43,7 @@ export function Login({ userToken, setUserToken }) {
   return (
     <>
       {<Nav userToken={userToken} />}
-
+      <BackButton />
       {/* {error && <alert>{error}</alert>} */}
 
       <form className="loginForm" onSubmit={submitLogin}>

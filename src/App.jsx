@@ -4,7 +4,7 @@ import { Home } from "./Components/Home.jsx";
 import { Nav } from "./Components/Nav.jsx";
 import { Login } from "./Components/Login.jsx";
 import { Logout } from "./Components/Logout.jsx";
-import { Register } from "./Components/Register.jsx";
+import Register from "./Components/Register.jsx";
 import { Account } from "./Components/Account.jsx";
 import Game from "./game.jsx";
 
