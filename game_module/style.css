@@ -1,5 +1,8 @@
 body {
-  background: white;
+  background-color: black;
+  background: url(nightsky.jpg);
+  background-repeat: no-repeat;
+  background-position: top;
 }
 
 #canvas1 {
@@ -14,24 +17,9 @@ body {
   display: none;
 }
 
-.pixelcat {
-  float: left;
-  height: 250px;
-  width: 250px;
-}
-
-.curiouscat {
-  float: left;
-  height: 250px;
-  width: 250px;
+.arcade {
+  background-position: center;
+  background-repeat: no-repeat;
   position: absolute;
-  transform: translate(75%, -20%);
-}
-
-.catscratch {
-  float: left;
-  height: 250px;
-  width: 250px;
-  position: absolute;
-  transform: translate(95%, 95%);
+  transform: translate(-50%, -10%);
 }

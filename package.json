@@ -11,17 +11,19 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules && jest",
     "seed:dev": "node ./db/seed.cjs",
     "postman": "npx prisma migrate reset -f && node ./db/seed.cjs && node app.cjs",
-    "prisma:restart": "npx prisma migrate dev --name init", 
+    "prisma:restart": "npx prisma migrate dev --name init",
     "server:dev": "nodemon app.cjs",
     "start": "node app.cjs",
     "detect": "jest --detectOpenHandles",
     "pull:request": "npm install && npx prisma migrate dev --name init && jest --detectOpenHandles",
-    "seed": "npm install && npx prisma migrate reset && node ./db/seed.js"
+    "seed": "npm install && npx prisma migrate reset && node ./db/seed.js",
+    "play:game": "npm run build && npm run dev"
   },
-   "dependencies": {
+  "dependencies": {
     "@prisma/client": "^5.13.0",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
     "deep-profanity-filter": "^2.3.3",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
