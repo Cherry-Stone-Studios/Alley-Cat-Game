@@ -1,7 +1,7 @@
 import BackButton from "./Components/BackButton";
 import "./CSS/Register.css";
 import { useState } from "react";
-require("dotenv").config();
+const API_URL = "https://cherry-stone-studios.onrender.com/";
 
 const Register = () => {
   // States for registration
@@ -44,7 +44,7 @@ const Register = () => {
   const handleRegister = async (event) => {
     event.preventDefault();
     console.log("in register handle");
-    const response = await fetch(`${DATABASE_URL}/api/users/register`, {
+    const response = await fetch(`${API_URL}/api/users/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, username, password, email, DOB }),
