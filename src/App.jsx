@@ -7,6 +7,7 @@ import { Logout } from "./Components/Logout.jsx";
 import { Register } from "./Components/Register.jsx";
 import { Account } from "./Components/Account.jsx";
 import Game from "./game.jsx";
+
 import { Scores } from "./Components/Scores.jsx";
 import { Terms } from "./Components/Terms.jsx";
 import { Privacy } from "./Components/Privacy.jsx";
