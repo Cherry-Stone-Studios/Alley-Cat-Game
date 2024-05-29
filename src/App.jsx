@@ -1,16 +1,16 @@
 import "./App.css";
 import { useEffect, useState } from "react";
-import { Home } from "./Components/Home";
-import { Nav } from "./Components/Nav";
-import { Login } from "./Components/Login";
-import { Logout } from "./Components/Logout";
-import { Register } from "./Components/Register";
-import { Account } from "./Components/Account";
+import { Home } from "./Components/Home.jsx";
+import { Nav } from "./Components/Nav.jsx";
+import { Login } from "./Components/Login.jsx";
+import { Logout } from "./Components/Logout.jsx";
+import { Register } from "./Components/Register.jsx";
+import { Account } from "./Components/Account.jsx";
 import Game from "./game";
-import { Scores } from "./Components/Scores";
-import { Terms } from "./Components/Terms";
-import { Privacy } from "./Components/Privacy";
-import { Admin } from "./Components/Admin";
+import { Scores } from "./Components/Scores.jsx";
+import { Terms } from "./Components/Terms.jsx";
+import { Privacy } from "./Components/Privacy.jsx";
+import { Admin } from "./Components/Admin.jsx";
 
 import Player from "./SpriteAnimation.jsx";
 
