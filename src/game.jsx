@@ -608,7 +608,7 @@ const Game = () => {
       // Update player food count and state based on chonkMeter
       player.foodCount = chonkMeter;
     
-      if (player.foodCount === 8 || player.foodCount === 16) {
+      if (player.foodCount === 7 || player.foodCount === 14) {
         player.stateChange = true; // Trigger state change for animation
       }
     
