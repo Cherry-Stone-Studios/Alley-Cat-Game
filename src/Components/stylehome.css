@@ -1,0 +1,28 @@
+body {
+  font-family: customfont;
+}
+
+@font-face {
+  font-family: customfont;
+  src: url('./Pixeboy-z8XGD.ttf') format('truetype');
+}
+
+button {
+  font-family: customfont;
+  font-size: 30px;
+}
+
+h1 {
+  font-size: 50px;
+  color: aqua;
+}
+
+p {
+  font-size: 20px;
+  color: aqua;
+}
+
+div {
+  font-size: 30px;
+  color: aqua;
+}
