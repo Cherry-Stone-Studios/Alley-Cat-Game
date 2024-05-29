@@ -1,7 +1,7 @@
 body {
   background-color: black;
-  background: url(nightsky.jpg);
-  background-repeat: no-repeat;
+  background: url(nightsky2.gif);
+  background-repeat:repeat;
   background-position: top;
 }
 
