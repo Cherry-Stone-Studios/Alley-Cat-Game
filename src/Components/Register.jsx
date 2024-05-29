@@ -3,6 +3,7 @@ import BackButton from "./BackButton";
 import { useState } from "react";
 const API_URL = "https://cherry-stone-studios.onrender.com";
 import { Link } from "react-router-dom";
+import { Nav } from "./Nav";
 
 const Register = () => {
   // States for registration
@@ -17,7 +18,7 @@ const Register = () => {
 
   // States for checking the errors
   const [submitted, setSubmitted] = useState(false);
-  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(false);
 
   // Handles the name input
   const handleName = (event) => {
@@ -58,38 +59,37 @@ const Register = () => {
   // Handles the form submission
   const handleRegister = async (event) => {
     event.preventDefault();
-    //TODO : FIGURE OUT HOW TO IMPLEMENT THE CONFIM PASSWORD FUNCTIONALITY
-    const message = { message: "PASSWORDS MUST MATCH" };
-    const password1 = document.getElementById("password");
-    const password2 = document.getElementById("retypedPassword");
-
-    try {
-      const response = await fetch(`${API_URL}/api/users/register`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name,
-          username,
-          email,
-          password,
-          date_of_birth,
-        }),
-      });
-      console.log(response.body);
-      const data = await response.json();
-      console.log(`THIS IS THE NEW HOMIE DATA`, data);
-      if (response.ok) {
-        localStorage.setItem("token", data.token);
-        setToken(data.token);
-        navigate("/login");
-      }
-    } catch (error) {
+    if (confirm !== password) {
+      alert("PASSWORDS MUST MATCH");
       throw error;
+    } else {
+      try {
+        const response = await fetch(`${API_URL}/api/users/register`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name,
+            username,
+            email,
+            password,
+            date_of_birth,
+          }),
+        });
+        const data = await response.json();
+        if (response.ok) {
+          localStorage.setItem("token", data.token);
+          setToken(data.token);
+          navigate("/login");
+        }
+      } catch (error) {
+        setErrorMessage(true);
+      }
     }
   };
 
   return (
     <>
+      <Nav />
       <BackButton />
       <div>
         <h2>Create an Account!</h2>
@@ -159,6 +159,7 @@ const Register = () => {
         <Link to={"/login"}>
           <button>Have an Account?</button>
         </Link>
+        {/* {errorMessage && <h2>{errorMessage}</h2>} */}
       </div>
     </>
   );
