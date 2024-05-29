@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import BackButton from "./BackButton";
 import { useState } from "react";
 const API_URL = "https://cherry-stone-studios.onrender.com";
+import { Link } from "react-router-dom";
 
 const Register = () => {
   // States for registration
@@ -57,6 +58,7 @@ const Register = () => {
   // Handles the form submission
   const handleRegister = async (event) => {
     event.preventDefault();
+    //TODO : FIGURE OUT HOW TO IMPLEMENT THE CONFIM PASSWORD FUNCTIONALITY
     const message = { message: "PASSWORDS MUST MATCH" };
     const password1 = document.getElementById("password");
     const password2 = document.getElementById("retypedPassword");
@@ -79,11 +81,11 @@ const Register = () => {
       if (response.ok) {
         localStorage.setItem("token", data.token);
         setToken(data.token);
+        navigate("/login");
       }
     } catch (error) {
       throw error;
     }
-    navigate("/login");
   };
 
   return (
@@ -154,8 +156,9 @@ const Register = () => {
           </label>
           <button type="submit">Create a Cat!</button>
         </form>
-        {/* MAKE THIS BUTTON LINK TO /LOGIN PAGE */}
-        <button>Have an Account?</button>
+        <Link to={"/login"}>
+          <button>Have an Account?</button>
+        </Link>
       </div>
     </>
   );
