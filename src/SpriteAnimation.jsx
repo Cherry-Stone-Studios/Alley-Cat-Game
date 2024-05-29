@@ -1,6 +1,9 @@
 import "./index.css";
 import orangeCatImage from './assets/orangeCat/orangeCatSprite.png';
+import orangeSkinnyCatImage from './assets/orangeCat/orangeCatSprite.png';
+import orangeChonkCatImage from './assets/orangeCat/orangeChonkCatSprite.png';
 import blackCatImage from './assets/blackCat/blackCatSprite.png';
+import blackSkinnyCatImage from './assets/blackCat/blackThinCatSprite .png'
 import dobermanDogImage from './assets/dogDoberman/dobermanDogSprite.png';
 import shibaDogImage from './assets/dogShiba/shibaDogSprite.png';
 import blackCrowImage from './assets/birdSprites/blackCrowSprite.png';

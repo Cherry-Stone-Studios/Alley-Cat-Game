@@ -1,5 +1,8 @@
 body {
-  background: black;
+  background-color: black;
+  background: url(nightsky.jpg);
+  background-repeat: no-repeat;
+  background-position: top;
 }
 
 #canvas1 {
@@ -12,4 +15,11 @@ body {
 
 #playerImage, #backgroundImage {
   display: none;
+}
+
+.arcade {
+  background-position: center;
+  background-repeat: no-repeat;
+  position: absolute;
+  transform: translate(-50%, -10%);
 }

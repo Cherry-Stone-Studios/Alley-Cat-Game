@@ -9,6 +9,12 @@ import trashObstacle from "../game_module/trashcan.png";
 import food1 from "../game_module/goldieSprite.png";
 import backgroundMusic from "../game_module/running90s.mp3";
 import gameoverMeow from "../game_module/angrycatmeow.mp3";
+import catPiano from "../game_module/catpiano.gif";
+import catScratch from "../game_module/catscratch.gif";
+import curiousCat from "../game_module/curiouscat.gif";
+import flyingCat from "../game_module/flyingcat.jpg";
+import pixelCat from "../game_module/pixel-cat.gif";
+import tvBackground from "../game_module/arcade.webp";
 
 const Game = () => {
   useEffect(() => {
@@ -684,6 +690,7 @@ const Game = () => {
 
   return (
     <div>
+      <img className="arcade" src={tvBackground}/>
       <canvas id="canvas1"></canvas>
     </div>
   );
