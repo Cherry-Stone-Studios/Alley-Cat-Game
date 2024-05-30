@@ -6,7 +6,7 @@ export function Privacy() {
       <h2>Introduction</h2>
       <p>
         This Privacy Policy outlines Cherry Stone Studios (" <b>we</b> ", "
-        <b>our</b>" <b>or</b> " the Company ") practices with respect to
+        <b>our</b>" or " <b>the Company</b> ") practices with respect to
         information collected from users who access our website at
         https://cherry-stone-studios.onrender.com/ (" <b>Site</b> "), or
         otherwise share personal information with us (collectively: "
