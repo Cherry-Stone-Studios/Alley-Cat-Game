@@ -66,6 +66,7 @@ export function Home({ createGuestName, userToken }) {
         <Nav userToken={userToken} />
       </div>
 
+      <GameInfo />
 
       {/* <button onClick={startGame}>START GAME</button>
       <br></br>
