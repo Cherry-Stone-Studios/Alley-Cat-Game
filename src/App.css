@@ -18,6 +18,12 @@
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
+@font-face {
+  font-family: customfont;
+  src: url('src/assets/game_module/Pixeboy-z8XGD.ttf') format('truetype');
+  
+}
+
 @keyframes logo-spin {
   from {
     transform: rotate(0deg);
