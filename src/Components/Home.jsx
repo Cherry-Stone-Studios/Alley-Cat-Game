@@ -46,6 +46,7 @@ export function Home({ createGuestName, userToken }) {
       <UsernamePop createGuestName={createGuestName} />
 
       <Nav userToken={userToken} />
+
       <GameInfo />
 
       {/* <button onClick={startGame}>START GAME</button>
