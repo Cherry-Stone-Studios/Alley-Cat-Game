@@ -332,7 +332,7 @@ export function Terms() {
         Application.
       </p>
       <h2>
-        <a href="#contribution">7. CONTRIBUTION LICENSE</a>
+        <a id="#contribution">7. CONTRIBUTION LICENSE</a>
       </h2>
       <p>
         You agree that we may access, store, process, and use any information
