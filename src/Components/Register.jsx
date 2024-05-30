@@ -5,7 +5,7 @@ const API_URL = "https://cherry-stone-studios.onrender.com";
 import { Link } from "react-router-dom";
 import { Nav } from "./Nav";
 
-const Register = () => {
+const Register = ({ setUserToken }) => {
   // States for registration
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
@@ -13,7 +13,8 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [date_of_birth, setDate_of_birth] = useState("");
   const [confirm, setConfirm] = useState("");
-  const [token, setToken] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+
   const navigate = useNavigate();
 
   // States for checking the errors
@@ -59,31 +60,27 @@ const Register = () => {
   // Handles the form submission
   const handleRegister = async (event) => {
     event.preventDefault();
-    if (confirm !== password) {
-      alert("PASSWORDS MUST MATCH");
-      throw error;
-    } else {
-      try {
-        const response = await fetch(`${API_URL}/api/users/register`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            name,
-            username,
-            email,
-            password,
-            date_of_birth,
-          }),
-        });
-        const data = await response.json();
-        if (response.ok) {
-          localStorage.setItem("token", data.token);
-          setToken(data.token);
-          navigate("/login");
-        }
-      } catch (error) {
-        setErrorMessage(true);
+    try {
+      const response = await fetch(`${API_URL}/api/users/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name,
+          username,
+          email,
+          password,
+          date_of_birth,
+        }),
+      });
+      const data = await response.json();
+      console.log(data);
+      if (response.ok) {
+        localStorage.setItem("token", data.token);
+        setUserToken(data.token);
+        navigate("/");
       }
+    } catch (error) {
+      setErrorMessage(true);
     }
   };
 
@@ -128,21 +125,20 @@ const Register = () => {
           <label>
             Password:
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="Password"
               onChange={handlePassword}
               id="password"
               required
             />
           </label>
-          <label>
-            Confirm Password:
+          <label className="formCheckbox">
+            Show Password
             <input
-              type="password"
-              id="retypedPassword"
-              placeholder="Confirm Password"
-              onChange={handleConfirm}
-              required
+              className="checkbox"
+              type="checkbox"
+              value={showPassword}
+              onChange={() => setShowPassword((prev) => !prev)}
             />
           </label>
           <label>

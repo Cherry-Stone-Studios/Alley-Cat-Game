@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { Nav } from "./Nav.jsx";
 import { useState } from "react";
 import { UsernamePop } from "../Components/UsernamePop.jsx";
+import GameInfo from "./GameInfo.jsx";
 
 export function Home({ createGuestName, userToken }) {
   const navigate = useNavigate();
@@ -48,6 +49,7 @@ export function Home({ createGuestName, userToken }) {
       <UsernamePop createGuestName={createGuestName} />
 
       <Nav userToken={userToken} />
+      <GameInfo />
 
       {/* <button onClick={startGame}>START GAME</button>
       <br></br>
