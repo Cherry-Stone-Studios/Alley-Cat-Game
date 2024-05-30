@@ -39,7 +39,10 @@ export function Home({ createGuestName, userToken }) {
       <p>
         In these cruel streets, a cat must rely on his smarts...and his chonk
       </p>
-      <img src={"../assets/gifs/curiouscat.gif"} onClick={() => playMusic()} />
+      <img
+        src={"/src/assets/gifs/curiouscat.gif"}
+        onClick={() => playMusic()}
+      />
       <br></br>
       <br></br>
       <UsernamePop createGuestName={createGuestName} />
