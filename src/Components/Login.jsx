@@ -30,7 +30,7 @@ export function Login({ userToken, setUserToken }) {
       setUserToken(unpackedKey.token);
 
       if (unpackedKey.message == `Welcome ${username}, you're logged in!`) {
-        console.log("Welcome back!");
+        console.log("Welcome back!", userToken);
       }
 
       localStorage.setItem("token", unpackedKey.token);

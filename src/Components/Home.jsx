@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { Nav } from "./Nav.jsx";
 import { useState } from "react";
 import { UsernamePop } from "../Components/UsernamePop.jsx";
+import GameInfo from "./GameInfo.jsx";
 
 export function Home({ createGuestName, userToken }) {
   const navigate = useNavigate();
