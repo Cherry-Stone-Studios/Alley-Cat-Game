@@ -57,6 +57,11 @@ export function Home({ createGuestName, userToken }) {
       <br></br>
       <UsernamePop createGuestName={createGuestName} />
 
+
+      <Nav userToken={userToken} />
+
+      <GameInfo />
+
       <div onClick={() => stopMusic()}>
         <Nav userToken={userToken} />
       </div>
