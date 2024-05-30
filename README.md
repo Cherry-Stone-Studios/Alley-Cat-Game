@@ -24,3 +24,8 @@
 - Get the highest score and highest chonk meter, avoid enemies and obstacles.
 - Maneuver your way through the city, avoiding obstacles and enemies.
 - Reach the loving family on the other side of town.
+
+rewrite the following code into html:
+
+refactor this code without any div
+refactor this code without any div or span
