@@ -34,6 +34,7 @@ export function Login({ userToken, setUserToken }) {
       }
 
       localStorage.setItem("token", unpackedKey.token);
+      alert(unpackedKey.message);
       navigate("/");
     } catch (error) {
       setError(error.message);

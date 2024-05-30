@@ -33,6 +33,15 @@ export function Home({ createGuestName, userToken }) {
     }
   };
 
+  const stopMusic = async () => {
+    try {
+      bgMusic.loop = false;
+      bgMusic.pause();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <>
       <h1>ALLEY CAT</h1>
@@ -47,7 +56,9 @@ export function Home({ createGuestName, userToken }) {
       <br></br>
       <UsernamePop createGuestName={createGuestName} />
 
-      <Nav userToken={userToken} />
+      <div onClick={() => stopMusic()}>
+        <Nav userToken={userToken} />
+      </div>
 
       {/* <button onClick={startGame}>START GAME</button>
       <br></br>
