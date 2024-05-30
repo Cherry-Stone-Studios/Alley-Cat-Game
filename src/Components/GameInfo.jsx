@@ -28,7 +28,6 @@ const GameInfo = () => (
           <p> ⮝ - Jump </p>
           <p> ⮝ + ⮝ - Double Jump </p>
           <p> (Tap) ⮜ - Step Backwards </p>
-          <p> (Hold) ⮞ - Run Backwards </p>
           <p> (Tap) ⮞ - Step Forward </p>
           <p> (Hold) ⮞ - Run Forward </p>
           <br />
