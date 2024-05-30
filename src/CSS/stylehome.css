@@ -1,10 +1,10 @@
-body {
-  font-family: customfont;
-}
-
 @font-face {
   font-family: customfont;
-  src: url('../assets/Pixeboy-z8XGD.ttf') format('truetype');
+  src: url('src/assets/game_module/Pixeboy-z8XGD.ttf') format('truetype');
+}
+
+body {
+  font-family: customfont;
 }
 
 button {

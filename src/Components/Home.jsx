@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "../CSS/stylehome.css";
-import backgroundMusic from "../assets/menu.mp3";
+import backgroundMusic from "../assets/music/menu.mp3";
 import { useEffect } from "react";
 import { Nav } from "./Nav.jsx";
 import { useState } from "react";
@@ -34,20 +34,38 @@ export function Home({ createGuestName, userToken }) {
     }
   };
 
+  const stopMusic = async () => {
+    try {
+      bgMusic.loop = false;
+      bgMusic.pause();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <>
       <h1>ALLEY CAT</h1>
       <p>
         In these cruel streets, a cat must rely on his smarts...and his chonk
       </p>
-      <img src={"../game_module/curiouscat.gif"} onClick={() => playMusic()} />
+      <img
+        src={"/src/assets/gifs/curiouscat.gif"}
+        onClick={() => playMusic()}
+      />
       <br></br>
       <br></br>
       <UsernamePop createGuestName={createGuestName} />
 
+
       <Nav userToken={userToken} />
 
       <GameInfo />
+
+      <div onClick={() => stopMusic()}>
+        <Nav userToken={userToken} />
+      </div>
+
 
       {/* <button onClick={startGame}>START GAME</button>
       <br></br>

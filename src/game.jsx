@@ -1,20 +1,26 @@
+// import css and other .jsx pages
 import React, { useEffect } from "react";
-import "../game_module/style.css";
-import playerImage from "./assets/orangeCat/orangeCatSprite.png";
-import backgroundImage from "../game_module/City2.png";
-import enemyImage from "../game_module/Dog_Black.png";
+import "./assets/game_module/style.css";
 import animatedSprite from "./SpriteAnimation.jsx";
+// import background images
+import playerImage from "./assets/orangeCat/orangeCatSprite.png";
+import backgroundImage from "./assets/backgrounds/City2.png";
+import tvBackground from "./assets/backgrounds/arcade.webp";
+// import bag guys
+import enemyImage from "./assets/dogDoberman/Dog_Black.png";
 import flyingEnemy from "./assets/birdSprites/blackCrowSprite.png";
-import trashObstacle from "../game_module/trashcan.png";
-import food1 from "../game_module/goldieSprite.png";
-import backgroundMusic from "../game_module/running90s.mp3";
-import gameoverMeow from "../game_module/angrycatmeow.mp3";
-import catPiano from "../game_module/catpiano.gif";
-import catScratch from "../game_module/catscratch.gif";
-import curiousCat from "../game_module/curiouscat.gif";
-import flyingCat from "../game_module/flyingcat.jpg";
-import pixelCat from "../game_module/pixel-cat.gif";
-import tvBackground from "../game_module/arcade.webp";
+import trashObstacle from "./assets/badGuys/trashcan.png";
+// import fishies
+import food1 from "./assets/fish/goldieSprite.png";
+// import music and noises
+import backgroundMusic from "./assets/music/running90s.mp3";
+import gameoverMeow from "./assets/music/angrycatmeow.mp3";
+// gifs
+// import catPiano from "./assets/gifs/catpiano.gif";
+// import catScratch from "./assets/gifs/catscratch.gif";
+// import curiousCat from "./assets/gifs/curiouscat.gif";
+// import flyingCat from "./assets/game_module/flyingcat.jpg";
+// import pixelCat from "./assets/gifs/pixel-cat.gif";
 
 const Game = ({ submitHighScore }) => {
   useEffect(() => {
@@ -116,7 +122,7 @@ const Game = ({ submitHighScore }) => {
         this.currAction = "walk";
         this.stateChange = true;
         this.jumpCount = 0; // Add jump count for double jump
-        this.foodCount = 0 
+        this.foodCount = 0;
       }
 
       //Resets player position and frame Y to initial values upon restart
@@ -600,21 +606,21 @@ const Game = ({ submitHighScore }) => {
       } else {
         foodTimer += deltaTime;
       }
-    
+
       foodArray.forEach((food) => {
         food.update();
         food.draw(ctx);
       });
-    
+
       player.handleCollisions([], [], [], foodArray);
-    
+
       // Update player food count and state based on chonkMeter
       player.foodCount = chonkMeter;
-    
+
       if (player.foodCount === 7 || player.foodCount === 14) {
         player.stateChange = true; // Trigger state change for animation
       }
-    
+
       // Remove marked food from the array
       foodArray = foodArray.filter((food) => !food.markedForDeletion);
     }
