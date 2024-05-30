@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { Nav } from "./Nav.jsx";
 import { useState } from "react";
 import { UsernamePop } from "../Components/UsernamePop.jsx";
+import GameInfo from "./GameInfo.jsx";
 
 export function Home({ createGuestName, userToken }) {
   const navigate = useNavigate();
@@ -39,12 +40,16 @@ export function Home({ createGuestName, userToken }) {
       <p>
         In these cruel streets, a cat must rely on his smarts...and his chonk
       </p>
-      <img src={"../assets/gifs/curiouscat.gif"} onClick={() => playMusic()} />
+      <img
+        src={"/src/assets/gifs/curiouscat.gif"}
+        onClick={() => playMusic()}
+      />
       <br></br>
       <br></br>
       <UsernamePop createGuestName={createGuestName} />
 
       <Nav userToken={userToken} />
+      <GameInfo />
 
       {/* <button onClick={startGame}>START GAME</button>
       <br></br>

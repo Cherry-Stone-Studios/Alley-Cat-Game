@@ -16,11 +16,11 @@ import food1 from "./assets/fish/goldieSprite.png";
 import backgroundMusic from "./assets/music/running90s.mp3";
 import gameoverMeow from "./assets/music/angrycatmeow.mp3";
 // gifs
-import catPiano from "./assets/gifs/catpiano.gif";
-import catScratch from "./assets/gifs/catscratch.gif";
-import curiousCat from "./assets/gifs/curiouscat.gif";
-import flyingCat from "./assets/gifs/flyingcat.jpg";
-import pixelCat from "./assets/gifs/pixel-cat.gif";
+// import catPiano from "./assets/gifs/catpiano.gif";
+// import catScratch from "./assets/gifs/catscratch.gif";
+// import curiousCat from "./assets/gifs/curiouscat.gif";
+// import flyingCat from "./assets/game_module/flyingcat.jpg";
+// import pixelCat from "./assets/gifs/pixel-cat.gif";
 
 const Game = ({ submitHighScore }) => {
   useEffect(() => {
