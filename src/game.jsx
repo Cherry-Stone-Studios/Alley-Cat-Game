@@ -16,7 +16,7 @@ import flyingCat from "../game_module/flyingcat.jpg";
 import pixelCat from "../game_module/pixel-cat.gif";
 import tvBackground from "../game_module/arcade.webp";
 
-const Game = () => {
+const Game = ({ submitHighScore }) => {
   useEffect(() => {
     const canvas = document.getElementById("canvas1");
     const ctx = canvas.getContext("2d");
@@ -42,10 +42,10 @@ const Game = () => {
 
     const bgMusic = new Audio(backgroundMusic);
     bgMusic.loop = true;
-    bgMusic.volume = 0.5;
+    bgMusic.volume = 0.4;
     bgMusic.play();
     const angryMeow = new Audio(gameoverMeow);
-    angryMeow.volume = 0.8;
+    angryMeow.volume = 0.1;
     angryMeow.loop = false;
 
     //Handles any keyboard inputs from the player
@@ -116,6 +116,7 @@ const Game = () => {
         this.currAction = "walk";
         this.stateChange = true;
         this.jumpCount = 0; // Add jump count for double jump
+        this.foodCount = 0 
       }
 
       //Resets player position and frame Y to initial values upon restart
@@ -165,8 +166,10 @@ const Game = () => {
         if (input.keys.indexOf("ArrowRight") > -1) {
           if (this.onGround()) {
             this.speed = 5; // Normal speed on ground
+            score++;
           } else {
             this.speed = 9; // Increased speed during jump
+            score++;
           }
           this.currAction = "walk";
         } else if (input.keys.indexOf("ArrowLeft") > -1) {
@@ -187,6 +190,7 @@ const Game = () => {
             this.vy = -32; // Initial jump velocity
             this.jumpCount = 1;
             this.jumpPressed = true;
+            score++;
           } else if (this.jumpCount === 1) {
             this.vy = -32; // Double jump velocity
             this.jumpCount = 2;
@@ -588,7 +592,7 @@ const Game = () => {
       );
     }
 
-    function handleFood(deltaTime) {
+    function handleFood(deltaTime, player) {
       if (foodTimer > foodInterval + randomFoodInterval) {
         foodArray.push(new Food(canvas.width, canvas.height));
         randomFoodInterval = Math.random() * 1000 + 500;
@@ -596,19 +600,32 @@ const Game = () => {
       } else {
         foodTimer += deltaTime;
       }
+    
       foodArray.forEach((food) => {
         food.update();
         food.draw(ctx);
       });
+    
+      player.handleCollisions([], [], [], foodArray);
+    
+      // Update player food count and state based on chonkMeter
+      player.foodCount = chonkMeter;
+    
+      if (player.foodCount === 7 || player.foodCount === 14) {
+        player.stateChange = true; // Trigger state change for animation
+      }
+    
+      // Remove marked food from the array
       foodArray = foodArray.filter((food) => !food.markedForDeletion);
     }
 
-    //Displays score and game over text
+    // When the game is over and a player dies
+    // Display the score and game over text
     function displayStatusText(context) {
       context.fillStyle = "yellow";
       context.font = "40px Helvetica";
       context.textAlign = "left";
-      context.fillText("Score: " + score, 50, 110);
+      context.fillText("High Score: " + score + chonkMeter * 2, 50, 110);
       context.fillStyle = "yellow";
       context.font = "40px Helvetica";
       context.textAlign = "left";
@@ -620,6 +637,7 @@ const Game = () => {
         context.fillText("Press Enter to Restart", canvas.width / 2, 250);
         bgMusic.pause();
         angryMeow.play();
+        submitHighScore(score + chonkMeter * 2);
       }
     }
 
@@ -677,7 +695,7 @@ const Game = () => {
       handleEnemies(deltaTime);
       handleFlyingEnemies(deltaTime);
       handleTrashObstacles(deltaTime);
-      handleFood(deltaTime);
+      handleFood(deltaTime, player);
       displayStatusText(ctx);
       if (!gameOver) requestAnimationFrame(animate);
     }
@@ -690,7 +708,7 @@ const Game = () => {
 
   return (
     <div>
-      <img className="arcade" src={tvBackground}/>
+      <img className="arcade" src={tvBackground} />
       <canvas id="canvas1"></canvas>
     </div>
   );

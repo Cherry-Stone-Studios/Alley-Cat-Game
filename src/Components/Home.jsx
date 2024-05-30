@@ -5,18 +5,32 @@ import backgroundMusic from "../assets/menu.mp3";
 import { useEffect } from "react";
 import { Nav } from "./Nav.jsx";
 import { useState } from "react";
+import { UsernamePop } from "../Components/UsernamePop.jsx";
 
-export function Home() {
+export function Home({ createGuestName, userToken }) {
   const navigate = useNavigate();
-  const [userToken, setUserToken] = useState(null);
-
   const bgMusic = new Audio(backgroundMusic);
-  bgMusic.loop = true;
-  bgMusic.volume = 0.5;
-  bgMusic.play();
 
-  const pauseBackgroundMusic = () => {
-    bgMusic.pause();
+  const playMusic = async () => {
+    const confirmation = confirm(
+      "Hurry home, Alley Cat!\n\n (Cancel to stop music.)"
+    );
+    if (confirmation === true) {
+      try {
+        bgMusic.loop = true;
+        bgMusic.volume = 0.05;
+        bgMusic.play();
+      } catch (err) {
+        console.error(err);
+      }
+    } else if (confirmation === false) {
+      try {
+        bgMusic.loop = false;
+        bgMusic.pause();
+      } catch (err) {
+        console.error(err);
+      }
+    }
   };
 
   return (
@@ -25,13 +39,13 @@ export function Home() {
       <p>
         In these cruel streets, a cat must rely on his smarts...and his chonk
       </p>
-      <img src={"../game_module/curiouscat.gif"} />
+      <img src={"../game_module/curiouscat.gif"} onClick={() => playMusic()} />
       <br></br>
       <br></br>
-      <Nav
-        userToken={userToken}
-        onPauseBackgroundMusic={pauseBackgroundMusic}
-      />
+      <UsernamePop createGuestName={createGuestName} />
+
+      <Nav userToken={userToken} />
+
       {/* <button onClick={startGame}>START GAME</button>
       <br></br>
       <button>LOG IN</button>
