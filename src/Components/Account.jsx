@@ -2,7 +2,10 @@ import "../CSS/home.css";
 import React from "react";
 import backgroundMusic from "../assets/music/menu.mp3";
 import { Nav } from "./Nav.jsx";
-import GameInfo from "./GameInfo.jsx";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+
+const API_URL = "https://cherry-stone-studios.onrender.com";
 
 export function Account({ userToken, username }) {
   const bgMusic = new Audio(backgroundMusic);
@@ -46,7 +49,6 @@ export function Account({ userToken, username }) {
       </p>
       <div onClick={() => stopMusic()}>
         <Nav userToken={userToken} />
-        <GameInfo />
       </div>
       <img src={"/src/curiouscat.gif"} onClick={() => playMusic()} />
       <div>

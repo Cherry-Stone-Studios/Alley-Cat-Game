@@ -36,9 +36,9 @@ export function Login({
       const unpackedKey = await apiKeyResponse.json();
 
       if (unpackedKey.message == `Welcome ${username}, you're logged in!`) {
-        console.log("Welcome back!", userToken);
+        console.log("Welcome back!", username);
       }
-
+      setUserToken(unpackedKey.token);
       localStorage.setItem("token", unpackedKey.token);
       alert(unpackedKey.message);
       navigate("/");
