@@ -46,8 +46,8 @@ export function Login({ userToken, setUserToken }) {
       {<Nav userToken={userToken} />}
       <BackButton />;
       <br />
-      <h2 class="formHeader">Login to play with your username!</h2>
-      <form className="form" onSubmit={submitLogin}>
+      <h2 className="formHeader">Login to play with your username!</h2>
+      <form id="login" className="form" onSubmit={submitLogin}>
         <label className="formLabel">
           Username:
           <input type="text" onChange={(e) => setUsername(e.target.value)} />
@@ -72,7 +72,9 @@ export function Login({ userToken, setUserToken }) {
           />
         </label>
       </form>
-      <button className="button">Submit</button>
+      <button type="submit" form="login" className="button">
+        Submit
+      </button>
       {/* {error && <alert>{error}</alert>} */}
     </>
   );
