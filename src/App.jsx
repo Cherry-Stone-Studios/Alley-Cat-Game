@@ -83,7 +83,10 @@ function App() {
           }
         />
 
-        <Route path="/user/:id" element={<Account userToken={userToken} />} />
+        <Route
+          path="/user/:id"
+          element={<Account username={username} userToken={userToken} />}
+        />
 
         <Route
           path="/game"

@@ -1,5 +1,6 @@
 import "../CSS/nav.css";
 import { Link } from "react-router-dom";
+import BackButton from "./BackButton";
 
 export function Nav({ userToken, onPauseBackgroundMusic }) {
   const handleItemClick = () => {
@@ -10,6 +11,7 @@ export function Nav({ userToken, onPauseBackgroundMusic }) {
 
   return (
     <>
+      <BackButton />
       <div className="navBox">
         <div className="navRow">
           {window.location.pathname === "/" ? (
@@ -30,9 +32,13 @@ export function Nav({ userToken, onPauseBackgroundMusic }) {
 
           {userToken ? (
             <>
-              <Link to="/user/:id">
-                <div className="button">Account</div>
-              </Link>
+              {window.location.pathname === "/user/:id" ? (
+                <></>
+              ) : (
+                <Link to="/user/:id">
+                  <div className="button">Account</div>
+                </Link>
+              )}
 
               <Link to="/logout">
                 <div className="button">Logout</div>
