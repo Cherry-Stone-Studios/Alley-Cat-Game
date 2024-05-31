@@ -34,7 +34,7 @@ router.put("/users/:id", requireAdmin, async (req, res, next) => {
       .status(200)
       .send({ message: `User updated successfully!`, ...updatedUser });
   } catch (err) {
-    throw err;
+    next(err);
   }
 });
 
@@ -57,13 +57,13 @@ router.put("/scores/:id", requireAdmin, async (req, res, next) => {
       .status(200)
       .send({ message: `Score updated successfully!`, ...updatedScore });
   } catch (err) {
-    throw err;
+    next(err);
   }
 });
 
 // Delete a user's profile
 // DELETE /api/admin/users/:id
-router.delete("/users/:id", requireAdmin, async (req, res) => {
+router.delete("/users/:id", requireAdmin, async (req, res, next) => {
   // grab the id from params -> this is the user we want to delete
   const id = parseInt(req.params.id);
 
@@ -74,13 +74,13 @@ router.delete("/users/:id", requireAdmin, async (req, res) => {
       message: `You have successfully deleted the user's account.`,
     });
   } catch (err) {
-    throw err;
+    next(err);
   }
 });
 
 // Delete a score from the DB
 // DELETE /api/admin/scores/:id
-router.delete("/scores/:id", requireAdmin, async (req, res) => {
+router.delete("/scores/:id", requireAdmin, async (req, res, next) => {
   // grab the id from params -> this is the score we want to delete
   const id = parseInt(req.params.id);
 
@@ -90,7 +90,7 @@ router.delete("/scores/:id", requireAdmin, async (req, res) => {
       message: `The score has been deleted from the database.`,
     });
   } catch (err) {
-    throw err;
+    next(err);
   }
 });
 

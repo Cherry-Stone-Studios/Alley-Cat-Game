@@ -12,7 +12,7 @@ const {
 
 // POST to /api/users/friends
 
-router.post("/", async (req, res) => {
+router.post("/", async (req, res, next) => {
   // given a user and friend ID on the body
   const { id, friendid } = req.body;
 
@@ -28,14 +28,14 @@ router.post("/", async (req, res) => {
     });
     // }
   } catch (err) {
-    throw err;
+    next(err);
   }
 });
 
 // GET to /api/users/friends/:id
 // where id is the user's ID
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", async (req, res, next) => {
   try {
     const id = parseInt(req.params.id);
 
@@ -43,14 +43,14 @@ router.get("/:id", async (req, res) => {
 
     res.status(200).send(friends);
   } catch (err) {
-    throw err;
+    next(err);
   }
 });
 
 //DELETE
 // DELETE to /api/users/friends
 
-router.delete("/", async (req, res) => {
+router.delete("/", async (req, res, next) => {
   // given a user and friend ID on the body
   const id = parseInt(req.body.id);
   const friendid = parseInt(req.body.friendid);
@@ -63,7 +63,7 @@ router.delete("/", async (req, res) => {
       remainingFriends,
     });
   } catch (err) {
-    throw err;
+    next(err);
   }
 });
 

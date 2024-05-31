@@ -9,30 +9,60 @@ export function GamePage({ userToken, setScore, username }) {
   // const [guestname, setGuestname] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
-  async function submitHighScore(score) {
-    const guestname = prompt("What name do you want for your high score?");
+  console.log("THIS IS THE USERNAME", username);
 
-    try {
-      const createScore = await fetch(`${API_URL}/api/scores/`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          score,
-          username,
-          guestname,
-          date: new Date().toISOString(),
-        }),
-      });
+  const submitHighScore = async (score) => {
+    console.log("THIS IS THE ASYNC USERNAME", username);
 
-      const data = await createScore.json();
+    if (username.length > 0) {
+      try {
+        const createScore = await fetch(`${API_URL}/api/scores/`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            value: score,
+            username: username,
+            created_on: new Date().toISOString(),
+          }),
+        });
 
-      console.log("THIS IS THE UNPACKED KEY", data);
+        const data = await createScore.json();
 
-      setScore({ data });
-    } catch (error) {
-      throw error;
+        console.log("THIS IS THE UNPACKED KEY", data);
+
+        setScore(data.value);
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      const guestname = prompt("What name do you want for your high score?");
+      try {
+        const createScore = await fetch(`${API_URL}/api/scores/`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            value: score,
+            guestname: guestname,
+            created_on: new Date().toISOString(),
+          }),
+        });
+
+        const data = await createScore.json();
+
+        console.log("THIS IS THE UNPACKED KEY", data);
+
+        setScore(data.value);
+
+        // setScore({ data });
+      } catch (error) {
+        console.log(error);
+      }
     }
-  }
+  };
 
   // const submitHighScore = async (score) => {
   //   // check to see if there is a userToken
