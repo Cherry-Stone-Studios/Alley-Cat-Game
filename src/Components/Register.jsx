@@ -21,6 +21,7 @@ const Register = ({
   setDate_of_birth,
   showPassword,
   setShowPassword,
+  setErrorMessage,
 }) => {
   // States for just the registration page
   const [confirm, setConfirm] = useState("");
@@ -71,7 +72,9 @@ const Register = ({
     try {
       const response = await fetch(`${API_URL}/api/users/register`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({
           name,
           username,
@@ -88,7 +91,7 @@ const Register = ({
         navigate("/");
       }
     } catch (error) {
-      throw error;
+      console.log(error);
     }
   };
 
@@ -174,10 +177,11 @@ const Register = ({
           I agree to the <Link to={"/terms"}>Terms of Use</Link> and
           <Link to={"/privacy"}>Privacy Policy</Link>
         </label>
+        <button form="register" type="submit" className="button">
+          Create Cat!
+        </button>
       </form>
-      <button form="register" type="submit" className="button">
-        Create Cat!
-      </button>
+
       {/* {errorMessage && <h2>{errorMessage}</h2>} */}
     </>
   );

@@ -22,7 +22,7 @@ import gameoverMeow from "./assets/music/angrycatmeow.mp3";
 // import flyingCat from "./assets/game_module/flyingcat.jpg";
 // import pixelCat from "./assets/gifs/pixel-cat.gif";
 
-const Game = ({ submitHighScore }) => {
+const Game = ({ submitHighScore, username }) => {
   useEffect(() => {
     const canvas = document.getElementById("canvas1");
     const ctx = canvas.getContext("2d");
@@ -173,9 +173,11 @@ const Game = ({ submitHighScore }) => {
           if (this.onGround()) {
             this.speed = 5; // Normal speed on ground
             score++;
+            console.log("THIS IS THE WALK SCORE", score);
           } else {
             this.speed = 9; // Increased speed during jump
             score++;
+            console.log("THIS IS THE RUN SCORE", score);
           }
           this.currAction = "walk";
         } else if (input.keys.indexOf("ArrowLeft") > -1) {
@@ -197,6 +199,7 @@ const Game = ({ submitHighScore }) => {
             this.jumpCount = 1;
             this.jumpPressed = true;
             score++;
+            console.log("THIS IS THE JUMP SCORE", score);
           } else if (this.jumpCount === 1) {
             this.vy = -32; // Double jump velocity
             this.jumpCount = 2;
@@ -413,6 +416,7 @@ const Game = ({ submitHighScore }) => {
         if (this.x < 0 - this.width) {
           this.markedForDeletion = true;
           score++;
+          console.log("THIS IS THE DOG SCORE", score);
         }
         this.y += this.vy;
         if (!this.onGround()) {
@@ -457,6 +461,7 @@ const Game = ({ submitHighScore }) => {
         if (this.x < 0 - this.width) {
           this.markedForDeletion = true;
           score++;
+          console.log("THIS IS THE BIRD SCORE", score);
         }
         // this.x += this.speed;
         // this.y += this.speed;
@@ -502,6 +507,7 @@ const Game = ({ submitHighScore }) => {
         if (this.x < 0 - this.width) {
           this.markedForDeletion = true;
           score++;
+          console.log("THIS IS THE TRASH SCORE", score);
         }
       }
 
@@ -616,30 +622,38 @@ const Game = ({ submitHighScore }) => {
 
       // Update player food count and state based on chonkMeter
       player.foodCount = chonkMeter;
-
+      console.log("THIS IS THE PLAYER COUNT CHONK METER", chonkMeter);
       // Remove marked food from the array
       foodArray = foodArray.filter((food) => !food.markedForDeletion);
     }
 
+    // const highScore = score + chonMeter * 2;
     // When the game is over and a player dies
     // Display the score and game over text
     function displayStatusText(context) {
+      let submitScore = score + chonkMeter * 77;
+      console.log("THIS IS THE ACTIVE CHONK METER", chonkMeter);
+      console.log("THIS IS THE ACTIVE SCORE", score);
+      console.log("THIS IS THE HIGH SCORE", submitScore);
       context.fillStyle = "yellow";
       context.font = "40px Helvetica";
       context.textAlign = "left";
-      context.fillText("High Score: " + score + chonkMeter * 2, 50, 110);
+      context.fillText("High Score: " + submitScore, 50, 110);
       context.fillStyle = "yellow";
       context.font = "40px Helvetica";
       context.textAlign = "left";
       context.fillText("Chonk Meter: " + chonkMeter, 50, 150);
       if (gameOver) {
+        console.log("THIS IS THE GAME OVER CHONK METER", chonkMeter);
+        console.log("THIS IS THE GAME OVER SCORE", score);
+        console.log("THIS IS THE GAME OVER HIGH SCORE", submitScore);
         context.textAlign = "center";
         context.fillStyle = "yellow";
         context.fillText("GAME OVER, try again!", canvas.width / 2, 200);
         context.fillText("Press Enter to Restart", canvas.width / 2, 250);
         angryMeow.play();
         bgMusic.pause();
-        submitHighScore(score + chonkMeter * 2);
+        submitHighScore(submitScore);
       }
     }
 

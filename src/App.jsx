@@ -87,7 +87,13 @@ function App() {
 
         <Route
           path="/game"
-          element={<GamePage userToken={userToken} setScore={setScore} />}
+          element={
+            <GamePage
+              userToken={userToken}
+              setScore={setScore}
+              username={username}
+            />
+          }
         />
         <Route path="/highscores" element={<Scores score={score} />} />
         <Route path="/terms" element={<Terms />} />

@@ -24,7 +24,9 @@ export function Login({
     try {
       const loginPackage = {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({ username, password }),
       };
 
@@ -36,14 +38,14 @@ export function Login({
       const unpackedKey = await apiKeyResponse.json();
 
       if (unpackedKey.message == `Welcome ${username}, you're logged in!`) {
-        console.log("Welcome back!", userToken);
+        console.log("Welcome back!", username);
       }
 
       localStorage.setItem("token", unpackedKey.token);
       alert(unpackedKey.message);
       navigate("/");
     } catch (error) {
-      throw error;
+      console.log(error);
     }
   }
 
@@ -77,10 +79,10 @@ export function Login({
             onChange={() => setShowPassword((prev) => !prev)}
           />
         </label>
+        <button form="login" type="submit" className="button">
+          Submit
+        </button>
       </form>
-      <button form="login" type="submit" className="button">
-        Submit
-      </button>
       {/* {error && <alert>{error}</alert>} */}
     </>
   );

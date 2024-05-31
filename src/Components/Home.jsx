@@ -49,7 +49,7 @@ export function Home({ userToken }) {
         <Nav userToken={userToken} />
         <GameInfo />
       </div>
-      <img src={"/src/curiouscat.gif"} onClick={() => playMusic()} />
+      <img src={"../src/curiouscat.gif"} onClick={() => playMusic()} />
       <br></br>
       <br></br>
     </>

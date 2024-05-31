@@ -17,7 +17,7 @@ const {
 
 // CREATE/POST
 // POST /api/users/register
-router.post("/register", async (req, res) => {
+router.post("/register", async (req, res, next) => {
   // given username and password on body
   const { name, username, email, password, date_of_birth } = req.body;
   try {
@@ -41,13 +41,13 @@ router.post("/register", async (req, res) => {
       ...singleUser,
     });
   } catch (err) {
-    throw err;
+    next(err);
   }
 });
 
 // login to existing account with JWT
 // POST api/users/login
-router.post("/login", async (req, res) => {
+router.post("/login", async (req, res, next) => {
   // We recieve a username and password on body
   const plainPassword = req.body.password;
   // has plainPassword for compare
@@ -56,7 +56,7 @@ router.post("/login", async (req, res) => {
   try {
     const user = await getUserByUsername(username);
 
-    // if the user is not in our DB -> throw err that states "user does not exist"
+    // if the user is not in our DB -> next(err) that states "user does not exist"
     if (!user) {
       res.send({
         message: `User does not exist. Register today to keep track of the fun!`,
@@ -84,24 +84,24 @@ router.post("/login", async (req, res) => {
       }
     }
   } catch (err) {
-    throw err;
+    next(err);
   }
 });
 
 // READ/GET ALL USERS
 // GET /api/users/
-router.get("/", async (req, res) => {
+router.get("/", async (req, res, next) => {
   try {
     const users = await getAllUsers();
     res.status(200).send(users);
   } catch (err) {
-    throw err;
+    next(err);
   }
 });
 
 // GET USER BY id
 // GET /api/users/:id
-router.get("/:id", async (req, res) => {
+router.get("/:id", async (req, res, next) => {
   try {
     const userId = parseInt(req.params.id); //convert req.params.id to INT
     const singleUser = await getUserById(userId);
@@ -114,13 +114,13 @@ router.get("/:id", async (req, res) => {
 
 // READ/GET ALL USERS BY USERNAME
 // GET /api/users/username/:username
-router.get("/username/:username", async (req, res) => {
+router.get("/username/:username", async (req, res, next) => {
   const username = req.params.username;
   try {
     user = await getUserByUsername(username);
     res.status(200).send(user);
   } catch (err) {
-    throw err;
+    next(err);
   }
 });
 
@@ -155,14 +155,14 @@ router.put("/:id", requireUser, async (req, res, next) => {
         .status(200)
         .send({ message: `User updated successfully!`, ...singleUser });
     } catch (err) {
-      throw err;
+      next(err);
     }
   }
 });
 
 //DELETE USER
 // DELETE /api/users/:id
-router.delete("/:id", requireUser, async (req, res) => {
+router.delete("/:id", requireUser, async (req, res, next) => {
   // grab the id from params -> this is the user we want to delete
   const id = parseInt(req.params.id);
 
@@ -183,7 +183,7 @@ router.delete("/:id", requireUser, async (req, res) => {
         message: `You have successfully deleted your account. An alley can be a dangerous place for a stay, stay safe!`,
       });
     } catch (err) {
-      throw err;
+      next(err);
     }
 });
 
