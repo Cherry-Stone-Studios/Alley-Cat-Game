@@ -121,9 +121,9 @@ const animatedSprite = (player) => {
     if (animal.sprite === player.sprite) {
       // Check if stateTransitions exist before attempting to access them
       if (animal.stateTransitions) {
-        if (player.foodCount > 15) {
+        if (player.foodCount > 14) {
           player.image.src = animal.stateTransitions.chonk;
-        } else if (player.foodCount > 8) {
+        } else if (player.foodCount > 7) {
           player.image.src = animal.stateTransitions.regular;
         } else {
           player.image.src = animal.stateTransitions.skinny;

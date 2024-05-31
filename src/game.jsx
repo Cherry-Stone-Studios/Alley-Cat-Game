@@ -617,10 +617,6 @@ const Game = ({ submitHighScore }) => {
       // Update player food count and state based on chonkMeter
       player.foodCount = chonkMeter;
 
-      if (player.foodCount === 7 || player.foodCount === 14) {
-        player.stateChange = true; // Trigger state change for animation
-      }
-
       // Remove marked food from the array
       foodArray = foodArray.filter((food) => !food.markedForDeletion);
     }
