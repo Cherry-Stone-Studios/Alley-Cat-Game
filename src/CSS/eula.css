@@ -1,0 +1,40 @@
+a {
+    color: rgb(106, 255, 255);
+    font-size: x-large;
+}
+
+.eulaBox {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 0 auto;
+    background-color: rgba(0, 0, 0, 0.274);  
+    backdrop-filter: blur(1rem);
+    width: 800px;
+    text-align: justify;
+
+}
+
+.eulaH1 {
+    color: rgb(213, 255, 255);
+    text-shadow: 4px 4px rgba(0, 88, 88, 0.788), -.25em 0 1em rgb(0, 0, 0);
+    font-size: xx-large;
+}
+
+.eulaH2 {
+    color: rgb(213, 255, 255);
+    text-shadow: 4px 4px rgba(0, 88, 88, 0.788), -.25em 0 1em rgb(0, 0, 0);
+    font-size: x-large;
+}
+
+.eulaP {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 8px;
+    color: rgb(255, 255, 255);
+    text-shadow: 2px 2px rgba(95, 255, 242, 0.342), -.5em 0 1em rgb(0, 0, 0);
+    font-size: x-large;
+}
