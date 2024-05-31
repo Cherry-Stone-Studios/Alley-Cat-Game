@@ -1,6 +1,13 @@
+import "../CSS/eula.css";
+import { Nav } from "./Nav";
+import BackButton from "./BackButton";
+
 export function Terms() {
   return (
     <>
+      {<Nav userToken={userToken} />}
+      <BackButton />;
+      <br />
       <h1>Cherry Stone Studios End User License Agreement</h1>
       <h1 class="title">END USER LICENSE AGREEMENT</h1>
       <p>
@@ -450,7 +457,6 @@ export function Terms() {
         Licensed Application, please contact us at Cherry Stone Studios Games at
         the following email address: cherry.stone.studios.games@gmail.com
       </p>
-
       <h2>
         <a id="#termination">13. TERMINATION</a>
       </h2>
@@ -462,7 +468,6 @@ export function Terms() {
         Licensed Application, and destroy all copies, full or partial, of the
         Licensed Application.
       </p>
-
       <h2>
         <a id="#thirdparty">
           14. THIRD-PARTY TERMS OF AGREEMENTS AND BENEFICIARY
@@ -494,7 +499,6 @@ export function Terms() {
         settlement, and discharge or any such intellectual property infringement
         claims.
       </p>
-
       <h2>
         <a id="#law">16. APPLICABLE LAW</a>
       </h2>

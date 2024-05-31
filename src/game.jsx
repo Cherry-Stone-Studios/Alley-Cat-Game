@@ -1,6 +1,6 @@
 // import css and other .jsx pages
 import React, { useEffect } from "react";
-import "./assets/game_module/style.css";
+import "./CSS/background.css";
 import animatedSprite from "./SpriteAnimation.jsx";
 // import background images
 import playerImage from "./assets/orangeCat/orangeCatSprite.png";
@@ -641,8 +641,8 @@ const Game = ({ submitHighScore }) => {
         context.fillStyle = "yellow";
         context.fillText("GAME OVER, try again!", canvas.width / 2, 200);
         context.fillText("Press Enter to Restart", canvas.width / 2, 250);
-        bgMusic.pause();
         angryMeow.play();
+        bgMusic.pause();
         submitHighScore(score + chonkMeter * 2);
       }
     }
@@ -713,9 +713,11 @@ const Game = ({ submitHighScore }) => {
   }, []);
 
   return (
-    <div>
-      <img className="arcade" src={tvBackground} />
-      <canvas id="canvas1"></canvas>
+    <div className="arcadeBox">
+      <div className="gameBox"></div>
+      <div className="shiftDown">
+        <canvas id="canvas1"></canvas>
+      </div>
     </div>
   );
 };

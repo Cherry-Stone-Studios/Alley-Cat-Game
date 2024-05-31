@@ -1,0 +1,37 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    text-align: center;
+    margin: 0 auto;
+    padding: 8px;
+    width: 320px;
+    backdrop-filter: blur(1rem);
+    background-color: rgba(53, 53, 53, 0.192);
+    font-size: large;
+}
+
+.formLabel {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 300px;
+    padding: 8px;
+    font-size: large;
+  }
+  
+.formCheckbox {
+    margin: 0 auto;
+    padding: 3px;
+    margin: 3px;
+    font-size: large;
+
+}
+  
+.checkbox {
+    width: 20px;
+    margin: 0 auto;
+    font-size: large;
+}

@@ -1,0 +1,29 @@
+.arcadeBox{  
+  height: 1035px;
+  position: relative;
+  margin: 0 auto;
+  text-align: center;
+  background-image: url(../assets/backgrounds/arcade.webp);
+  background-position: center;
+  background-size: cover; 
+}
+
+.gameBox {
+  display: inherit;
+  height: 100%;
+}
+
+.shiftDown {
+  position: inherit;
+  top: -415px;
+  left: -5px;
+}
+
+.arcadeBox > #canvas1 {
+  border: 2px solid white; 
+
+}
+
+#playerImage, #backgroundImage {
+  display: none;
+}

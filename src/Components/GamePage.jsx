@@ -1,7 +1,6 @@
-import "../CSS/stylegame.css";
+import "../CSS/background.css";
 import Game from "../game.jsx";
 import { Nav } from "./Nav";
-import { UsernamePop } from "./UsernamePop.jsx";
 import { useState } from "react";
 
 export function GamePage({ userToken, setScore, username }) {
@@ -103,7 +102,7 @@ export function GamePage({ userToken, setScore, username }) {
 
   return (
     <>
-      <h1>CATCH PHRASE</h1>
+      <h1>Good luck! Eat lots of fish!</h1>
       {<Nav userToken={userToken} />}
 
       <Game submitHighScore={submitHighScore} />
