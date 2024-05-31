@@ -7,13 +7,18 @@ export function Nav({ userToken, onPauseBackgroundMusic }) {
       onPauseBackgroundMusic();
     }
   };
+
   return (
     <>
       <div className="navBox">
         <div className="navRow">
-          <Link to="/">
-            <div className="button">Home</div>
-          </Link>
+          {window.location.pathname === "/" ? (
+            <></>
+          ) : (
+            <Link to="/">
+              <div className="navItem">Home</div>
+            </Link>
+          )}
 
           <Link to="/game" onClick={handleItemClick}>
             <div className="button">Play!</div>
