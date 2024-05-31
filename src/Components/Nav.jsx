@@ -16,7 +16,7 @@ export function Nav({ userToken, onPauseBackgroundMusic }) {
             <></>
           ) : (
             <Link to="/">
-              <div className="navItem">Home</div>
+              <div className="button">Home</div>
             </Link>
           )}
 

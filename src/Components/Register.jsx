@@ -6,21 +6,28 @@ import BackButton from "./BackButton";
 
 const API_URL = "https://cherry-stone-studios.onrender.com";
 
-const Register = ({ userToken, setUserToken }) => {
-  // States for registration
-  const [name, setName] = useState("");
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [date_of_birth, setDate_of_birth] = useState("");
+const Register = ({
+  userToken,
+  setUserToken,
+  username,
+  setUsername,
+  name,
+  setName,
+  email,
+  setEmail,
+  password,
+  setPassword,
+  date_of_birth,
+  setDate_of_birth,
+  showPassword,
+  setShowPassword,
+}) => {
+  // States for just the registration page
   const [confirm, setConfirm] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-
   const navigate = useNavigate();
 
   // States for checking the errors
   const [submitted, setSubmitted] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(false);
 
   // Handles the name input
   const handleName = (event) => {
@@ -58,7 +65,7 @@ const Register = ({ userToken, setUserToken }) => {
     setSubmitted(false);
   };
 
-  // Handles the form submission
+  // Handles the register form submission
   const handleRegister = async (event) => {
     event.preventDefault();
     try {
@@ -81,7 +88,7 @@ const Register = ({ userToken, setUserToken }) => {
         navigate("/");
       }
     } catch (error) {
-      setErrorMessage(true);
+      throw error;
     }
   };
 
@@ -90,8 +97,8 @@ const Register = ({ userToken, setUserToken }) => {
       {<Nav userToken={userToken} />}
       <BackButton />
       <br />
-      <h2 class="formHeader">Create an Account!</h2>
-      <form onSubmit={handleRegister} className="form">
+      <h2 className="formHeader">Create an Account!</h2>
+      <form id="register" onSubmit={handleRegister} className="form">
         <label className="formLabel">
           Name:
           <input
@@ -168,10 +175,9 @@ const Register = ({ userToken, setUserToken }) => {
           <Link to={"/privacy"}>Privacy Policy</Link>
         </label>
       </form>
-      <button className="button" type="submit">
+      <button form="register" type="submit" className="button">
         Create Cat!
       </button>
-
       {/* {errorMessage && <h2>{errorMessage}</h2>} */}
     </>
   );

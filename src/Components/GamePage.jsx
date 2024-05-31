@@ -3,6 +3,8 @@ import Game from "../game.jsx";
 import { Nav } from "./Nav";
 import { useState } from "react";
 
+const API_URL = "https://cherry-stone-studios.onrender.com";
+
 export function GamePage({ userToken, setScore, username }) {
   // const [guestname, setGuestname] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -11,7 +13,7 @@ export function GamePage({ userToken, setScore, username }) {
     const guestname = prompt("What name do you want for your high score?");
 
     try {
-      const createScore = {
+      const createScore = await fetch(`${API_URL}/api/scores/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -20,20 +22,13 @@ export function GamePage({ userToken, setScore, username }) {
           guestname,
           date: new Date().toISOString(),
         }),
-      };
+      });
 
-      const apiKeyResponse = await fetch(
-        "https://cherry-stone-studios.onrender.com/api/scores/",
-        createScore
-      );
+      const data = await createScore.json();
 
-      const unpackedKey = await apiKeyResponse.json();
+      console.log("THIS IS THE UNPACKED KEY", data);
 
-      console.log("THIS IS THE UNPACKED KEY", unpackedKey);
-
-      setScore({ unpackedKey });
-
-      alert(unpackedKey.message);
+      setScore({ data });
     } catch (error) {
       throw error;
     }
@@ -102,7 +97,7 @@ export function GamePage({ userToken, setScore, username }) {
 
   return (
     <>
-      <h1>Good luck! Eat lots of fish!</h1>
+      <h1 className="gameHeader">Good luck! Eat lots of fish!</h1>
       {<Nav userToken={userToken} />}
 
       <Game submitHighScore={submitHighScore} />
