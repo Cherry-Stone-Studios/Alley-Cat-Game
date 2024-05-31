@@ -1,3 +1,9 @@
+/* global css for global at-rules */
+@font-face {
+  font-family: customfont;
+  src: url('/src/Pixeboy-z8XGD.ttf'), url('/src/Pixeboy-z8XGD.ttf') format('truetype');
+}
+
 /* global css for elements */
 body {
   font-family: customfont;
@@ -12,6 +18,8 @@ body {
   background-size: 1300px;
   background-color: black;
   position: sticky;
+  list-style-position: inside;
+
 }
 
 button {
@@ -21,6 +29,8 @@ button {
 a {
   text-decoration: none;
   font-family: customfont;
+  color: aqua;
+  text-shadow: 4px 4px rgba(0, 88, 88, 0.788), -.25em 0 1em rgb(0, 0, 0);
 }
 
 /* Changes Form Input Colors */
@@ -83,12 +93,6 @@ h6 {
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
-}
-
-/* global css for global at-rules */
-@font-face {
-  font-family: customfont;
-  src: url('src/assets/game_module/Pixeboy-z8XGD.ttf') format('truetype');
 }
 
 @keyframes logo-spin {

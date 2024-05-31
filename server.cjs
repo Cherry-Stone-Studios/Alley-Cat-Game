@@ -24,7 +24,9 @@ const { authCheck } = require("./middleware/authorization.cjs");
 server.use(authCheck);
 
 // cors permits the browser to connect to our server
-server.use(cors());
+// cors needs to send preflight
+// server.use(cors());
+server.options("*", cors()); // enable pre-flight request for all requests
 
 // Middleware to parse JSON requests
 // Middleware to parse URL-encoded data
@@ -70,7 +72,7 @@ server.use(morgan("dev"));
 server.use("/api", require("./api/index.cjs"));
 
 //Frontend
-server.use(express.static('./dist'));
+server.use(express.static("./dist"));
 server.get("*", (req, res) => {
   res.sendFile(__dirname + "/dist/index.html");
 });

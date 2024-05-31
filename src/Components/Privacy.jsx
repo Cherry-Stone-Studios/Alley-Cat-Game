@@ -5,17 +5,14 @@ import BackButton from "./BackButton";
 export function Privacy() {
   return (
     <>
-      {<Nav userToken={userToken} />}
-      <BackButton />;
-      <div className="">
-        <div className="">
-          <h1>Cherry Stone Studios Privacy Policy</h1>
+      <div className="eulaBox">
+        <div className="eulaH1">
+          <h1>Privacy Policy</h1>
         </div>
-
-        <div className="">
+        <div className="eulaH2">
           <h2>Introduction</h2>
         </div>
-        <div className="">
+        <div className="eulaP">
           <p>
             This Privacy Policy outlines Cherry Stone Studios (" <b>we</b> ", "
             <b>our</b>" or " <b>the Company</b> ") practices with respect to
@@ -24,11 +21,12 @@ export function Privacy() {
             otherwise share personal information with us (collectively: "
             <b>Users</b> ").
           </p>
+          <br />
         </div>
-
-        <div className=""></div>
-        <h2>Grounds for data collection </h2>
-        <div className="">
+        <div className="eulaH2">
+          <h2>Grounds for data collection </h2>
+        </div>
+        <div className="eulaP">
           <p>
             Processing of your personal information (meaning, any information
             which may potentially allow your identification with reasonable
@@ -38,21 +36,23 @@ export function Privacy() {
             and for compliance with legal and financial regulatory obligations
             to which we are subject.
           </p>
+          <br />
           <p>
             When you use the Site, you consent to the collection, storage, use,
             disclosure and other uses of your Personal Information as described
             in this Privacy Policy.
           </p>
+          <br />
           <p>
             We encourage our Users to carefully read the Privacy Policy and use
             it to make informed decisions.
           </p>
+          <br />
         </div>
-
-        <div className="">
+        <div className="eulaH2">
           <h2>What information do we collect?</h2>
         </div>
-        <div className="">
+        <div className="eulaP">
           <p>We collect two types of data and information from Users. </p>
           <p>
             The first type of information is un-identified and non-identifiable
@@ -68,13 +68,14 @@ export function Privacy() {
             of our Site. We may also collect information on your activity on the
             Site (e.g. pages viewed, online browsing, clicks, actions, etc.).
           </p>
+          <br />
           <p>
             The second type of information <b>Personal Information</b> which is
             individually identifiable information, namely information that
             identifies an individual or may with reasonable effort identify an
             individual. Such information includes:
           </p>
-
+          <br />
           <ul>
             <li>
               Device Information: We collect Personal Information from your
@@ -82,17 +83,19 @@ export function Privacy() {
               unique identifiers (e.g. MAC address and UUID) and other
               information which relates to your activity through the Site
             </li>
+            <br />
             <li>
               Your Contact information: When you contact us through our Site you
               will be asked to provide us certain details such as: full name;
               e-mail or physical address, and other information.
             </li>
+            <br />
           </ul>
         </div>
-        <div className="">
+        <div className="eulaH2">
           <h2>How do we receive information about you?</h2>
         </div>
-        <div className="">
+        <div className="eulaP">
           <p>We receive your Personal Information from various sources:</p>
 
           <ul>
@@ -100,76 +103,90 @@ export function Privacy() {
               When you voluntarily provide us your personal details in order to
               register on our Site;
             </li>
+            <br />
             <li>
               When you use or access our Site in connection with your use of our
               services;
             </li>
+            <br />
             <li>
               From third party providers, services and public registers (for
               example, traffic analytics vendors).
             </li>
+            <br />
           </ul>
         </div>
-        <div className="">
+        <div className="eulaH2">
           <h2>What do we do with the information we collect?</h2>
         </div>
-        <div className="">
+        <div className="eulaP">
           <p>
             We do not rent, sell, or share Users’ information with third parties
             except as described in this Privacy Policy.
           </p>
+          <br />
           <p>We may use the information for the following:</p>
-
+          <br />
           <ul>
             <li>
               Communicating with you – sending you notices regarding our
               services, providing you with technical information and responding
               to any customer service issue you may have;
             </li>
+            <br />
             <li>
               To communicate with you and to keep you informed of our latest
               updates and services;
             </li>
+            <br />
             <li>
               To serve you advertisements when you use our Site (see more under
               "Advertisements");
             </li>
+            <br />
             <li>
               To market our websites and products (see more under "Marketing");
             </li>
+            <br />
             <li>
               Conducting statistical and analytical purposes, intended to
               improve the Site.
             </li>
+            <br />
           </ul>
           <p>
             In addition to the different uses listed above, we may transfer or
             disclose Personal Information to our subsidiaries, affiliated
             companies and subcontractors.
           </p>
+          <br />
           <p>
             In addition to the purposes listed in this Privacy Policy, we may
             share Personal Information with our trusted third party providers,
             who may be located in different jurisdictions across the world, for
             any of the following purposes:
           </p>
-
+          <br />
           <ul>
             <li>Hosting and operating our Site;</li>
+            <br />
             <li>
               Providing you with our services, including providing a
               personalized display of our Site;
             </li>
+            <br />
             <li>Storing and processing such information on our behalf; </li>
             <li>
               Serving you with advertisements and assist us in evaluating the
               success of our advertising campaigns and help us retarget any of
               our users;
             </li>
+            <br />
             <li>
               Providing you with marketing offers and promotional materials
               related to our Site and services;
             </li>
+            <br />
             <li>Performing research, technical diagnostics or analytics;</li>
           </ul>
           <p>
@@ -187,13 +204,14 @@ export function Privacy() {
             and/or in case we find it necessary in order to enforce intellectual
             property or other legal rights.
           </p>
+          <br />
         </div>
-
-        <div className="">
+        <div className="eulaH2">
           <h2>User Rights</h2>
         </div>
-        <div className="">
+        <div className="eulaP">
           <p>You may request to: </p>
+          <br />
 
           <ol>
             <li>
@@ -201,35 +219,44 @@ export function Privacy() {
               concerning you is being processed, and access your stored personal
               information, together with supplementary information.
             </li>
+            <br />
             <li>
               Receive a copy of personal information you directly volunteer to
               us in a structured, commonly used and machine-readable format.
             </li>
+            <br />
             <li>
               Request rectification of your personal information that is in our
               control.
             </li>
+            <br />
             <li>Request erasure of your personal information. </li>
+            <br />
             <li>Object to the processing of personal information by us. </li>
+            <br />
             <li>
               Request to restrict processing of your personal information by us.
             </li>
+            <br />
             <li>Lodge a complaint with a supervisory authority.</li>
+            <br />
           </ol>
           <p>
             However, please note that these rights are not absolute, and may be
             subject to our own legitimate interests and regulatory requirements.
           </p>
+          <br />
           <p>
             If you wish to exercise any of the aforementioned rights, or receive
             more information, please contact our Data Protection Officer (“DPO”)
             using the details provided: cherry.stone.studios.games@gmail.com
           </p>
+          <br />
         </div>
-        <div className="">
+        <div className="eulaH2">
           <h2>Retention</h2>
         </div>
-        <div className="">
+        <div className="eulaP">
           <p>
             We will retain your personal information for as long as necessary to
             provide our services, and as necessary to comply with our legal
@@ -243,20 +270,23 @@ export function Privacy() {
             documents, communications and anything else as required by
             applicable laws and regulations.
           </p>
+          <br />
           <p>
             We may rectify, replenish or remove incomplete or inaccurate
             information, at any time and at our own discretion.
           </p>
+          <br />
         </div>
-        <div className="">
+        <div className="eulaH2">
           <h2>Cookies</h2>
         </div>
-        <div className="">
+        <div className="eulaP">
           <p>
             We and our trusted partners use cookies and other technologies in
             our related services, including when you visit our Site or access
             our services.
           </p>
+          <br />
           <p>
             A "cookie" is a small piece of information that a website assign to
             your device while you are viewing a website. Cookies are very
@@ -268,14 +298,16 @@ export function Privacy() {
             advertisements you see are relevant to you and your interests and to
             compile statistical data on your use of our Services.
           </p>
+          <br />
           <p>The Site uses the following types of cookies:</p>
-
+          <br />
           <ol>
             <li>
               'session cookies' - These are stored only temporarily during a
               browsing session in order to allow normal use of the system and
               are deleted from your device when the browser is closed;
             </li>
+            <br />
             <li>
               'persistent cookies ' - These are read only by the Site, saved on
               your computer for a fixed period and are not deleted when the
@@ -283,11 +315,13 @@ export function Privacy() {
               you are for repeat visits, for example to allow us to store your
               preferences for the next sign-in;
             </li>
+            <br />
             <li>
               'third party cookies' - These are set by other online services who
               run content on the page you are viewing, for example by third
               party analytics companies who monitor and analyze our web access.
             </li>
+            <br />
           </ol>
           <p>
             Cookies do not contain any information that personally identifies
@@ -298,6 +332,7 @@ export function Privacy() {
             features of our Site may not operate properly and your online
             experience may be limited.
           </p>
+          <br />
           <p>
             We also use a tool called “Google Analytics” to collect information
             about your use of the Site. Google Analytics collects information
@@ -319,11 +354,12 @@ export function Privacy() {
             </a>
             .
           </p>
+          <br />
         </div>
-        <div className="">
+        <div className="eulaH2">
           <h2>Third party collection of information</h2>
         </div>
-        <div className="">
+        <div className="eulaP">
           <p>
             Our policy only addresses the use and disclosure of information we
             collect from you. To the extent you disclose your information to
@@ -333,17 +369,19 @@ export function Privacy() {
             and privacy policy of each third party that you choose to disclose
             information to.
           </p>
+          <br />
           <p>
             This Privacy Policy does not apply to the practices of companies
             that we do not own or control, or to individuals whom we do not
             employ or manage, including any of the third parties which we may
             disclose information as set forth in this Privacy Policy.
           </p>
+          <br />
         </div>
-        <div className="">
+        <div className="eulaH2">
           <h2>How do we safeguard your information?</h2>
         </div>
-        <div className="">
+        <div className="eulaP">
           <p>
             We take great care in implementing and maintaining the security of
             the Site and your information. We employ industry standard
@@ -356,11 +394,12 @@ export function Privacy() {
             access or abuse our Site, and we make no warranty, express, implied
             or otherwise, that we will prevent such access.
           </p>
+          <br />
         </div>
-        <div className="">
+        <div className="eulaH2">
           <h2>Transfer of data outside the EEA </h2>
         </div>
-        <div className="">
+        <div className="eulaP">
           <p>
             Please note that some data recipients may be located outside the
             EEA. In such cases we will transfer your data only to such countries
@@ -368,11 +407,12 @@ export function Privacy() {
             of data protection, or enter into legal agreements ensuring an
             adequate level of data protection.
           </p>
+          <br />
         </div>
-        <div className="">
+        <div className="eulaH2">
           <h2>Advertisements</h2>
         </div>
-        <div className="">
+        <div className="eulaP">
           <p>
             We may use a third-party advertising technology to serve
             advertisements when you access the Site. This technology uses your
@@ -380,6 +420,7 @@ export function Privacy() {
             advertisements to you (e.g., by placing third-party cookies on your
             web browser).
           </p>
+          <br />
           <p>
             You may opt-out of many third-party ad networks, including those
             operated by members of the Network Advertising Initiative ("NAI")
@@ -396,11 +437,12 @@ export function Privacy() {
               http://optout.aboutads.info/
             </a>
           </p>
+          <br />
         </div>
-        <div className="">
+        <div className="eulaH2">
           <h2>Marketing</h2>
         </div>
-        <div className="">
+        <div className="eulaP">
           <p>
             We may use your Personal Information, such as your name, email
             address, telephone number, etc. ourselves or by using our third
@@ -408,6 +450,7 @@ export function Privacy() {
             promotional materials, concerning our services, which we believe may
             interest you.{" "}
           </p>
+          <br />
           <p>
             Out of respect to your right to privacy we provide you within such
             marketing materials with means to decline receiving further
@@ -415,6 +458,7 @@ export function Privacy() {
             email address or telephone number from our marketing distribution
             lists.{" "}
           </p>
+          <br />
           <p>
             Please note that even if you have unsubscribed from receiving
             marketing emails from us, we may send you other types of important
@@ -422,11 +466,12 @@ export function Privacy() {
             out of receiving them. These may include customer service
             announcements or administrative notices.
           </p>
+          <br />
         </div>
-        <div className="">
+        <div className="eulaH2">
           <h2>Corporate transaction</h2>
         </div>
-        <div className="">
+        <div className="eulaP">
           <p>
             We may share information in the event of a corporate transaction
             (e.g. sale of a substantial part of our business, merger,
@@ -434,11 +479,12 @@ export function Privacy() {
             transferee or acquiring company will assume the rights and
             obligations as described in this Privacy Policy.
           </p>
+          <br />
         </div>
-        <div className="">
+        <div className="eulaH2">
           <h2>Minors</h2>
         </div>
-        <div className="">
+        <div className="eulaP">
           <p>
             We understand the importance of protecting children’s privacy,
             especially in an online environment. The Site is not designed for or
@@ -450,11 +496,12 @@ export function Privacy() {
             their consent, he or she should contact us at
             cherry.stone.studios.games@gmail.com
           </p>
+          <br />
         </div>
-        <div className="">
+        <div className="eulaH2">
           <h2>Updates or amendments to this Privacy Policy</h2>
         </div>
-        <div className="">
+        <div className="eulaP">
           <p>
             We reserve the right to periodically amend or revise the Privacy
             Policy; material changes will be effective immediately upon the
@@ -465,21 +512,25 @@ export function Privacy() {
             amendments to the Privacy Policy and your agreement to be bound by
             the terms of such amendments.
           </p>
+          <br />
         </div>
-        <div className="">
+        <div className="eulaH2">
           <h2>How to contact us</h2>
         </div>
-        <div className="">
+        <div className="eulaP">
           <p>
             If you have any general questions about the Site or the information
             we collect about you and how we use it, you can contact us at
             cherry.stone.studios.games@gmail.com
           </p>
+          <br />
         </div>
-        <div>
+        <div className="eulaP">
           <p>Last Modified 05/30/2024</p>
+          <br />
         </div>
       </div>
+      <BackButton />;
     </>
   );
 }
