@@ -1,6 +1,6 @@
+import "../CSS/gameinfo.css";
 import React from "react";
 import Popup from "reactjs-popup";
-import "../CSS/GameInfo.css";
 import Shiba from "../assets/dogShiba/Shiba.png";
 import Crow from "../assets/Bird/Crow.png";
 import trashcan from "../assets/Can/trashcan.png";
@@ -13,7 +13,7 @@ import Doberman from "../assets/dogDoberman/Doberman.png";
 const GameInfo = () => (
   //Creates a button that renders a pop up menu when clicked
   <Popup
-    trigger={<button className="Button"> HOW TO PLAY </button>}
+    trigger={<button className="button"> HOW TO PLAY </button>}
     modal
     nested
   >
@@ -32,9 +32,8 @@ const GameInfo = () => (
           <p> (Hold) ⮞ - Run Forward </p>
           <br />
           <div className="header">
-            {" "}
             Enemies : <br />
-            AVOID AT ALL COSTS{" "}
+            AVOID AT ALL COSTS
           </div>
           <img className="pop_up_img" src={Doberman} alt="Doberman" />
           <img className="pop_up_img" src={Shiba} alt="Shiba" />
@@ -44,9 +43,8 @@ const GameInfo = () => (
           <br />
           <br />
           <div className="header">
-            {" "}
             Food : <br />
-            EAT AS MANY AS YOU CAN{" "}
+            EAT AS MANY AS YOU CAN
           </div>
           <img className="pop_up_img" src={goldieSprite} alt="Goldfish" />
           <img className="pop_up_img" src={salmonSprite} alt="Salmon" />
@@ -56,7 +54,7 @@ const GameInfo = () => (
           <button
             className="button"
             onClick={() => {
-              console.log("modal closed ");
+              console.log("modal closed");
               close();
             }}
           >

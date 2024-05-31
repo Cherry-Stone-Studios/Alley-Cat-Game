@@ -1,11 +1,12 @@
-import { useNavigate } from "react-router-dom";
-import BackButton from "./BackButton";
+import "../CSS/form.css";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-const API_URL = "https://cherry-stone-studios.onrender.com";
-import { Link } from "react-router-dom";
 import { Nav } from "./Nav";
+import BackButton from "./BackButton";
 
-const Register = ({ setUserToken }) => {
+const API_URL = "https://cherry-stone-studios.onrender.com";
+
+const Register = ({ userToken, setUserToken }) => {
   // States for registration
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
@@ -86,77 +87,92 @@ const Register = ({ setUserToken }) => {
 
   return (
     <>
-      <Nav />
+      {<Nav userToken={userToken} />}
       <BackButton />
-      <div>
-        <h2>Create an Account!</h2>
-        <form onSubmit={handleRegister}>
-          <label>
-            Name:
-            <input
-              type="text"
-              id="name"
-              placeholder="Name"
-              onChange={handleName}
-              required
-            />
-          </label>
-          <label>
-            Username:
-            <input
-              type="text"
-              id="username"
-              placeholder="Username"
-              onChange={handleUsername}
-              required
-            />
-          </label>
-          <label>
-            Email Address:
-            <input
-              id="email"
-              type="email"
-              placeholder="Email"
-              onChange={handleEmail}
-              required
-            />
-          </label>
+      <br />
+      <h2 class="formHeader">Create an Account!</h2>
+      <form onSubmit={handleRegister} className="form">
+        <label className="formLabel">
+          Name:
+          <input
+            type="text"
+            id="name"
+            placeholder="Name"
+            onChange={handleName}
+            required
+          />
+        </label>
 
-          <label>
-            Password:
-            <input
-              type={showPassword ? "text" : "password"}
-              placeholder="Password"
-              onChange={handlePassword}
-              id="password"
-              required
-            />
-          </label>
-          <label className="formCheckbox">
-            Show Password
-            <input
-              className="checkbox"
-              type="checkbox"
-              value={showPassword}
-              onChange={() => setShowPassword((prev) => !prev)}
-            />
-          </label>
-          <label>
-            Date of Birth:
-            <input
-              type="date"
-              id="date_of_birth"
-              onChange={handleDate_of_birth}
-              required
-            />
-          </label>
-          <button type="submit">Create a Cat!</button>
-        </form>
-        <Link to={"/login"}>
-          <button>Have an Account?</button>
-        </Link>
-        {/* {errorMessage && <h2>{errorMessage}</h2>} */}
-      </div>
+        <label className="formLabel">
+          Username:
+          <input
+            type="text"
+            id="username"
+            placeholder="Username"
+            onChange={handleUsername}
+            required
+          />
+        </label>
+
+        <label className="formLabel">
+          Email Address:
+          <input
+            id="email"
+            type="email"
+            placeholder="Email"
+            onChange={handleEmail}
+            required
+          />
+        </label>
+
+        <label className="formLabel">
+          Password:
+          <input
+            type={showPassword ? "text" : "password"}
+            placeholder="Password"
+            onChange={handlePassword}
+            id="password"
+            required
+          />
+        </label>
+
+        <label className="formCheckbox">
+          Show Password
+          <input
+            className="checkbox"
+            type="checkbox"
+            value={showPassword}
+            onChange={() => setShowPassword((prev) => !prev)}
+          />
+        </label>
+
+        <label className="formLabel">
+          Date of Birth:
+          <input
+            type="date"
+            id="date_of_birth"
+            onChange={handleDate_of_birth}
+            required
+          />
+        </label>
+
+        <input
+          type="radio"
+          id="agreeterms"
+          name="terms"
+          value="Agree to Terms"
+          required="required"
+        />
+        <label className="formLabel" for="agreeterms">
+          I agree to the <Link to={"/terms"}>Terms of Use</Link> and
+          <Link to={"/privacy"}>Privacy Policy</Link>
+        </label>
+      </form>
+      <button className="button" type="submit">
+        Create Cat!
+      </button>
+
+      {/* {errorMessage && <h2>{errorMessage}</h2>} */}
     </>
   );
 };

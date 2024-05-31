@@ -1,6 +1,5 @@
-/* TODO - add your code to create a functional React component that renders a navigation bar for the different views in your single page application. You may consider conditionally rendering some options - for example 'Login' should be available if someone has not logged in yet. */
+import "../CSS/nav.css";
 import { Link } from "react-router-dom";
-import "../CSS/stylehome.css";
 
 export function Nav({ userToken, onPauseBackgroundMusic }) {
   const handleItemClick = () => {
@@ -13,34 +12,34 @@ export function Nav({ userToken, onPauseBackgroundMusic }) {
       <div className="navBox">
         <div className="navRow">
           <Link to="/">
-            <div className="navItem">Home</div>
+            <div className="button">Home</div>
           </Link>
 
           <Link to="/game" onClick={handleItemClick}>
-            <div className="navItem">Play!</div>
+            <div className="button">Play!</div>
           </Link>
 
           <Link to="/highscores" onClick={handleItemClick}>
-            <div className="navItem">High Scores</div>
+            <div className="button">High Scores</div>
           </Link>
 
           {userToken ? (
             <>
               <Link to="/user/:id">
-                <div className="navItem">Account</div>
+                <div className="button">Account</div>
               </Link>
 
               <Link to="/logout">
-                <div className="navItem">Logout</div>
+                <div className="button">Logout</div>
               </Link>
             </>
           ) : (
             <>
               <Link to="/register" onClick={handleItemClick}>
-                <div className="navItem">Register</div>
+                <div className="button">Register</div>
               </Link>
               <Link to="/login" onClick={handleItemClick}>
-                <div className="navItem">Login</div>
+                <div className="button">Login</div>
               </Link>
             </>
           )}

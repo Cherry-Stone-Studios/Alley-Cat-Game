@@ -1,0 +1,107 @@
+/* global css for elements */
+body {
+  font-family: customfont;
+  /* blue background */
+  background: url(../assets/gifs/tumblr_89a85fac4e9e203ebc0393e93a3e33be_95c1386f_500.webp);
+  /* red background 
+  background: url(../assets/gifs/tumblr_3f2d946ff2703d10134366a98b79634d_d3d1c980_500.webp);*/
+  /* city rain background 
+  background: url(../assets/gifs/nightsky2.gif);*/
+  /* tokyo rain background
+  background: url(../assets/gifs/michael-tenebrae-tokyo-rain.gif); */
+  background-size: 1300px;
+  background-color: black;
+  position: sticky;
+}
+
+button {
+  font-family: customfont;
+}
+
+a {
+  text-decoration: none;
+  font-family: customfont;
+}
+
+/* Changes Form Input Colors */
+input {
+  background-image: linear-gradient(
+  rgba(219, 243, 255, 0.3) 0%,
+  rgba(102, 243, 248, 0.664) 100%
+  );
+}
+
+/* Changes Form Input Colors */
+textarea {
+  background-image: linear-gradient(
+  rgba(219, 243, 255, 0.3) 0%,
+  rgba(102, 243, 248, 0.664) 100%
+);
+}
+
+p {
+  margin: 0;
+}
+
+/* Setting spacing rules for header elements */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-bottom: 0.625rem;
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+/* global css for global classes */
+
+.button {
+  font-size: xx-large;
+  padding: 10px;
+  margin: 5px; 
+  border: 1.5px dotted rgba(0, 255, 255, 0.219);
+  border-radius: 200px;
+  background-color: rgba(0, 88, 88, 0.35);
+  backdrop-filter: blur(5px);
+  color: aqua;
+  text-shadow: 4px 4px rgba(0, 88, 88, 0.788), -.25em 0 1em rgb(196, 251, 255);
+}
+
+.invisible {
+  color:transparent;
+  font-size: x-small;
+  text-align: center;
+}
+
+
+
+/* global css for global IDs */
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+/* global css for global at-rules */
+@font-face {
+  font-family: customfont;
+  src: url('src/assets/game_module/Pixeboy-z8XGD.ttf') format('truetype');
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}

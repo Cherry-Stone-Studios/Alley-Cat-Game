@@ -1,15 +1,10 @@
+import "../CSS/home.css";
 import React from "react";
-import { useNavigate } from "react-router-dom";
-import "../CSS/stylehome.css";
 import backgroundMusic from "../assets/music/menu.mp3";
-import { useEffect } from "react";
 import { Nav } from "./Nav.jsx";
-import { useState } from "react";
-import { UsernamePop } from "../Components/UsernamePop.jsx";
 import GameInfo from "./GameInfo.jsx";
 
-export function Home({ createGuestName, userToken }) {
-  const navigate = useNavigate();
+export function Home({ userToken }) {
   const bgMusic = new Audio(backgroundMusic);
 
   const playMusic = async () => {
@@ -45,29 +40,21 @@ export function Home({ createGuestName, userToken }) {
 
   return (
     <>
-      <h1>ALLEY CAT</h1>
-      <p>
-        In these cruel streets, a cat must rely on his smarts...and his chonk
+      <h1 className="alleyHeader">ALLEY CAT</h1>
+      <p className="alleyHome">
+        In the cruel streets, we must rely on our smarts and ability to level
+        our chonk.
       </p>
+      <div onClick={() => stopMusic()}>
+        <Nav userToken={userToken} />
+        <GameInfo />
+      </div>
       <img
         src={"/src/assets/gifs/curiouscat.gif"}
         onClick={() => playMusic()}
       />
       <br></br>
       <br></br>
-      <UsernamePop createGuestName={createGuestName} />
-
-      <div onClick={() => stopMusic()}>
-        <Nav userToken={userToken} />
-      </div>
-
-      {/* <button onClick={startGame}>START GAME</button>
-      <br></br>
-      <button>LOG IN</button>
-      <br></br>
-      <button>REGISTER</button>
-      <br></br>
-      <button>LEADERBOARDS</button> */}
     </>
   );
 }

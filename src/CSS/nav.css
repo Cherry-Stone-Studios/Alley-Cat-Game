@@ -1,0 +1,33 @@
+.navBox {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 5px;
+    margin: 5px; 
+  }
+  
+.navRow {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 8px;
+    margin: 8px; 
+  }
+  
+.navItem {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 5px;
+    margin: 5px; 
+    border: 1.5px dotted rgba(0, 255, 255, 0.219);
+    border-radius: 200px;
+    background-color: rgba(0, 88, 88, 0.35);
+    backdrop-filter: blur(5px);
+    font-size: 30px;
+    color: aqua;
+    text-shadow: 4px 4px rgba(0, 88, 88, 0.788), -.25em 0 1em rgb(196, 251, 255);
+  }

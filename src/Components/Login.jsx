@@ -1,7 +1,7 @@
-/* TODO - add your code to create a functional React component that renders a login form */
-import { Nav } from "./Nav";
+import "../CSS/form.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Nav } from "./Nav";
 import BackButton from "./BackButton";
 
 export function Login({ userToken, setUserToken }) {
@@ -44,10 +44,10 @@ export function Login({ userToken, setUserToken }) {
   return (
     <>
       {<Nav userToken={userToken} />}
-      <BackButton />
-      {/* {error && <alert>{error}</alert>} */}
-
-      <form className="loginForm" onSubmit={submitLogin}>
+      <BackButton />;
+      <br />
+      <h2 class="formHeader">Login to play with your username!</h2>
+      <form className="form" onSubmit={submitLogin}>
         <label className="formLabel">
           Username:
           <input type="text" onChange={(e) => setUsername(e.target.value)} />
@@ -71,9 +71,9 @@ export function Login({ userToken, setUserToken }) {
             onChange={() => setShowPassword((prev) => !prev)}
           />
         </label>
-
-        <button className="submit">Submit</button>
       </form>
+      <button className="button">Submit</button>
+      {/* {error && <alert>{error}</alert>} */}
     </>
   );
 }

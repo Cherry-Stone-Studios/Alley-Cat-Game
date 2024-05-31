@@ -1,14 +1,14 @@
-import "./index.css";
-import orangeCatImage from './assets/orangeCat/orangeCatSprite.png';
-import orangeSkinnyCatImage from './assets/orangeCat/orangeThinCatSprite.png';
-import orangeChonkCatImage from './assets/orangeCat/orangeChonkCatSprite.png';
-import blackCatImage from './assets/blackCat/blackCatSprite.png';
-import blackSkinnyCatImage from './assets/blackCat/blackThinCatSprite .png';
-import blackChonkCatImage from './assets/blackCat/blackChonkCatSprite .png';
-import dobermanDogImage from './assets/dogDoberman/dobermanDogSprite.png';
-import shibaDogImage from './assets/dogShiba/shibaDogSprite.png';
-import blackCrowImage from './assets/birdSprites/blackCrowSprite.png';
-import regularPigeonImage from './assets/birdSprites/regularPigeonSprite.png';
+import "./CSS/index.css";
+import orangeCatImage from "./assets/orangeCat/orangeCatSprite.png";
+import orangeSkinnyCatImage from "./assets/orangeCat/orangeThinCatSprite.png";
+import orangeChonkCatImage from "./assets/orangeCat/orangeChonkCatSprite.png";
+import blackCatImage from "./assets/blackCat/blackCatSprite.png";
+import blackSkinnyCatImage from "./assets/blackCat/blackThinCatSprite .png";
+import blackChonkCatImage from "./assets/blackCat/blackChonkCatSprite .png";
+import dobermanDogImage from "./assets/dogDoberman/dobermanDogSprite.png";
+import shibaDogImage from "./assets/dogShiba/shibaDogSprite.png";
+import blackCrowImage from "./assets/birdSprites/blackCrowSprite.png";
+import regularPigeonImage from "./assets/birdSprites/regularPigeonSprite.png";
 
 const characterSprite = [
   {
@@ -92,9 +92,7 @@ const characterSprite = [
       spriteWidth: 33,
       spriteHeight: 20,
     },
-    animationStates: [
-      { name: "walk", frames: 5, row: 0, speed: 6 },
-    ],
+    animationStates: [{ name: "walk", frames: 5, row: 0, speed: 6 }],
   },
   {
     sprite: "regularPigeon",
@@ -105,12 +103,9 @@ const characterSprite = [
       spriteWidth: 32,
       spriteHeight: 20,
     },
-    animationStates: [
-      { name: "walk", frames: 5, row: 0, speed: 6 },
-    ],
+    animationStates: [{ name: "walk", frames: 5, row: 0, speed: 6 }],
   },
 ];
-
 
 const animatedSprite = (player) => {
   let currRow = 0;
@@ -151,10 +146,10 @@ const animatedSprite = (player) => {
 
   if (player.stateChange) {
     player.frameCount = 0;
-    player.stateChange = false;    
+    player.stateChange = false;
   }
 
-  if (player.spriteDirection === 'right') {
+  if (player.spriteDirection === "right") {
     player.frameCount += 1;
     if (player.frameCount >= maxFrames * speed) {
       player.frameCount = 0;
@@ -170,4 +165,3 @@ const animatedSprite = (player) => {
 };
 
 export default animatedSprite;
-
