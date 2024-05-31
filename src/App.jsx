@@ -25,6 +25,12 @@ const FRIENDS_API = `https://cherry-stone-studios.onrender.com/api/users/friends
 function App() {
   const [userToken, setUserToken] = useState(null);
   const [score, setScore] = useState({});
+  const [username, setUsername] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [date_of_birth, setDate_of_birth] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <>
@@ -36,7 +42,18 @@ function App() {
 
         <Route
           path="/login"
-          element={<Login userToken={userToken} setUserToken={setUserToken} />}
+          element={
+            <Login
+              userToken={userToken}
+              setUserToken={setUserToken}
+              username={username}
+              setUsername={setUsername}
+              password={password}
+              setPassword={setPassword}
+              showPassword={showPassword}
+              setShowPassword={setShowPassword}
+            />
+          }
         />
 
         <Route
@@ -47,7 +64,22 @@ function App() {
         <Route
           path="/register"
           element={
-            <Register userToken={userToken} setUserToken={setUserToken} />
+            <Register
+              userToken={userToken}
+              setUserToken={setUserToken}
+              username={username}
+              setUsername={setUsername}
+              name={name}
+              setName={setName}
+              email={email}
+              setEmail={setEmail}
+              password={password}
+              setPassword={setPassword}
+              date_of_birth={date_of_birth}
+              setDate_of_birth={setDate_of_birth}
+              showPassword={showPassword}
+              setShowPassword={setShowPassword}
+            />
           }
         />
 

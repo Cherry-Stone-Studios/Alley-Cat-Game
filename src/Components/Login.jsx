@@ -4,30 +4,36 @@ import { useNavigate } from "react-router-dom";
 import { Nav } from "./Nav";
 import BackButton from "./BackButton";
 
-export function Login({ userToken, setUserToken }) {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState(null);
+const API_URL = "https://cherry-stone-studios.onrender.com";
+
+export function Login({
+  userToken,
+  setUserToken,
+  username,
+  setUsername,
+  password,
+  setPassword,
+  showPassword,
+  setShowPassword,
+}) {
   const navigate = useNavigate();
 
-  async function submitLogin(event) {
+  // Handles the login form submission
+  async function handleLogin(event) {
     event.preventDefault();
     try {
-      const registerPackage = {
+      const loginPackage = {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
       };
 
       const apiKeyResponse = await fetch(
-        "https://cherry-stone-studios.onrender.com/api/users/login",
-        registerPackage
+        `${API_URL}/api/users/login`,
+        loginPackage
       );
 
       const unpackedKey = await apiKeyResponse.json();
-
-      setUserToken(unpackedKey.token);
 
       if (unpackedKey.message == `Welcome ${username}, you're logged in!`) {
         console.log("Welcome back!", userToken);
@@ -37,7 +43,7 @@ export function Login({ userToken, setUserToken }) {
       alert(unpackedKey.message);
       navigate("/");
     } catch (error) {
-      setError(error.message);
+      throw error;
     }
   }
 
@@ -47,7 +53,7 @@ export function Login({ userToken, setUserToken }) {
       <BackButton />;
       <br />
       <h2 className="formHeader">Login to play with your username!</h2>
-      <form id="login" className="form" onSubmit={submitLogin}>
+      <form id="login" className="form" onSubmit={handleLogin}>
         <label className="formLabel">
           Username:
           <input type="text" onChange={(e) => setUsername(e.target.value)} />
@@ -72,7 +78,7 @@ export function Login({ userToken, setUserToken }) {
           />
         </label>
       </form>
-      <button type="submit" form="login" className="button">
+      <button form="login" type="submit" className="button">
         Submit
       </button>
       {/* {error && <alert>{error}</alert>} */}

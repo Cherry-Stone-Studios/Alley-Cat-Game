@@ -11,7 +11,7 @@ import enemyImage from "./assets/dogDoberman/Dog_Black.png";
 import flyingEnemy from "./assets/birdSprites/blackCrowSprite.png";
 import trashObstacle from "./assets/badGuys/trashcan.png";
 // import fishies
-import food1 from "./assets/fish/goldieSprite.png";
+import food1 from "./assets/Fish/goldieSprite.png";
 // import music and noises
 import backgroundMusic from "./assets/music/running90s.mp3";
 import gameoverMeow from "./assets/music/angrycatmeow.mp3";
@@ -616,10 +616,6 @@ const Game = ({ submitHighScore }) => {
 
       // Update player food count and state based on chonkMeter
       player.foodCount = chonkMeter;
-
-      if (player.foodCount === 7 || player.foodCount === 14) {
-        player.stateChange = true; // Trigger state change for animation
-      }
 
       // Remove marked food from the array
       foodArray = foodArray.filter((food) => !food.markedForDeletion);
