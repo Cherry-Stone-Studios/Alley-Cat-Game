@@ -1,7 +1,15 @@
 /* global css for global at-rules */
 @font-face {
-  font-family: customfont;
-  src: url('/src/Pixeboy-z8XGD.ttf'), url('/src/Pixeboy-z8XGD.ttf') format('truetype');
+  font-family: 'Pixeboy';
+  src: url('/src/Pixeboy.eot');
+  src: url('/src/Pixeboy.eot?#iefix') format('embedded-opentype'),
+      url('/src/Pixeboy.woff2') format('woff2'),
+      url('/src/Pixeboy.woff') format('woff'),
+      url('/src/Pixeboy.ttf') format('truetype'),
+      url('/src/Pixeboy.svg#Pixeboy') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
 }
 
 /* global css for elements */
