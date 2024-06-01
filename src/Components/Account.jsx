@@ -1,34 +1,77 @@
 import "../CSS/home.css";
+import { useState, useEffect, useRef } from "react";
 import React from "react";
 import backgroundMusic from "../assets/music/menu.mp3";
 import { Nav } from "./Nav.jsx";
 import EditInfo from "./EditInfo.jsx";
-import { useState, useEffect } from "react";
+
+import TheChonkImage from "../assets/ChonkCat/gatito_parada_espera.png";
 import Popup from "reactjs-popup";
 
 const API_URL = "https://cherry-stone-studios.onrender.com";
 
 export function Account({
   userToken,
-  setUserToken,
-  username,
-  setUsername,
+  userID,
   name,
-  setName,
+  username,
   email,
-  setEmail,
   password,
-  setPassword,
   date_of_birth,
-  setDate_of_birth,
+  setUsername,
+  setName,
+  setEmail,
+  setPassword,
+  showPassword,
+  setShowPassword,
 }) {
   // contruct new useState for new data, pass into editInfo component
   const [currName, setCurrName] = useState("");
-  const [currPassword, setCurrPassword] = useState("");
-  const [currEmail, setCurrEmail] = useState("");
   const [currUsername, setCurrUsername] = useState("");
+  const [currEmail, setCurrEmail] = useState("");
+  const [currPassword, setCurrPassword] = useState("");
+  const [thisUser, setThisUser] = useState([]);
 
   const bgMusic = new Audio(backgroundMusic);
+  const canvasRef = useRef(null);
+  const animationRef = useRef(null);
+  const frameCounterRef = useRef(0); // Counter for frame delay
+  const frameDelay = 8; // Number of frames to delay animation update
+
+  useEffect(() => {
+    async function getUser() {
+      try {
+        let fetchAPI = await fetch(`${API_URL}/api/users/username/${username}`);
+        let jsonCatch = await fetchAPI.json();
+        setThisUser(jsonCatch);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    getUser();
+  }, []);
+
+  const theupdatedUser = async () => {
+    try {
+      const response = await fetch(`${API_URL}/api/users/${thisUser.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: currName,
+          username: currUsername,
+          email: currEmail,
+          password: currPassword,
+        }),
+      });
+      const result = await response.json();
+
+      setUpdatedUser(result);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const playMusic = async () => {
     const confirmation = confirm(
@@ -61,18 +104,6 @@ export function Account({
     }
   };
 
-  let newName = username;
-  let newPassword = password;
-  let newEmail = email;
-  let newUsername = username;
-  let newDate_of_birth = date_of_birth;
-
-  console.log(`this is Account the newName`, newName);
-  console.log(`this is Account the newUsername`, newUsername);
-  console.log(`this is Account the newEmail`, newEmail);
-  console.log(`this is Account the newPassword`, newPassword);
-  console.log(`this is Account the newDate_of_birth`, newDate_of_birth);
-
   // put function to json with new user data
 
   // use new data from new useStates in json,
@@ -102,22 +133,107 @@ export function Account({
     // else, just close module
   };
 
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+
+    canvas.width = 800;
+    canvas.height = 720;
+
+    class TheChonk {
+      constructor(gameWidth, gameHeight) {
+        this.gameWidth = gameWidth;
+        this.gameHeight = gameHeight;
+        this.width = 500; // size of cats
+        this.height = 420;
+        this.spriteWidth = 128;
+        this.spriteHeight = 128;
+        this.image = new Image();
+        this.image.src = TheChonkImage;
+        this.frameX = 0;
+        this.frameY = 0;
+        this.maxFrameX = 5; // number of columns
+        this.maxFrameY = 14; // number of rows
+        this.reverse = false; // to track the direction of the animation
+      }
+
+      draw(context) {
+        context.clearRect(0, 0, this.gameWidth, this.gameHeight);
+        context.drawImage(
+          this.image,
+          this.frameX * this.spriteWidth,
+          this.frameY * this.spriteHeight,
+          this.spriteWidth,
+          this.spriteHeight,
+          150,
+          0,
+          this.width,
+          this.height
+        );
+      }
+
+      update() {
+        frameCounterRef.current++; // Increment frame counter
+        if (frameCounterRef.current >= frameDelay) {
+          // Check if enough frames have passed
+          frameCounterRef.current = 0; // Reset frame counter
+          if (!this.reverse) {
+            if (this.frameX < this.maxFrameX) {
+              this.frameX++;
+            } else if (this.frameY < this.maxFrameY) {
+              this.frameX = 0;
+              this.frameY++;
+            } else {
+              this.reverse = true;
+            }
+          } else {
+            if (this.frameX > 0) {
+              this.frameX--;
+            } else if (this.frameY > 0) {
+              this.frameX = this.maxFrameX;
+              this.frameY--;
+            } else {
+              this.reverse = false;
+            }
+          }
+        }
+      }
+    }
+
+    const theChonk = new TheChonk(canvas.width, canvas.height);
+
+    theChonk.image.onload = () => {
+      const animate = () => {
+        theChonk.update();
+        theChonk.draw(ctx);
+        animationRef.current = requestAnimationFrame(animate);
+      };
+      animate();
+    };
+
+    return () => {
+      cancelAnimationFrame(animationRef.current);
+    };
+  }, []);
+
   return (
     <>
-      <h1 className="alleyHeader">{`WELCOME HOME, ${username}`}</h1>
+      <h1 className="alleyHeader">{`WELCOME HOME, ${thisUser.username}`}</h1>
+
       <p className="alleyHome">
         Prowl the alleys and collect fish in this purr-fect adventure!
       </p>
       <div onClick={() => stopMusic()}>
-        <Nav userToken={userToken} />
+        <Nav userToken={userToken} userID={userID} />
       </div>
-      <img src={"/src/curiouscat.gif"} onClick={() => playMusic()} />
+      {/* <img src={"/src/curiouscat.gif"} onClick={() => playMusic()} /> */}
+      <canvas ref={canvasRef} id="canvas2" onClick={() => playMusic()}></canvas>
       <div>
         <h2 className="alleyHome">Global Leaderboard</h2>
         {/* PLACE LEADERBOARD COMPONENT */}
         {/* <Leaderboard /> */}
         {/* PLACE USER LEADERBOARD COMPONENT */}
-        <h2 className="alleyHome">{`${username}'s Leaderboard`}</h2>
+        <h2 className="alleyHome">{`${thisUser.username}'s Leaderboard`}</h2>
         {/* <UserLeaderboard/> */}
         <EditInfo
           setCurrUsername={setCurrUsername}
@@ -130,43 +246,6 @@ export function Account({
           newUsername={newUsername}
           newDate_of_birth={newDate_of_birth}
         />
-
-        <Popup
-          trigger={<button className="button"> Delete Account </button>}
-          modal
-          nested
-        >
-          {(close) => (
-            <div className="modal">
-              <button className="close" onClick={close}>
-                &times;
-              </button>
-              <div className="header">
-                {" "}
-                Are you sure you want to delete your account {`${newUsername}`}?{" "}
-              </div>
-              <div className="content">
-                <form>
-                  {/* Form fields for user info */}
-                  <button type="submit" onChange={(e) => closeSubmit()}>
-                    Delete My Account
-                  </button>
-                </form>
-              </div>
-              <div className="actions">
-                <button
-                  className="button"
-                  onClick={() => {
-                    console.log("modal closed");
-                    close();
-                  }}
-                >
-                  close
-                </button>
-              </div>
-            </div>
-          )}
-        </Popup>
       </div>
 
       <br></br>

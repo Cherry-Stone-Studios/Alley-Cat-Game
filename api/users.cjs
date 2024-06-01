@@ -134,15 +134,11 @@ router.put("/:id", requireUser, async (req, res, next) => {
   // grab the id from body -> this is the user who is interacting with our app
   const currId = req.user.id;
 
-  // check to see if the two usernames are a match
+  // check to see if the two ID are a match
   const matchedId = id === currId;
 
-  // if they are not a match, send them a non-authorized error (401)
-  if (!matchedId) {
-    res.status(401).send({ message: `Unathorized access detected!` });
-    //else if they are, run the updateUsers function
-  } else {
-    // update the user with given username from req.params
+  // if they are a match, edit the user
+  if (matchedId === true) {
     try {
       const singleUser = await userUpdatesUser({
         id,
@@ -157,6 +153,11 @@ router.put("/:id", requireUser, async (req, res, next) => {
     } catch (err) {
       next(err);
     }
+    //else, they're not the right user
+  } else {
+    res.status(401).send({ message: `Unathorized access detected!` });
+
+    // update the user with given username from req.params
   }
 });
 
