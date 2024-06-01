@@ -2,13 +2,29 @@ import "../CSS/gameinfo.css";
 import React from "react";
 import Popup from "reactjs-popup";
 
-const EditInfo = ({ username, name, email, password, date_of_birth }) => {
+const EditInfo = ({
+  setCurrUsername,
+  setCurrName,
+  setCurrEmail,
+  setCurrPassword,
+  newName,
+  newPassword,
+  newEmail,
+  newUsername,
+  newDate_of_birth,
+}) => {
   const updateInfo = async () => {
     try {
     } catch (error) {
       console.log(error);
     }
   };
+
+  console.log(`this is the EditInfo newName`, newName);
+  console.log(`this is the EditInfo newUsername`, newUsername);
+  console.log(`this is the EditInfo newEmail`, newEmail);
+  console.log(`this is the EditInfo newPassword`, newPassword);
+  console.log(`this is the EditInfo newDate_of_birth`, newDate_of_birth);
 
   return (
     <Popup
@@ -21,42 +37,40 @@ const EditInfo = ({ username, name, email, password, date_of_birth }) => {
           <button className="close" onClick={close}>
             &times;
           </button>
-          <div className="header"> {`${username}'s Info:`} </div>
+          <div className="header"> {`${newUsername}`} </div>
           <div className="content">
-            <div>
-              <form>
-                {/* Form fields for user info */}
-                username:
-                <input
-                  type="text"
-                  placeholder={`${username}`}
-                  // onChange={(e) => setUsername(e.target.value)}
-                />
-                Name:
-                <input
-                  type="text"
-                  placeholder={`${name}`}
-                  // onChange={(e) => setName(e.target.value)}
-                />
-                Password:
-                <input
-                  type="password"
-                  placeholder={`${password}`}
-                  // onChange={(e) => setPassword(e.target.value)}
-                />
-                Email:
-                <input
-                  type="text"
-                  placeholder={`${email}`}
-                  // onChange={(e) => setEmail(e.target.value)}
-                />
-                D.O.B:
-                <input type="text" placeholder={`${date_of_birth}`} />
-                <button type="submit" onChange={(e) => closeSubmit()}>
-                  Submit
-                </button>
-              </form>
-            </div>
+            <form>
+              {/* Form fields for user info */}
+              username:
+              <input
+                type="text"
+                placeholder={`${newUsername}`}
+                // onChange={(e) => setUsername(e.target.value)}
+              />
+              Name:
+              <input
+                type="text"
+                placeholder={`${newName}`}
+                // onChange={(e) => setName(e.target.value)}
+              />
+              Password:
+              <input
+                type="password"
+                placeholder={`${newPassword}`}
+                // onChange={(e) => setPassword(e.target.value)}
+              />
+              Email:
+              <input
+                type="text"
+                placeholder={`${newEmail}`}
+                // onChange={(e) => setEmail(e.target.value)}
+              />
+              D.O.B:
+              <p>{`${newDate_of_birth}`}</p>
+              <button type="submit" onChange={(e) => closeSubmit()}>
+                Submit
+              </button>
+            </form>
           </div>
           <div className="actions">
             <button
