@@ -2,12 +2,24 @@ import "../CSS/home.css";
 import React from "react";
 import backgroundMusic from "../assets/music/menu.mp3";
 import { Nav } from "./Nav.jsx";
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import EditInfo from "./EditInfo.jsx";
 
 const API_URL = "https://cherry-stone-studios.onrender.com";
 
-export function Account({ userToken, username }) {
+export function Account({
+  userToken,
+  setUserToken,
+  username,
+  setUsername,
+  name,
+  setName,
+  email,
+  setEmail,
+  password,
+  setPassword,
+  date_of_birth,
+  setDate_of_birth,
+}) {
   const bgMusic = new Audio(backgroundMusic);
 
   const playMusic = async () => {
@@ -58,6 +70,17 @@ export function Account({ userToken, username }) {
         {/* PLACE USER LEADERBOARD COMPONENT */}
         <h2 className="alleyHome">{`${username}'s Leaderboard`}</h2>
         {/* <UserLeaderboard/> */}
+        <EditInfo
+          setUsername={setUsername}
+          userToken={userToken}
+          name={name}
+          setName={setName}
+          email={email}
+          setEmail={setEmail}
+          password={password}
+          setPassword={setPassword}
+          date_of_birth={date_of_birth}
+        />
       </div>
       <br></br>
       <br></br>

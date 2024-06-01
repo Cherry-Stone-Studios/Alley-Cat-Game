@@ -85,7 +85,21 @@ function App() {
 
         <Route
           path="/user/:id"
-          element={<Account username={username} userToken={userToken} />}
+          element={
+            <Account
+              username={username}
+              setUsername={setUsername}
+              userToken={userToken}
+              name={name}
+              setName={setName}
+              email={email}
+              setEmail={setEmail}
+              password={password}
+              setPassword={setPassword}
+              date_of_birth={date_of_birth}
+              setDate_of_birth={setDate_of_birth}
+            />
+          }
         />
 
         <Route
