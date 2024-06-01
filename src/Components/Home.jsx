@@ -5,7 +5,7 @@ import { Nav } from "./Nav.jsx";
 import GameInfo from "./GameInfo.jsx";
 import TheChonkImage from "../assets/ChonkCat/gatito_parada_espera.png";
 
-export function Home({ userToken }) {
+export function Home({ userToken, userID }) {
   const bgMusic = new Audio(backgroundMusic);
   const canvasRef = useRef(null);
   const animationRef = useRef(null);
@@ -84,7 +84,8 @@ export function Home({ userToken }) {
 
       update() {
         frameCounterRef.current++; // Increment frame counter
-        if (frameCounterRef.current >= frameDelay) { // Check if enough frames have passed
+        if (frameCounterRef.current >= frameDelay) {
+          // Check if enough frames have passed
           frameCounterRef.current = 0; // Reset frame counter
           if (!this.reverse) {
             if (this.frameX < this.maxFrameX) {
@@ -133,11 +134,11 @@ export function Home({ userToken }) {
         our chonk.
       </p>
       <div onClick={() => stopMusic()}>
-        <Nav userToken={userToken} />
+        <Nav userToken={userToken} userID={userID} />
         <GameInfo />
       </div>
       {/* <img src={TheChonkImage} onClick={() => playMusic()} /> */}
-      <canvas ref={canvasRef} id="canvas2"></canvas>
+      <canvas ref={canvasRef} id="canvas2" onClick={() => playMusic()}></canvas>
       <br></br>
       <br></br>
     </>

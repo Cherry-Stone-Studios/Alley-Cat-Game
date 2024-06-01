@@ -10,6 +10,7 @@ const API_URL = "https://cherry-stone-studios.onrender.com";
 
 export function GamePage({
   userToken,
+  userID,
   setScore,
   username,
   setGuestname,
@@ -75,7 +76,7 @@ export function GamePage({
   return (
     <>
       <h1 className="textHeader">Good luck! Eat lots of fish!</h1>
-      {<Nav userToken={userToken} />}
+      {<Nav userToken={userToken} userID={userID} />}
 
       <Game submitHighScore={submitHighScore} />
 
@@ -113,8 +114,6 @@ export function GamePage({
           )}
         </Popup>
       }
-
-      {/* {<UsernamePop guestname={guestname} />} */}
     </>
   );
 }

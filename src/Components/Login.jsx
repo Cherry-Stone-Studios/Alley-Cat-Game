@@ -8,6 +8,8 @@ const API_URL = "https://cherry-stone-studios.onrender.com";
 export function Login({
   userToken,
   setUserToken,
+  userID,
+  setUserID,
   username,
   setUsername,
   password,
@@ -40,6 +42,7 @@ export function Login({
         console.log("Welcome back!", username);
       }
       setUserToken(unpackedKey.token);
+      setUserID(unpackedKey.id);
       localStorage.setItem("token", unpackedKey.token);
       alert(unpackedKey.message);
       navigate("/");
@@ -50,7 +53,7 @@ export function Login({
 
   return (
     <>
-      {<Nav userToken={userToken} />}
+      {<Nav userToken={userToken} userID={userID} />}
 
       <br />
       <h2 className="textHeader">Login</h2>
