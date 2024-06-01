@@ -89,6 +89,7 @@ const Register = ({
       if (response.ok) {
         localStorage.setItem("token", data.token);
         setUserToken(data.token);
+        alert(data.message);
         navigate("/");
       }
     } catch (error) {
