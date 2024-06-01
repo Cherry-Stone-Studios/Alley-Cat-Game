@@ -4,6 +4,7 @@ import backgroundMusic from "../assets/music/menu.mp3";
 import { Nav } from "./Nav.jsx";
 import EditInfo from "./EditInfo.jsx";
 import { useState, useEffect } from "react";
+import Popup from "reactjs-popup";
 
 const API_URL = "https://cherry-stone-studios.onrender.com";
 
@@ -129,6 +130,43 @@ export function Account({
           newUsername={newUsername}
           newDate_of_birth={newDate_of_birth}
         />
+
+        <Popup
+          trigger={<button className="button"> Delete Account </button>}
+          modal
+          nested
+        >
+          {(close) => (
+            <div className="modal">
+              <button className="close" onClick={close}>
+                &times;
+              </button>
+              <div className="header">
+                {" "}
+                Are you sure you want to delete your account {`${newUsername}`}?{" "}
+              </div>
+              <div className="content">
+                <form>
+                  {/* Form fields for user info */}
+                  <button type="submit" onChange={(e) => closeSubmit()}>
+                    Delete My Account
+                  </button>
+                </form>
+              </div>
+              <div className="actions">
+                <button
+                  className="button"
+                  onClick={() => {
+                    console.log("modal closed");
+                    close();
+                  }}
+                >
+                  close
+                </button>
+              </div>
+            </div>
+          )}
+        </Popup>
       </div>
 
       <br></br>
