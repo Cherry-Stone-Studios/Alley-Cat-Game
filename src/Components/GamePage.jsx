@@ -115,8 +115,6 @@ export function GamePage({
           )}
         </Popup>
       }
-
-      {/* {<UsernamePop guestname={guestname} />} */}
     </>
   );
 }
