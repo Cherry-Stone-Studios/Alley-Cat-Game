@@ -1,19 +1,23 @@
 import "../CSS/background.css";
+import "../CSS/gameinfo.css";
 import Game from "../game.jsx";
 import { Nav } from "./Nav";
 import { useState } from "react";
+import React from "react";
+import Popup from "reactjs-popup";
 
 const API_URL = "https://cherry-stone-studios.onrender.com";
 
-export function GamePage({ userToken, setScore, username }) {
-  // const [guestname, setGuestname] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
-
-  console.log("THIS IS THE USERNAME", username);
-
+export function GamePage({
+  userToken,
+  setScore,
+  username,
+  setGuestname,
+  guestname,
+  setGuestScore,
+  guestScore,
+}) {
   const submitHighScore = async (score) => {
-    console.log("THIS IS THE ASYNC USERNAME", username);
-
     if (username.length > 0) {
       try {
         const createScore = await fetch(`${API_URL}/api/scores/`, {
@@ -24,20 +28,24 @@ export function GamePage({ userToken, setScore, username }) {
           body: JSON.stringify({
             value: score,
             username: username,
+            guestname: "",
             created_on: new Date().toISOString(),
           }),
         });
 
         const data = await createScore.json();
 
-        console.log("THIS IS THE UNPACKED KEY", data);
-
         setScore(data.value);
       } catch (error) {
         console.log(error);
       }
     } else {
-      const guestname = prompt("What name do you want for your high score?");
+      setGuestScore(score);
+    }
+  };
+
+  const guestHighScore = async () => {
+    if (guestScore > 0) {
       try {
         const createScore = await fetch(`${API_URL}/api/scores/`, {
           method: "POST",
@@ -45,98 +53,68 @@ export function GamePage({ userToken, setScore, username }) {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            value: score,
+            value: guestScore,
             guestname: guestname,
+            username: "",
             created_on: new Date().toISOString(),
           }),
         });
 
         const data = await createScore.json();
 
-        console.log("THIS IS THE UNPACKED KEY", data);
-
         setScore(data.value);
 
-        // setScore({ data });
+        setScore({ data });
+        setGuestScore(0);
       } catch (error) {
         console.log(error);
       }
     }
   };
 
-  // const submitHighScore = async (score) => {
-  //   // check to see if there is a userToken
-  //   // if there is a userToken, get the username from the body and create the high score
-  //   // else, the player is a guest and requires a guestname
-  //   // if the guestname exists, create a guest high score
-  //   // else, run the createGuestName function to
-  //   // collect a guestname input from the user
-  //   // then create a highscore for the user
-  //   // using the api call with the correct inputs for each if statement
-  //   // use the body to set the date/time, user info, etc
-
-  //   //   createGuestName();
-  //   //   setScore(score);
-  //   //   console.log(score);
-
-  //   const guestname = prompt("What name do you want for your high score?");
-
-  //   try {
-  //     const createScore = {
-  //       method: "POST",
-  //       headers: { "Content-Type": "application/json" },
-  //       body: JSON.stringify({
-  //         score,
-  //         username,
-  //         guestname,
-  //         date: new Date().toISOString(),
-  //       }),
-  //     };
-
-  //     const apiKeyResponse = await fetch(
-  //       "https://cherry-stone-studios.onrender.com/api/scores/",
-  //       createScore
-  //     );
-
-  //     const unpackedKey = await apiKeyResponse.json();
-
-  //     setScore(unpackedKey.token);
-  //   } catch (error) {
-  //     setError(error.message);
-  //   }
-  // };
-
-  // const createGuestName = async () => {
-  //   // this function will need to create a popup for the user
-  //   // if the user already has a token, return their username to the higScore
-  //   // that will prompt them with an empty text box
-  //   // to enter their guestname in order to save their highscore
-  //   // and a message encouraging them to register to save their scores
-
-  //   {
-  //     userToken ? { username } : setIsOpen(true);
-  //   }
-  // };
-
-  // console.log("THIS IS THE USE STATE guestname", guestname);
-
-  // field showing the final highscore
-  // if user is a registered member, show their username next to the score
-  // if the user is a guest, show an input box to allow them to add a guestname
-  // include a message that highscore names need to be 25 characters or less
-
   return (
     <>
-      <h1 className="gameHeader">Good luck! Eat lots of fish!</h1>
+      <h1 className="textHeader">Good luck! Eat lots of fish!</h1>
       {<Nav userToken={userToken} />}
 
       <Game submitHighScore={submitHighScore} />
 
-      {/* <UsernamePop
-         setGuestname={setGuestname}
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-      /> */}
+      {
+        <Popup open={guestScore > 0} modal nested>
+          {(close) => (
+            <div className="modal">
+              <button className="close" onClick={close}>
+                &times;
+              </button>
+              <div className="header">
+                Register to Automatically Save Scores{" "}
+              </div>
+              <div className="content">
+                <form>
+                  <label className="formLabel">
+                    Username:
+                    <input
+                      type="text"
+                      onChange={(e) => setGuestname(e.target.value)}
+                    />
+                  </label>
+                </form>
+              </div>
+              <div className="actions">
+                <button
+                  className="button"
+                  onClick={async () => {
+                    await guestHighScore();
+                    close();
+                  }}
+                >
+                  Save High Score!
+                </button>
+              </div>
+            </div>
+          )}
+        </Popup>
+      }
 
       {/* {<UsernamePop guestname={guestname} />} */}
     </>

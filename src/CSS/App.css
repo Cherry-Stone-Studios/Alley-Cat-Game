@@ -1,6 +1,6 @@
 /* global css for global at-rules */
 @font-face {
-  font-family: 'Pixeboy';
+  font-family: customfont;
   src: url('/src/Pixeboy.eot');
   src: url('/src/Pixeboy.eot?#iefix') format('embedded-opentype'),
       url('/src/Pixeboy.woff2') format('woff2'),
@@ -93,7 +93,11 @@ h6 {
   text-align: center;
 }
 
-
+.textHeader {
+  font-size: 8rem;
+  color: aqua;
+  text-shadow: 4px 4px rgba(0, 88, 88, 0.788), -.25em 0 1em rgb(0, 0, 0);
+}
 
 /* global css for global IDs */
 #root {

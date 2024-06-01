@@ -1,5 +1,4 @@
 import "../CSS/form.css";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Nav } from "./Nav";
 import BackButton from "./BackButton";
@@ -52,9 +51,10 @@ export function Login({
   return (
     <>
       {<Nav userToken={userToken} />}
-      <BackButton />;
+
       <br />
-      <h2 className="formHeader">Login to play with your username!</h2>
+      <h2 className="textHeader">Login</h2>
+      <h3 className="loginh3">Please play safely!</h3>
       <form id="login" className="form" onSubmit={handleLogin}>
         <label className="formLabel">
           Username:
@@ -83,6 +83,7 @@ export function Login({
           Submit
         </button>
       </form>
+      <BackButton />
       {/* {error && <alert>{error}</alert>} */}
     </>
   );

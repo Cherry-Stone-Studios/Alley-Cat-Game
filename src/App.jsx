@@ -17,6 +17,7 @@ import Player from "./SpriteAnimation.jsx";
 
 import { Route, Routes } from "react-router-dom";
 
+const API_URL = "https://cherry-stone-studios.onrender.com";
 const USER_API = `https://cherry-stone-studios.onrender.com/api/users/`;
 const SCORE_API = `https://cherry-stone-studios.onrender.com/api/scores/`;
 const ADMIN_API = `https://cherry-stone-studios.onrender.com/api/admin/`;
@@ -31,6 +32,8 @@ function App() {
   const [password, setPassword] = useState("");
   const [date_of_birth, setDate_of_birth] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [guestname, setGuestname] = useState("");
+  const [guestScore, setGuestScore] = useState(0);
 
   return (
     <>
@@ -95,6 +98,10 @@ function App() {
               userToken={userToken}
               setScore={setScore}
               username={username}
+              setGuestname={setGuestname}
+              guestname={guestname}
+              setGuestScore={setGuestScore}
+              guestScore={guestScore}
             />
           }
         />

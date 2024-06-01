@@ -84,7 +84,7 @@ const Register = ({
         }),
       });
       const data = await response.json();
-      console.log(data);
+
       if (response.ok) {
         localStorage.setItem("token", data.token);
         setUserToken(data.token);
@@ -98,9 +98,12 @@ const Register = ({
   return (
     <>
       {<Nav userToken={userToken} />}
-      <BackButton />
       <br />
-      <h2 className="formHeader">Create an Account!</h2>
+      <h2 className="textHeader">Create an Account!</h2>
+      <h3 className="loginh3">⮞ Compete for the best score!</h3>
+      <h3 className="loginh3">⮞ Instantly Save Your High Score</h3>
+      <h3 className="loginh3">⮞ See Your Personal Top Scores</h3>
+      <h3 className="loginh3">⮞ Connect With Other Cool Cats</h3>
       <form id="register" onSubmit={handleRegister} className="form">
         <label className="formLabel">
           Name:
@@ -181,7 +184,7 @@ const Register = ({
           Create Cat!
         </button>
       </form>
-
+      <BackButton />
       {/* {errorMessage && <h2>{errorMessage}</h2>} */}
     </>
   );
