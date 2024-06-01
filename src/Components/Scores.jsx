@@ -1,13 +1,12 @@
 import { Nav } from "./Nav";
-import BackButton from "./BackButton";
+import GlobalScores from "./GlobalScores";
 
 export function Scores({ userToken }) {
   return (
     <>
-      <h1>SCORES</h1>
+      <h1 className="textHeader">Global High Scores</h1>
       {<Nav userToken={userToken} />}
-      <BackButton />;
-      <br />
+      <GlobalScores />
     </>
   );
 }
