@@ -54,7 +54,6 @@ const GameInfo = () => (
           <button
             className="button"
             onClick={() => {
-              console.log("modal closed");
               close();
             }}
           >

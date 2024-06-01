@@ -1,6 +1,5 @@
 import "../CSS/nav.css";
 import { Link } from "react-router-dom";
-import BackButton from "./BackButton";
 
 export function Nav({ userToken, onPauseBackgroundMusic }) {
   const handleItemClick = () => {

@@ -8,15 +8,16 @@ import Popup from "reactjs-popup";
 
 const API_URL = "https://cherry-stone-studios.onrender.com";
 
-export function GamePage({ userToken, setScore, username }) {
-  const [guestname, setGuestname] = useState("");
-  const [guestScore, setGuestScore] = useState(0);
-
-  console.log("THIS IS THE USERNAME", username);
-
+export function GamePage({
+  userToken,
+  setScore,
+  username,
+  setGuestname,
+  guestname,
+  setGuestScore,
+  guestScore,
+}) {
   const submitHighScore = async (score) => {
-    console.log("THIS IS THE ASYNC USERNAME", username);
-
     if (username.length > 0) {
       try {
         const createScore = await fetch(`${API_URL}/api/scores/`, {
@@ -34,8 +35,6 @@ export function GamePage({ userToken, setScore, username }) {
 
         const data = await createScore.json();
 
-        console.log("THIS IS THE UNPACKED KEY", data);
-
         setScore(data.value);
       } catch (error) {
         console.log(error);
@@ -46,7 +45,6 @@ export function GamePage({ userToken, setScore, username }) {
   };
 
   const guestHighScore = async () => {
-    console.log("THIS IS THE GUEST NAME STATE", guestname);
     if (guestScore > 0) {
       try {
         const createScore = await fetch(`${API_URL}/api/scores/`, {
@@ -63,8 +61,6 @@ export function GamePage({ userToken, setScore, username }) {
         });
 
         const data = await createScore.json();
-
-        console.log("THIS IS THE UNPACKED KEY", data);
 
         setScore(data.value);
 
@@ -108,7 +104,6 @@ export function GamePage({ userToken, setScore, username }) {
                 <button
                   className="button"
                   onClick={async () => {
-                    console.log("Submitting Guest scores", guestScore);
                     await guestHighScore();
                     close();
                   }}
