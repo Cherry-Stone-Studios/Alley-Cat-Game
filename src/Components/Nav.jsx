@@ -1,7 +1,7 @@
 import "../CSS/nav.css";
 import { Link } from "react-router-dom";
 
-export function Nav({ userToken, onPauseBackgroundMusic }) {
+export function Nav({ userToken, userID, onPauseBackgroundMusic }) {
   const handleItemClick = () => {
     if (onPauseBackgroundMusic) {
       onPauseBackgroundMusic();
@@ -30,10 +30,10 @@ export function Nav({ userToken, onPauseBackgroundMusic }) {
 
           {userToken ? (
             <>
-              {window.location.pathname === "/user/:id" ? (
+              {window.location.pathname === `/user/${userID}` ? (
                 <></>
               ) : (
-                <Link to="/user/:id">
+                <Link to={`/user/${userID}`}>
                   <div className="button">Account</div>
                 </Link>
               )}

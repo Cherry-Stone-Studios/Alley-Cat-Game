@@ -8,6 +8,7 @@ const API_URL = "https://cherry-stone-studios.onrender.com";
 
 const Register = ({
   userToken,
+  userID,
   setUserToken,
   username,
   setUsername,
@@ -97,7 +98,7 @@ const Register = ({
 
   return (
     <>
-      {<Nav userToken={userToken} />}
+      {<Nav userToken={userToken} userID={userID} />}
       <br />
       <h2 className="textHeader">Create an Account!</h2>
       <h3 className="loginh3">⮞ Compete for the best score!</h3>

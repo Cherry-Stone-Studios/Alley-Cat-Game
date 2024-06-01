@@ -5,7 +5,7 @@ import { Nav } from "./Nav.jsx";
 import GameInfo from "./GameInfo.jsx";
 import TheChonkImage from "../assets/ChonkCat/gatito_parada_espera.png";
 
-export function Home({ userToken }) {
+export function Home({ userToken, userID }) {
   const bgMusic = new Audio(backgroundMusic);
   const canvasRef = useRef(null);
   const animationRef = useRef(null);
@@ -134,7 +134,7 @@ export function Home({ userToken }) {
         our chonk.
       </p>
       <div onClick={() => stopMusic()}>
-        <Nav userToken={userToken} />
+        <Nav userToken={userToken} userID={userID} />
         <GameInfo />
       </div>
       {/* <img src={TheChonkImage} onClick={() => playMusic()} /> */}
