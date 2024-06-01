@@ -11,7 +11,6 @@ export function Nav({ userToken, onPauseBackgroundMusic }) {
 
   return (
     <>
-      <BackButton />
       <div className="navBox">
         <div className="navRow">
           {window.location.pathname === "/" ? (

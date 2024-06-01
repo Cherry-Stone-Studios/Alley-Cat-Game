@@ -40,7 +40,7 @@ export function Home({ userToken }) {
 
   return (
     <>
-      <h1 className="alleyHeader">ALLEY CAT</h1>
+      <h1 className="textHeader">ALLEY CAT</h1>
       <p className="alleyHome">
         In the cruel streets, we must rely on our smarts and ability to level
         our chonk.
