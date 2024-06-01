@@ -2,12 +2,31 @@ import "../CSS/home.css";
 import React from "react";
 import backgroundMusic from "../assets/music/menu.mp3";
 import { Nav } from "./Nav.jsx";
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import EditInfo from "./EditInfo.jsx";
+import { useState, useEffect } from "react";
 
 const API_URL = "https://cherry-stone-studios.onrender.com";
 
-export function Account({ userToken, username }) {
+export function Account({
+  userToken,
+  setUserToken,
+  username,
+  setUsername,
+  name,
+  setName,
+  email,
+  setEmail,
+  password,
+  setPassword,
+  date_of_birth,
+  setDate_of_birth,
+}) {
+  // contruct new useState for new data, pass into editInfo component
+  const [currName, setCurrName] = useState("");
+  const [currPassword, setCurrPassword] = useState("");
+  const [currEmail, setCurrEmail] = useState("");
+  const [currUsername, setCurrUsername] = useState("");
+
   const bgMusic = new Audio(backgroundMusic);
 
   const playMusic = async () => {
@@ -41,6 +60,47 @@ export function Account({ userToken, username }) {
     }
   };
 
+  let newName = username;
+  let newPassword = password;
+  let newEmail = email;
+  let newUsername = username;
+  let newDate_of_birth = date_of_birth;
+
+  console.log(`this is Account the newName`, newName);
+  console.log(`this is Account the newUsername`, newUsername);
+  console.log(`this is Account the newEmail`, newEmail);
+  console.log(`this is Account the newPassword`, newPassword);
+  console.log(`this is Account the newDate_of_birth`, newDate_of_birth);
+
+  // put function to json with new user data
+
+  // use new data from new useStates in json,
+  // use new json data to set original props
+
+  const updateInfo = async () => {
+    // if data is not the same, trigger the api PUT call
+    try {
+      const updatedUser = await fetch(`${API_URL}/api/scores/`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: newUsername,
+          name: newName,
+          password: newPassword,
+          email: newEmail,
+        }),
+      });
+      const data = await createScore.json();
+
+      setScore(data.value);
+    } catch (error) {
+      console.log(error);
+    }
+    // else, just close module
+  };
+
   return (
     <>
       <h1 className="alleyHeader">{`WELCOME HOME, ${username}`}</h1>
@@ -58,7 +118,19 @@ export function Account({ userToken, username }) {
         {/* PLACE USER LEADERBOARD COMPONENT */}
         <h2 className="alleyHome">{`${username}'s Leaderboard`}</h2>
         {/* <UserLeaderboard/> */}
+        <EditInfo
+          setCurrUsername={setCurrUsername}
+          setCurrName={setCurrName}
+          setCurrEmail={setCurrEmail}
+          setCurrPassword={setCurrPassword}
+          newName={newName}
+          newPassword={newPassword}
+          newEmail={newEmail}
+          newUsername={newUsername}
+          newDate_of_birth={newDate_of_birth}
+        />
       </div>
+
       <br></br>
       <br></br>
     </>

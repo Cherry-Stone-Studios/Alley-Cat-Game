@@ -83,9 +83,7 @@ export function GamePage({
         <Popup open={guestScore > 0} modal nested>
           {(close) => (
             <div className="modal">
-              <button className="close" onClick={close}>
-                &times;
-              </button>
+              <button className="close" onClick={close}></button>
               <div className="header">
                 Register to Automatically Save Scores{" "}
               </div>
