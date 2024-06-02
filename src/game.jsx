@@ -26,6 +26,7 @@ import gameoverMeow from "./assets/music/angrycatmeow.mp3";
 const Game = ({ submitHighScore, username }) => {
   useEffect(() => {
     const canvas = document.getElementById("canvas1");
+    // canvas.focus(); // forces the browser to focus on the game
     const ctx = canvas.getContext("2d");
     canvas.width = 800;
     canvas.height = 720;
@@ -800,12 +801,14 @@ const Game = ({ submitHighScore, username }) => {
   }, []);
 
   return (
-    <div className="arcadeBox">
-      <div className="gameBox"></div>
-      <div className="shiftDown">
-        <canvas id="canvas1"></canvas>
+    <>
+      <div className="arcadeBox">
+        <div className="gameBox"></div>
+        <div className="shiftDown">
+          <canvas id="canvas1"></canvas>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

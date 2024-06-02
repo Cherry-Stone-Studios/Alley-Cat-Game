@@ -86,7 +86,7 @@ export function GamePage({
 
   return (
     <>
-      <h1 className="textHeader">Good luck! Eat lots of fish!</h1>
+      <h2 className="goodLuck">Good luck! Eat lots of fish!</h2>
       {<Nav userToken={userToken} userID={userID} />}
 
       {/* find a way to get the game to only play when on this page  */}

@@ -5,9 +5,9 @@ import Shiba from "../assets/dogShiba/Shiba.png";
 import Crow from "../assets/Bird/Crow.png";
 import trashcan from "../assets/Can/trashcan.png";
 import Pigeon from "../assets/Bird/Pigeon.png";
-import goldieSprite from "../assets/fish/goldieSprite.png";
-import salmonSprite from "../assets/fish/salmonSprite.png";
-import tunaSprite from "../assets/fish/tunaSprite.png";
+import goldieSprite from "../assets/Fish/goldieSprite.png";
+import salmonSprite from "../assets/Fish/salmonSprite.png";
+import tunaSprite from "../assets/Fish/tunaSprite.png";
 import Doberman from "../assets/dogDoberman/Doberman.png";
 
 const GameInfo = () => (

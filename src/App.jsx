@@ -12,6 +12,7 @@ import { Scores } from "./Components/Scores.jsx";
 import { Terms } from "./Components/Terms.jsx";
 import { Privacy } from "./Components/Privacy.jsx";
 import { Admin } from "./Components/Admin.jsx";
+import { Footer } from "./Components/Footer.jsx";
 
 import Player from "./SpriteAnimation.jsx";
 
@@ -36,9 +37,21 @@ function App() {
   const [guestname, setGuestname] = useState("");
   const [guestScore, setGuestScore] = useState(0);
 
-  // write a use effect to get the user's ID
-  // get to json
-  //c
+  useEffect(() => {
+    window.addEventListener(
+      "keydown",
+      function (e) {
+        if (
+          ["Space", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].indexOf(
+            e.code
+          ) > -1
+        ) {
+          e.preventDefault();
+        }
+      },
+      false
+    );
+  }, []);
 
   return (
     <>
@@ -133,6 +146,7 @@ function App() {
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/admin" element={<Admin userToken={userToken} />} />
       </Routes>
+      <Footer />
     </>
   );
 }

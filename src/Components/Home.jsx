@@ -53,6 +53,8 @@ export function Home({ userToken, userID }) {
     canvas.width = 800;
     canvas.height = 720;
 
+    ctx.imageSmoothingEnabled = false;
+
     class TheChonk {
       constructor(gameWidth, gameHeight) {
         this.gameWidth = gameWidth;
