@@ -48,6 +48,7 @@ export function Login({
       navigate("/");
     } catch (error) {
       console.log(error);
+      alert("Oops! You've encountered an error, try again.");
     }
   }
 
@@ -70,18 +71,19 @@ export function Login({
             type={showPassword ? "text" : "password"}
             placeholder="Enter your password!"
             onChange={(e) => setPassword(e.target.value)}
-          />{" "}
+          />
         </label>
 
         <label className="formCheckbox">
-          Show Password
           <input
             className="checkbox"
             type="checkbox"
             value={showPassword}
             onChange={() => setShowPassword((prev) => !prev)}
           />
+          Show Password
         </label>
+
         <button form="login" type="submit" className="button">
           Submit
         </button>

@@ -1,4 +1,4 @@
-import "../CSS/home.css";
+import "../CSS/account.css";
 import { useState, useEffect, useRef } from "react";
 import React from "react";
 import backgroundMusic from "../assets/music/menu.mp3";
@@ -9,24 +9,11 @@ import GlobalScores from "./GlobalScores";
 import PersonalScores from "./PersonalScores";
 import TheChonkImage from "../assets/ChonkCat/gatito_parada_espera.png";
 import Popup from "reactjs-popup";
+import BackButton from "./BackButton";
 
 const API_URL = "https://cherry-stone-studios.onrender.com";
 
-export function Account({
-  userToken,
-  userID,
-  name,
-  username,
-  email,
-  password,
-  date_of_birth,
-  setUsername,
-  setName,
-  setEmail,
-  setPassword,
-  showPassword,
-  setShowPassword,
-}) {
+export function Account({ userToken, userID, username }) {
   // contruct new useState for new data, pass into editInfo component
   const [currName, setCurrName] = useState("");
   const [currUsername, setCurrUsername] = useState("");
@@ -46,9 +33,7 @@ export function Account({
   useEffect(() => {
     async function getUser() {
       try {
-        let fetchAPI = await fetch(
-          `${API_URL}/api/users/username/${thisUser.id}`
-        );
+        let fetchAPI = await fetch(`${API_URL}/api/users/username/${username}`);
         let jsonCatch = await fetchAPI.json();
         setThisUser(jsonCatch);
       } catch (err) {
@@ -60,7 +45,7 @@ export function Account({
 
   const deleteAccount = async () => {
     const confirmation = confirm(
-      "Oh no! We're sorry that you want to delete your account.\n\nPlease note: there is no undoing this action!\n\nYour high scores will be converted to guest scores with your current username.\n\nAre you really sure you want to delete your account?"
+      "Oh no! We're sorry that you want to delete your account.\n\nWARNING: This action cannot be undone!\n\nAre you really sure you want to delete your account?\n\nCancel to go back!"
     );
     if (confirmation === true) {
       try {
@@ -73,6 +58,7 @@ export function Account({
         });
         const result = await response.json();
         console.log(result);
+        alert(result.message);
         alert("Lucky for you, you can always play as a guest!");
         navigate("/");
       } catch (err) {
@@ -84,7 +70,7 @@ export function Account({
   // music start
   const playMusic = async () => {
     const confirmation = confirm(
-      "Hurry home, Alley Cat!\n\n (Cancel to stop music.)"
+      "Enjoy this secret treato!\n\n (Cancel to stop music.)"
     );
     if (confirmation === true) {
       try {
@@ -200,9 +186,9 @@ export function Account({
 
   return (
     <>
-      <h1 className="alleyHeader">{`WELCOME HOME, ${thisUser.username}`}</h1>
+      <h1 className="textHeader">{`WELCOME HOME, ${username}`}</h1>
 
-      <p className="alleyHome">
+      <p className="accountHello">
         Prowl the alleys and collect fish in this purr-fect adventure!
       </p>
       <div onClick={() => stopMusic()}>
@@ -211,6 +197,7 @@ export function Account({
       <canvas ref={canvasRef} id="canvas2" onClick={() => playMusic()}></canvas>
 
       <EditInfo
+        userToken={userToken}
         currName={currName}
         setCurrName={setCurrName}
         currUsername={currUsername}
@@ -225,13 +212,14 @@ export function Account({
 
       <div className="accountButtonBox">
         <div className="accountScoresBox">
-          <div className="scoresBox">
+          <div className="scoresBox1">
             <h2 className="accounth2">Global Leaderboard</h2>
-            <GlobalScores />
+            <GlobalScores limit={10} />
           </div>
-          <div className="scoresBox">
-            <h2 className="accounth2">{`${thisUser.username}'s Leaderboard`}</h2>{" "}
-            <PersonalScores />
+          <div className="spacer"></div>
+          <div className="scoresBox2">
+            <h2 className="accounth2">{` ${thisUser.username}'s Leaderboard`}</h2>
+            <PersonalScores username={username} limit={10} />
           </div>
         </div>
       </div>
@@ -246,9 +234,16 @@ export function Account({
             <button className="close" onClick={close}>
               &times;
             </button>
-            <div className="header">
-              {" "}
-              Are you sure you want to delete your account {`${username}`}?{" "}
+            <div className="accountHeader">
+              Are you sure you want to <br />
+              delete your account,
+              {` ${thisUser.username}`}?
+            </div>
+            <br />
+            <div className="accountHeader">
+              Your high scores will be converted to <br />
+              guest scores with your current username. <br />
+              You will be able to continue as a guest.
             </div>
             <div className="actions">
               <button
@@ -260,6 +255,7 @@ export function Account({
               >
                 Delete Account
               </button>
+              <BackButton />
             </div>
           </div>
         )}

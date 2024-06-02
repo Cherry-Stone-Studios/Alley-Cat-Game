@@ -82,6 +82,7 @@ function App() {
           element={
             <Register
               userToken={userToken}
+              setUserID={setUserID}
               userID={userID}
               setUserToken={setUserToken}
               username={username}
@@ -107,17 +108,6 @@ function App() {
               userToken={userToken}
               userID={userID}
               username={username}
-              setUsername={setUsername}
-              name={name}
-              setName={setName}
-              email={email}
-              setEmail={setEmail}
-              password={password}
-              setPassword={setPassword}
-              date_of_birth={date_of_birth}
-              setDate_of_birth={setDate_of_birth}
-              showPassword={showPassword}
-              setShowPassword={setShowPassword}
             />
           }
         />
@@ -141,7 +131,6 @@ function App() {
         <Route path="/terms" element={<Terms />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/admin" element={<Admin userToken={userToken} />} />
-        <Route path="/edit" element={<EditInfo />} />
       </Routes>
     </>
   );

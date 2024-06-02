@@ -22,7 +22,6 @@
   }
 
 .oneScore {
-
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
@@ -36,8 +35,8 @@
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
-    padding: 3px;
-    margin: 3px; 
+    padding: 2px;
+    margin: 2px; 
     border: 2px solid rgba(189, 255, 255, 0.219);
   }
 
@@ -46,7 +45,7 @@
     flex-direction: column;
     flex-wrap: wrap;
     justify-content: center;
-    padding: 5px;
-    margin: 5px; 
-    backdrop-filter: blur(15px);
+    padding: 4px;
+    margin: 4px; 
+    backdrop-filter: blur(10px);
   }

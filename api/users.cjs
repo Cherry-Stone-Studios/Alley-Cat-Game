@@ -127,15 +127,12 @@ router.get("/username/:username", async (req, res, next) => {
 //UPDATE USER BY ID
 // PUT /api/users/:id
 router.put("/:id", requireUser, async (req, res, next) => {
-  // grab the id from params -> this is the user we want to update
-  const id = parseInt(req.params.id);
   const { name, username, email, password } = req.body;
 
+  // grab the id from params -> this is the user we want to delete
   // grab the id from body -> this is the user who is interacting with our app
-  const currId = req.user.id;
-
-  // check to see if the two ID are a match
-  const matchedId = id === currId;
+  // check to see if the two usernames are a match
+  const matchedId = parseInt(req.params.id) === req.user.id;
 
   // if they are a match, edit the user
   if (matchedId === true) {
@@ -163,13 +160,9 @@ router.put("/:id", requireUser, async (req, res, next) => {
 // DELETE /api/users/:id
 router.delete("/:id", requireUser, async (req, res, next) => {
   // grab the id from params -> this is the user we want to delete
-  const id = parseInt(req.params.id);
-
   // grab the id from body -> this is the user who is interacting with our app
-  const currId = req.user.id;
-
   // check to see if the two usernames are a match
-  const matchedId = id === currId;
+  const matchedId = parseInt(req.params.id) === req.user.id;
 
   // if they are not a match, send back an unauthorized message
   if (matchedId === true) {

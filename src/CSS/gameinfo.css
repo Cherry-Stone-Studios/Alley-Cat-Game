@@ -1,28 +1,28 @@
-.modal {
+.infomodal {
   font-size: 16px;
   color: rgb(0, 0, 0);
   background-color: rgba(0, 41, 41, 0.35);
   backdrop-filter: blur(100px);
 
 }
-.modal > .header {
+.infomodal > .infoheader {
   width: 100%;
   border-bottom: 1px solid gray;
   font-size: 18px;
   text-align: center;
   padding: 5px;
 }
-.modal > .content {
+.infomodal > .infocontent {
   width: 100%;
   padding: 10px 5px;
 }
-.modal > .actions {
+.infomodal > .infoactions {
   width: 100%;
   padding: 10px 5px;
   margin: auto;
   text-align: center;
 }
-.modal > .close {
+.infomodal > .infoclose {
   cursor: pointer;
   position: absolute;
   display: block;

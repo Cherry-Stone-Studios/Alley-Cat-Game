@@ -1,4 +1,4 @@
-import "../CSS/gameinfo.css";
+import "../CSS/userinfo.css";
 import React from "react";
 import Popup from "reactjs-popup";
 import { useState } from "react";
@@ -6,6 +6,7 @@ import { useState } from "react";
 const API_URL = "https://cherry-stone-studios.onrender.com";
 
 const EditInfo = ({
+  userToken,
   currName,
   setCurrName,
   currUsername,
@@ -24,11 +25,22 @@ const EditInfo = ({
       "Are you sure you want to update your account information?\n\nContact us at cherry.stone.studios.games@gmail.com if you have any issues!"
     );
     if (confirmation === true) {
+      if (!currName) {
+        currName = thisUser.name;
+      }
+      if (!currUsername) {
+        currUsername = thisUser.username;
+      }
+      if (!currEmail) {
+        currEmail = thisUser.email;
+      }
+
       try {
         const response = await fetch(`${API_URL}/api/users/${thisUser.id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${userToken}`,
           },
           body: JSON.stringify({
             name: currName,
@@ -58,45 +70,58 @@ const EditInfo = ({
             <button className="close" onClick={close}>
               &times;
             </button>
-            <div className="header"> {`${thisUser.username}`} </div>
+            <div className="textHeader">Hello{` ${thisUser.username}`}</div>
             <div className="content">
               <form>
-                username:
-                <input
-                  type="text"
-                  placeholder={`${thisUser.username}`}
-                  onChange={(e) => setCurrUsername(e.target.value)}
-                />
-                Name:
-                <input
-                  type="text"
-                  placeholder={`${thisUser.name}`}
-                  onChange={(e) => setCurrName(e.target.value)}
-                />
-                Password:
-                <input
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Change your password!"
-                  onChange={(e) => setCurrPassword(e.target.value)}
-                />
-                See Password?
-                <input
-                  className="checkbox"
-                  type="checkbox"
-                  value={showPassword}
-                  onChange={() => setShowPassword((prev) => !prev)}
-                />
-                Email:
-                <input
-                  type="text"
-                  placeholder={`${thisUser.email}`}
-                  onChange={(e) => setCurrEmail(e.target.value)}
-                />
-                D.O.B:
-                <p>{`${thisUser.date_of_birth}`}</p>
-                <button type="submit" onChange={(e) => closeSubmit()}>
-                  Submit
-                </button>
+                <div className="input">
+                  Username:
+                  <input
+                    type="text"
+                    placeholder={` ${thisUser.username}`}
+                    onChange={(e) => setCurrUsername(e.target.value)}
+                  />
+                </div>
+                <div className="input">
+                  Name:
+                  <input
+                    type="text"
+                    placeholder={` ${thisUser.name}`}
+                    onChange={(e) => setCurrName(e.target.value)}
+                  />
+                </div>
+                <div className="input">
+                  Password:
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Required: Enter or update your password!"
+                    required="required"
+                    onChange={(e) => setCurrPassword(e.target.value)}
+                  />
+                </div>
+                <div className="input">
+                  <input
+                    className="checkbox"
+                    type="checkbox"
+                    value={showPassword}
+                    onChange={() => setShowPassword((prev) => !prev)}
+                  />
+                  Show Password
+                </div>
+                <div className="input">
+                  Email:
+                  <input
+                    type="text"
+                    placeholder={` ${thisUser.email}`}
+                    onChange={(e) => setCurrEmail(e.target.value)}
+                  />
+                </div>
+                <div className="input">
+                  D.O.B:
+                  <input
+                    type="text"
+                    placeholder={` ${thisUser.date_of_birth}`}
+                  />
+                </div>
               </form>
             </div>
             <div className="actions">

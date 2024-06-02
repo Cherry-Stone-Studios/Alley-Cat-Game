@@ -8,6 +8,7 @@ const API_URL = "https://cherry-stone-studios.onrender.com";
 
 const Register = ({
   userToken,
+  setUserID,
   userID,
   setUserToken,
   username,
@@ -22,7 +23,6 @@ const Register = ({
   setDate_of_birth,
   showPassword,
   setShowPassword,
-  setErrorMessage,
 }) => {
   // States for just the registration page
   const [confirm, setConfirm] = useState("");
@@ -87,13 +87,15 @@ const Register = ({
       const data = await response.json();
 
       if (response.ok) {
-        localStorage.setItem("token", data.token);
         setUserToken(data.token);
+        setUserID(data.id);
+        localStorage.setItem("token", data.token);
         alert(data.message);
         navigate("/");
       }
     } catch (error) {
       console.log(error);
+      alert("Oops! You've encountered an error, try again.");
     }
   };
 
@@ -152,13 +154,13 @@ const Register = ({
         </label>
 
         <label className="formCheckbox">
-          Show Password
           <input
             className="checkbox"
             type="checkbox"
             value={showPassword}
             onChange={() => setShowPassword((prev) => !prev)}
           />
+          Show Password
         </label>
 
         <label className="formLabel">
@@ -170,18 +172,21 @@ const Register = ({
             required
           />
         </label>
-
-        <input
-          type="radio"
-          id="agreeterms"
-          name="terms"
-          value="Agree to Terms"
-          required="required"
-        />
-        <label className="formLabel" for="agreeterms">
-          I agree to the <Link to={"/terms"}>Terms of Use</Link> and
-          <Link to={"/privacy"}>Privacy Policy</Link>
-        </label>
+        <legend>
+          Do you agree to the terms?
+          <label className="formLabel" htmlFor="agreeterms">
+            I agree to the <Link to={"/terms"}>Terms of Use</Link> and
+            <Link to={"/privacy"}>Privacy Policy</Link>
+          </label>
+          <input
+            className="checkbox"
+            type="checkbox"
+            id="agreeterms"
+            name="terms"
+            value="Agree to Terms"
+            required="required"
+          />
+        </legend>
         <button form="register" type="submit" className="button">
           Create Cat!
         </button>
