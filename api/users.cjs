@@ -127,15 +127,22 @@ router.get("/username/:username", async (req, res, next) => {
 //UPDATE USER BY ID
 // PUT /api/users/:id
 router.put("/:id", requireUser, async (req, res, next) => {
+  // grab the id from params -> this is the user we want to update
+  const id = parseInt(req.params.id);
   const { name, username, email, password } = req.body;
 
-  // grab the id from params -> this is the user we want to delete
   // grab the id from body -> this is the user who is interacting with our app
-  // check to see if the two usernames are a match
-  const matchedId = parseInt(req.params.id) === req.user.id;
+  const currId = req.user.id;
 
-  // if they are a match, edit the user
-  if (matchedId === true) {
+  // check to see if the two usernames are a match
+  const matchedId = id === currId;
+
+  // if they are not a match, send them a non-authorized error (401)
+  if (!matchedId) {
+    res.status(401).send({ message: `Unathorized access detected!` });
+    //else if they are, run the updateUsers function
+  } else {
+    // update the user with given username from req.params
     try {
       const singleUser = await userUpdatesUser({
         id,
@@ -150,9 +157,6 @@ router.put("/:id", requireUser, async (req, res, next) => {
     } catch (err) {
       next(err);
     }
-    //else, they're not the right user
-  } else {
-    res.status(401).send({ message: `Unathorized access detected!` });
   }
 });
 
@@ -160,25 +164,27 @@ router.put("/:id", requireUser, async (req, res, next) => {
 // DELETE /api/users/:id
 router.delete("/:id", requireUser, async (req, res, next) => {
   // grab the id from params -> this is the user we want to delete
+  const id = parseInt(req.params.id);
+
   // grab the id from body -> this is the user who is interacting with our app
+  const currId = req.user.id;
+
   // check to see if the two usernames are a match
-  const matchedId = parseInt(req.params.id) === req.user.id;
+  const matchedId = id === currId;
 
   // if they are not a match, send back an unauthorized message
-  if (matchedId === true) {
+  if (!matchedId) {
+    res.status(401).send({ message: `Unathorized access detected!` });
     // if they are a match, run deleteUser with the ID of current user
+  } else
     try {
       const deletedUser = await deleteUser(id);
       res.status(200).send({
         message: `You have successfully deleted your account. An alley can be a dangerous place for a stay, stay safe!`,
       });
-      console.log("Goodbye, we're gonna miss you!", deletedUser);
     } catch (err) {
       next(err);
     }
-  } else {
-    res.status(401).send({ message: `Unathorized access detected!` });
-  }
 });
 
 module.exports = router;
