@@ -11,7 +11,8 @@ import enemyImage from "./assets/dogDoberman/Dog_Black.png";
 import flyingEnemy from "./assets/birdSprites/blackCrowSprite.png";
 import trashObstacle from "./assets/badGuys/trashcan.png";
 // import fishies
-import food1 from "./assets/fish/goldieSprite.png";
+import food1 from "./assets/Fish/goldieSprite.png";
+import food2 from "./assets/Fish/tunaSprite.png";
 // import music and noises
 import backgroundMusic from "./assets/music/running90s.mp3";
 import gameoverMeow from "./assets/music/angrycatmeow.mp3";
@@ -45,6 +46,10 @@ const Game = ({ submitHighScore }) => {
     let foodTimer = 0;
     const foodInterval = 6000;
     let randomFoodInterval = Math.random() * 1000 + 500;
+    let flyingFoodArray = [];
+    let flyingFoodTimer = 0;
+    const flyingFoodInterval = 6000;
+    let randomFlyingFoodInterval = Math.random() * 1000 + 500;
 
     const bgMusic = new Audio(backgroundMusic);
     bgMusic.loop = true;
@@ -158,24 +163,26 @@ const Game = ({ submitHighScore }) => {
         enemies,
         flyingEnemiesArray,
         trashObstacleArray,
-        foodArray
+        foodArray,
+        flyingFoodArray
       ) {
         // Handle collisions
         this.handleCollisions(
           enemies,
           flyingEnemiesArray,
           trashObstacleArray,
-          foodArray
+          foodArray,
+          flyingFoodArray
         );
 
         // Handle horizontal movement
         if (input.keys.indexOf("ArrowRight") > -1) {
           if (this.onGround()) {
             this.speed = 5; // Normal speed on ground
-            score++;
+            //score++;
           } else {
             this.speed = 9; // Increased speed during jump
-            score++;
+            //score++;
           }
           this.currAction = "walk";
         } else if (input.keys.indexOf("ArrowLeft") > -1) {
@@ -196,7 +203,7 @@ const Game = ({ submitHighScore }) => {
             this.vy = -32; // Initial jump velocity
             this.jumpCount = 1;
             this.jumpPressed = true;
-            score++;
+            //score++;
           } else if (this.jumpCount === 1) {
             this.vy = -32; // Double jump velocity
             this.jumpCount = 2;
@@ -285,6 +292,19 @@ const Game = ({ submitHighScore }) => {
             gameOver = true;
             this.currAction = "death";
             this.deathFrameCounter = 4; // Set death frame counter
+          }
+        });
+
+        flyingFoodArray.forEach((flyingfood) => {
+          const flyingfoodHitbox = {
+            x: flyingfood.x + flyingfood.width * 0.8,
+            y: flyingfood.y + flyingfood.height /2,
+            radius: Math.min(flyingfood.width, flyingfood.height) / 2.75,
+          };
+
+          if (checkCircularCollision(playerHitbox, flyingfoodHitbox)) {
+            flyingfood.markedForDeletion = true;
+            chonkMeter++;
           }
         });
 
@@ -537,6 +557,44 @@ const Game = ({ submitHighScore }) => {
       }
     }
 
+    class FlyingFood {
+      constructor(gameWidth, gameHeight) {
+        this.gameWidth = gameWidth;
+        this.gameHeight = gameHeight;
+        this.spriteWidth = 33;
+        this.spriteHeight = 15;
+        this.width = 55;
+        this.height = 55;
+        this.x = gameWidth;
+        this.y = Math.random() * (gameHeight / 4) + gameHeight / 4;
+        this.image = new Image();
+        this.image.src = food2;
+        this.speed = 4;
+        this.markedForDeletion = false;
+        this.frameX = 0;
+        this.frameY = 0;
+      }
+      update() {
+        this.x -= this.speed;
+        if (this.x < 0 - this.width) {
+          this.markedForDeletion = true;
+        }
+      }
+      draw(context) {
+        context.drawImage(
+          this.image,
+          this.frameX * this.spriteWidth,
+          this.frameY * this.spriteHeight,
+          this.spriteWidth,
+          this.spriteHeight,
+          this.x,
+          this.y,
+          this.width,
+          this.height
+        )
+      }
+    }
+
     //Handles creating and updating enemies
     function handleEnemies(deltaTime) {
       if (enemyTimer > enemyInterval + randomEnemyInterval) {
@@ -625,6 +683,22 @@ const Game = ({ submitHighScore }) => {
       foodArray = foodArray.filter((food) => !food.markedForDeletion);
     }
 
+    function handleFlyingFood(deltaTime) {
+      if (flyingFoodTimer > flyingFoodInterval + randomFlyingFoodInterval) {
+        flyingFoodArray.push(new FlyingFood(canvas.width, canvas.height));
+        randomFlyingFoodInterval = Math.random() * 1000 + 500;
+        flyingFoodTimer = 0;
+      } else {
+        flyingFoodTimer += deltaTime
+      }
+      flyingFoodArray.forEach((food) => {
+        food.update();
+        food.draw(ctx);
+      });
+      // player.handleCollisions([], [], [], flyingFoodArray);
+      flyingFoodArray = flyingFoodArray.filter((food) => !food.markedForDeletion);
+    }
+
     // When the game is over and a player dies
     // Display the score and game over text
     function displayStatusText(context) {
@@ -639,8 +713,8 @@ const Game = ({ submitHighScore }) => {
       if (gameOver) {
         context.textAlign = "center";
         context.fillStyle = "yellow";
-        context.fillText("GAME OVER, try again!", canvas.width / 2, 200);
-        context.fillText("Press Enter to Restart", canvas.width / 2, 250);
+        context.fillText("GAME OVER, try again!", canvas.width / 2, 400);
+        context.fillText("Press Enter to Restart", canvas.width / 2, 450);
         angryMeow.play();
         bgMusic.pause();
         submitHighScore(score + chonkMeter * 2);
@@ -655,11 +729,13 @@ const Game = ({ submitHighScore }) => {
       flyingEnemiesArray = [];
       trashObstacleArray = [];
       foodArray = [];
+      flyingFoodArray = [];
       score = 0;
       chonkMeter = 0;
       gameOver = false;
       bgMusic.play();
       animate(0);
+      input.keys = [];
     }
 
     const input = new InputHandler();
@@ -681,7 +757,7 @@ const Game = ({ submitHighScore }) => {
       // } else {
       //   background.speed = 0;
       // }
-      if (player.isHalfwayAcross() && input.isAnyKeyPressed()) {
+      if (input.isAnyKeyPressed()) {
         background.speed = 8;
       } else {
         background.speed = 0;
@@ -696,12 +772,14 @@ const Game = ({ submitHighScore }) => {
         enemies,
         flyingEnemiesArray,
         trashObstacleArray,
-        foodArray
+        foodArray,
+        flyingFoodArray
       );
       handleEnemies(deltaTime);
       handleFlyingEnemies(deltaTime);
       handleTrashObstacles(deltaTime);
       handleFood(deltaTime, player);
+      handleFlyingFood(deltaTime, player);
       displayStatusText(ctx);
       if (!gameOver) requestAnimationFrame(animate);
     }
