@@ -10,16 +10,18 @@ import PersonalScores from "./PersonalScores";
 import TheChonkImage from "../assets/ChonkCat/gatito_parada_espera.png";
 import Popup from "reactjs-popup";
 import BackButton from "./BackButton";
+import "ldrs/newtonsCradle";
 
 const API_URL = "https://cherry-stone-studios.onrender.com";
 
-export function Account({ userToken, userID, username }) {
+export function Account({ userToken, setUserToken, userID, username }) {
   // contruct new useState for new data, pass into editInfo component
   const [currName, setCurrName] = useState("");
   const [currUsername, setCurrUsername] = useState("");
   const [currEmail, setCurrEmail] = useState("");
   const [currPassword, setCurrPassword] = useState("");
   const [thisUser, setThisUser] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const bgMusic = new Audio(backgroundMusic);
   const canvasRef = useRef(null);
@@ -44,6 +46,7 @@ export function Account({ userToken, userID, username }) {
   }, []);
 
   const deleteAccount = async () => {
+    setIsLoading(true);
     const confirmation = confirm(
       "Oh no! We're sorry that you want to delete your account.\n\nWARNING: This action cannot be undone!\n\nAre you really sure you want to delete your account?\n\nCancel to go back!"
     );
@@ -60,8 +63,11 @@ export function Account({ userToken, userID, username }) {
         console.log(result);
         alert(result.message);
         alert("Lucky for you, you can always play as a guest!");
+        setUserToken(null);
+        setIsLoading(false);
         navigate("/");
       } catch (err) {
+        setIsLoading(false);
         console.error(err);
       }
     }
@@ -214,12 +220,28 @@ export function Account({ userToken, userID, username }) {
         <div className="accountScoresBox">
           <div className="scoresBox1">
             <h2 className="accounth2">Global Leaderboard</h2>
-            <GlobalScores limit={10} />
+
+            {isLoading ? (
+              <l-newtons-cradle
+                className="button"
+                color="aqua"
+              ></l-newtons-cradle>
+            ) : (
+              <GlobalScores limit={10} />
+            )}
           </div>
           <div className="spacer"></div>
           <div className="scoresBox2">
             <h2 className="accounth2">{` ${thisUser.username}'s Leaderboard`}</h2>
-            <PersonalScores username={username} limit={10} />
+
+            {isLoading ? (
+              <l-newtons-cradle
+                className="button"
+                color="aqua"
+              ></l-newtons-cradle>
+            ) : (
+              <PersonalScores username={username} limit={10} />
+            )}
           </div>
         </div>
       </div>
@@ -246,15 +268,24 @@ export function Account({ userToken, userID, username }) {
               You will be able to continue as a guest.
             </div>
             <div className="actions">
-              <button
-                className="button"
-                onClick={async () => {
-                  await deleteAccount();
-                  close();
-                }}
-              >
-                Delete Account
-              </button>
+              <div className="loading">
+                {isLoading ? (
+                  <l-newtons-cradle
+                    className="button"
+                    color="aqua"
+                  ></l-newtons-cradle>
+                ) : (
+                  <button
+                    className="button"
+                    onClick={async () => {
+                      await deleteAccount();
+                      close();
+                    }}
+                  >
+                    Delete Account
+                  </button>
+                )}
+              </div>
               <BackButton />
             </div>
           </div>

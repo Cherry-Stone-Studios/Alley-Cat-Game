@@ -106,6 +106,7 @@ function App() {
           element={
             <Account
               userToken={userToken}
+              setUserToken={setUserToken}
               userID={userID}
               username={username}
             />

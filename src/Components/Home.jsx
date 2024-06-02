@@ -1,12 +1,14 @@
 import "../CSS/account.css";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import backgroundMusic from "../assets/music/menu.mp3";
 import { Nav } from "./Nav.jsx";
 import GameInfo from "./GameInfo.jsx";
 import TheChonkImage from "../assets/ChonkCat/gatito_parada_espera.png";
 import GlobalScores from "./GlobalScores";
+import "ldrs/newtonsCradle";
 
 export function Home({ userToken, userID }) {
+  const [isLoading, setIsLoading] = useState(false);
   const bgMusic = new Audio(backgroundMusic);
   const canvasRef = useRef(null);
   const animationRef = useRef(null);

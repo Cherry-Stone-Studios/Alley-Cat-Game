@@ -1,3 +1,7 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "ldrs/newtonsCradle";
+
 export function Admin({ userToken }) {
   const [updatedUser, setUpdatedUser] = useState([]);
   const navigate = useNavigate();
@@ -11,7 +15,8 @@ export function Admin({ userToken }) {
     password,
     date_of_birth,
     is_admin,
-    nyan_unlocked
+    nyan_unlocked,
+    isLoading
   ) => {
     const confirmation = confirm(
       "Are you sure you want to update this user?\n\nIf you update this user's password, be sure to let them know what the new one is!"

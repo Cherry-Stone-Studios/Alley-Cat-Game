@@ -1,5 +1,6 @@
 import { Nav } from "./Nav";
 import GlobalScores from "./GlobalScores";
+import "ldrs/newtonsCradle";
 
 export function Scores({ userToken, userID }) {
   return (

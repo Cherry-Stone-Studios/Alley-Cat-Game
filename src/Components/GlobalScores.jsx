@@ -1,10 +1,12 @@
 import "../CSS/scores.css";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const API_URL = "https://cherry-stone-studios.onrender.com";
 
 const GlobalScores = ({ limit }) => {
   const [globalScores, setGlobalScores] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function getScores() {
@@ -44,8 +46,9 @@ const GlobalScores = ({ limit }) => {
                   {score.name ? score.name : score.guestname}
                 </div>
                 <div className="scoreDetails">Score: {score.value}</div>
+
                 <div className="scoreDetails">
-                  Date: {score.created_on.substring(0, 10)}
+                  {score.name ? "User" : "Guest"}
                 </div>
               </div>
             </div>
