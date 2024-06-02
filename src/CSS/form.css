@@ -5,7 +5,8 @@
     justify-content: center;
     text-align: center;
     margin: 0 auto;
-    padding: 8px;
+    padding: 1.5rem;
+    margin-top: 2rem;
     width: 320px;
     backdrop-filter: blur(1rem);
     background-color: rgba(53, 53, 53, 0.192);
@@ -27,11 +28,11 @@
     padding: 3px;
     margin: 3px;
     font-size: large;
-
 }
-  
-.checkbox {
-    width: 20px;
-    margin: 0 auto;
-    font-size: large;
+
+.loginh3 {
+    font-size: 2.5rem;
+    color: aqua;
+    text-shadow: 4px 4px rgba(0, 88, 88, 0.788), -.25em 0 1em rgb(0, 0, 0);
+    margin: 4px;
 }

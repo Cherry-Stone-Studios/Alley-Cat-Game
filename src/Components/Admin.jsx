@@ -44,7 +44,7 @@ export function Admin({ userToken }) {
         setUpdatedUser(result);
         navigate("/admin");
       } catch (err) {
-        throw err;
+        console.log(err);
       }
     }
   };
@@ -69,7 +69,7 @@ export function Admin({ userToken }) {
       alert("The user has been deleted.");
       navigate("/");
     } catch (err) {
-      throw err;
+      console.log(err);
     }
   };
 
@@ -105,8 +105,8 @@ export function Admin({ userToken }) {
 
         setUpdatedUser(result);
         navigate("/admin");
-      } catch (err) {
-        throw err;
+      } catch (error) {
+        console.log(error);
       }
     }
   };
@@ -131,7 +131,7 @@ export function Admin({ userToken }) {
       alert("The user has been deleted.");
       navigate("/");
     } catch (err) {
-      throw err;
+      console.log(error);
     }
   };
 

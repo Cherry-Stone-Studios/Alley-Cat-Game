@@ -15,7 +15,7 @@ const {
 
 // POST to /api/scores/
 
-router.post("/", async (req, res) => {
+router.post("/", async (req, res, next) => {
   // given a value, created_on date, username, and guestname on body
   const { value, created_on, username, guestname } = req.body;
 
@@ -35,31 +35,31 @@ router.post("/", async (req, res) => {
     });
     // }
   } catch (err) {
-    throw err;
+    next(err);
   }
 });
 
 // GET to /api/scores/
 
-router.get("/", async (req, res) => {
+router.get("/", async (req, res, next) => {
   try {
     const scores = await getAllScores();
     res.status(200).send(scores);
   } catch (err) {
-    throw err;
+    next(err);
   }
 });
 
 // GET to /api/scores/:username
 
-router.get("/:username", async (req, res) => {
+router.get("/:username", async (req, res, next) => {
   const username = req.params.username;
   try {
     const userScores = await getScoresByUsername(username);
 
     res.status(200).send(userScores);
   } catch (err) {
-    throw err;
+    next(err);
   }
 });
 

@@ -1,0 +1,51 @@
+.allScores {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 1px;
+    margin: 1px; 
+    width: 600px;
+    margin: 0 auto;
+    font-size: x-large;
+    color: aqua;
+    text-shadow: 4px 4px rgba(0, 88, 88, 0.788), -.25em 0 1em rgb(0, 0, 0);
+}
+
+.eachScore {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 1px;
+    margin: 1px; 
+  }
+
+.oneScore {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 2px;
+    margin: 2px; 
+}
+
+.scoreCard {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 2px;
+    margin: 2px; 
+    border: 2px solid rgba(189, 255, 255, 0.219);
+  }
+
+.scoreDetails {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 4px;
+    margin: 4px; 
+    backdrop-filter: blur(10px);
+  }

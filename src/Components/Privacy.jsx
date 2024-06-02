@@ -1,5 +1,4 @@
 import "../CSS/eula.css";
-import { Nav } from "./Nav";
 import BackButton from "./BackButton";
 
 export function Privacy() {
@@ -530,7 +529,7 @@ export function Privacy() {
           <br />
         </div>
       </div>
-      <BackButton />;
+      <BackButton />
     </>
   );
 }

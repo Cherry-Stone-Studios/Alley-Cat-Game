@@ -1,0 +1,77 @@
+.alleyHome {
+    font-size: 3rem;
+    color: aqua;
+    text-shadow: 4px 4px rgba(0, 88, 88, 0.788), -0.25em 0 1em rgb(0, 0, 0);
+}
+  
+.accountHello {
+    font-size: 2.75rem;
+    color: aqua;
+    text-shadow: 4px 4px rgba(0, 88, 88, 0.788), -.25em 0 1em rgb(0, 0, 0);
+}
+
+.accounth2 {
+    font-size: 4rem;
+    color: aqua;
+    text-shadow: 4px 4px rgba(0, 88, 88, 0.788), -.25em 0 1em rgb(0, 0, 0);
+}
+
+.accountButtonBox {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    margin: 0 auto;
+    color: aqua;
+    text-shadow: 4px 4px rgba(0, 88, 88, 0.788), -.25em 0 1em rgb(0, 0, 0);
+}
+
+.accountScoresBox {
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    font-size: large;
+}
+
+.scoresBox1 {
+    width: 90%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: top;
+    font-size: large;
+    border: 2px solid rgba(189, 255, 255, 0.219);
+}
+
+.scoresBox2 {
+    width: 90%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: top;
+    font-size: large;
+    border: 2px solid rgba(189, 255, 255, 0.219);
+}
+
+.catBox {
+    width: 90%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: top;
+}
+
+.spacer {
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+}

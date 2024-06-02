@@ -18,43 +18,42 @@ const GameInfo = () => (
     nested
   >
     {(close) => (
-      <div className="modal">
-        <button className="close" onClick={close}>
+      <div className="infomodal">
+        <button className="infoclose" onClick={close}>
           &times;
         </button>
-        <div className="header"> HOW TO PLAY </div>
-        <div className="content">
-          <div className="header"> Controls : </div>
+        <div className="infoheader"> HOW TO PLAY </div>
+        <div className="infocontent">
+          <div className="infoheader"> Controls : </div>
           <p> ⮝ - Jump </p>
           <p> ⮝ + ⮝ - Double Jump </p>
           <p> (Tap) ⮜ - Step Backwards </p>
           <p> (Tap) ⮞ - Step Forward </p>
           <p> (Hold) ⮞ - Run Forward </p>
           <br />
-          <div className="header">
+          <div className="infoheader">
             Enemies : <br />
             AVOID AT ALL COSTS
           </div>
-          <img className="pop_up_img" src={Doberman} alt="Doberman" />
-          <img className="pop_up_img" src={Shiba} alt="Shiba" />
-          <img className="pop_up_img" src={Crow} alt="Crow" />
-          <img className="pop_up_img" src={Pigeon} alt="Pigeon" />
-          <img className="pop_up_img" src={trashcan} alt="Trashcan" />
+          <img className="infopop_up_img" src={Doberman} alt="Doberman" />
+          <img className="infopop_up_img" src={Shiba} alt="Shiba" />
+          <img className="infopop_up_img" src={Crow} alt="Crow" />
+          <img className="infopop_up_img" src={Pigeon} alt="Pigeon" />
+          <img className="infopop_up_img" src={trashcan} alt="Trashcan" />
           <br />
           <br />
-          <div className="header">
+          <div className="infoheader">
             Food : <br />
             EAT AS MANY AS YOU CAN
           </div>
-          <img className="pop_up_img" src={goldieSprite} alt="Goldfish" />
-          <img className="pop_up_img" src={salmonSprite} alt="Salmon" />
-          <img className="pop_up_img" src={tunaSprite} alt="Tuna" />
+          <img className="infopop_up_img" src={goldieSprite} alt="Goldfish" />
+          <img className="infopop_up_img" src={salmonSprite} alt="Salmon" />
+          <img className="infopop_up_img" src={tunaSprite} alt="Tuna" />
         </div>
-        <div className="actions">
+        <div className="infoactions">
           <button
-            className="button"
+            className="infobutton"
             onClick={() => {
-              console.log("modal closed");
               close();
             }}
           >

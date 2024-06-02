@@ -6,21 +6,30 @@ import BackButton from "./BackButton";
 
 const API_URL = "https://cherry-stone-studios.onrender.com";
 
-const Register = ({ userToken, setUserToken }) => {
-  // States for registration
-  const [name, setName] = useState("");
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [date_of_birth, setDate_of_birth] = useState("");
+const Register = ({
+  userToken,
+  setUserID,
+  userID,
+  setUserToken,
+  username,
+  setUsername,
+  name,
+  setName,
+  email,
+  setEmail,
+  password,
+  setPassword,
+  date_of_birth,
+  setDate_of_birth,
+  showPassword,
+  setShowPassword,
+}) => {
+  // States for just the registration page
   const [confirm, setConfirm] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-
   const navigate = useNavigate();
 
   // States for checking the errors
   const [submitted, setSubmitted] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(false);
 
   // Handles the name input
   const handleName = (event) => {
@@ -58,13 +67,15 @@ const Register = ({ userToken, setUserToken }) => {
     setSubmitted(false);
   };
 
-  // Handles the form submission
+  // Handles the register form submission
   const handleRegister = async (event) => {
     event.preventDefault();
     try {
       const response = await fetch(`${API_URL}/api/users/register`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({
           name,
           username,
@@ -74,24 +85,30 @@ const Register = ({ userToken, setUserToken }) => {
         }),
       });
       const data = await response.json();
-      console.log(data);
+
       if (response.ok) {
-        localStorage.setItem("token", data.token);
         setUserToken(data.token);
+        setUserID(data.id);
+        localStorage.setItem("token", data.token);
+        alert(data.message);
         navigate("/");
       }
     } catch (error) {
-      setErrorMessage(true);
+      console.log(error);
+      alert("Oops! You've encountered an error, try again.");
     }
   };
 
   return (
     <>
-      {<Nav userToken={userToken} />}
-      <BackButton />
+      {<Nav userToken={userToken} userID={userID} />}
       <br />
-      <h2 class="formHeader">Create an Account!</h2>
-      <form onSubmit={handleRegister} className="form">
+      <h2 className="textHeader">Create an Account!</h2>
+      <h3 className="loginh3">⮞ Compete for the best score!</h3>
+      <h3 className="loginh3">⮞ Instantly Save Your High Score</h3>
+      <h3 className="loginh3">⮞ See Your Personal Top Scores</h3>
+      <h3 className="loginh3">⮞ Connect With Other Cool Cats</h3>
+      <form id="register" onSubmit={handleRegister} className="form">
         <label className="formLabel">
           Name:
           <input
@@ -137,13 +154,13 @@ const Register = ({ userToken, setUserToken }) => {
         </label>
 
         <label className="formCheckbox">
-          Show Password
           <input
             className="checkbox"
             type="checkbox"
             value={showPassword}
             onChange={() => setShowPassword((prev) => !prev)}
           />
+          Show Password
         </label>
 
         <label className="formLabel">
@@ -155,23 +172,26 @@ const Register = ({ userToken, setUserToken }) => {
             required
           />
         </label>
-
-        <input
-          type="radio"
-          id="agreeterms"
-          name="terms"
-          value="Agree to Terms"
-          required="required"
-        />
-        <label className="formLabel" for="agreeterms">
-          I agree to the <Link to={"/terms"}>Terms of Use</Link> and
-          <Link to={"/privacy"}>Privacy Policy</Link>
-        </label>
+        <legend>
+          Do you agree to the terms?
+          <label className="formLabel" htmlFor="agreeterms">
+            I agree to the <Link to={"/terms"}>Terms of Use</Link> and
+            <Link to={"/privacy"}>Privacy Policy</Link>
+          </label>
+          <input
+            className="checkbox"
+            type="checkbox"
+            id="agreeterms"
+            name="terms"
+            value="Agree to Terms"
+            required="required"
+          />
+        </legend>
+        <button form="register" type="submit" className="button">
+          Create Cat!
+        </button>
       </form>
-      <button className="button" type="submit">
-        Create Cat!
-      </button>
-
+      <BackButton />
       {/* {errorMessage && <h2>{errorMessage}</h2>} */}
     </>
   );

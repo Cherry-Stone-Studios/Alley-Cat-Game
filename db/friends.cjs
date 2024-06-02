@@ -26,7 +26,7 @@ const addFriend = async ({ id, friendid }) => {
     });
     return userWithFriends;
   } catch (err) {
-    throw err;
+    console.log("AN ERROR HAS OCCURRED WHILE WORKING THE FRIENDS DB", err);
   }
 };
 
@@ -53,7 +53,7 @@ const getUsersFriends = async (id) => {
     });
     return user;
   } catch (err) {
-    throw err;
+    console.log("AN ERROR HAS OCCURRED WHILE WORKING THE FRIENDS DB", err);
   }
 };
 
@@ -78,7 +78,7 @@ const removeFriend = async (id, friendid) => {
 
     return newfriends;
   } catch (err) {
-    throw err;
+    console.log("AN ERROR HAS OCCURRED WHILE WORKING THE FRIENDS DB", err);
   }
 };
 
@@ -93,7 +93,7 @@ const deleteAllFriends = async ({ id }) => {
     });
     return removedFriends;
   } catch (err) {
-    throw err;
+    console.log("AN ERROR HAS OCCURRED WHILE WORKING THE FRIENDS DB", err);
   }
 };
 

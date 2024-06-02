@@ -25,7 +25,7 @@ server.use(authCheck);
 
 // cors permits the browser to connect to our server
 // cors needs to send preflight
-// server.use(cors());
+server.use(cors());
 server.options("*", cors()); // enable pre-flight request for all requests
 
 // Middleware to parse JSON requests
