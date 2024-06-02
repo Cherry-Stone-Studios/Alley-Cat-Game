@@ -1,34 +1,34 @@
 .arcadeBox{  
-  height: 1035px;
+  width: 131.5%;
   position: relative;
-  margin: 0 auto;
-  text-align: center;
-  background-image: url(../assets/backgrounds/arcade.webp);
-  background-position: center;
   background-size: cover; 
 }
 
 .gameBox {
-  display: inherit;
-  height: 100%;
+  position: relative;
+  background-image: url(../assets/backgrounds/arcade.webp);
+  background-position: center;
+  background-size: cover; 
+  height: 1035px;
+  left: -110px;
 }
 
 .shiftDown {
   position: inherit;
   top: -415px;
-  left: -5px;
+  left: -115px;
 }
 
 .arcadeBox > #canvas1 {
   border: 2px solid white; 
 }
 
-.gameHeader {
-  font-size: 8rem;
-  color: aqua;
-  text-shadow: 4px 4px rgba(0, 88, 88, 0.788), -.25em 0 1em rgb(0, 0, 0);
-}
-
 #playerImage, #backgroundImage {
   display: none;
+}
+
+.goodLuck {
+  font-size: 3.5rem;
+  color: aqua;
+  text-shadow: 4px 4px rgba(0, 88, 88, 0.788), -.25em 0 1em rgb(0, 0, 0);
 }

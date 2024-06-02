@@ -2,6 +2,7 @@ import "../CSS/userinfo.css";
 import React from "react";
 import Popup from "reactjs-popup";
 import { useState } from "react";
+import "ldrs/newtonsCradle";
 
 const API_URL = "https://cherry-stone-studios.onrender.com";
 
@@ -19,8 +20,10 @@ const EditInfo = ({
   setThisUser,
 }) => {
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const updateUser = async () => {
+    setIsLoading(true);
     const confirmation = confirm(
       "Are you sure you want to update your account information?\n\nContact us at cherry.stone.studios.games@gmail.com if you have any issues!"
     );
@@ -52,7 +55,9 @@ const EditInfo = ({
         const result = await response.json();
 
         setThisUser(result);
+        setIsLoading(false);
       } catch (err) {
+        setIsLoading(false);
         console.error(err);
       }
     }
@@ -125,15 +130,24 @@ const EditInfo = ({
               </form>
             </div>
             <div className="actions">
-              <button
-                className="button"
-                onClick={async () => {
-                  await updateUser();
-                  close();
-                }}
-              >
-                Save Info?
-              </button>
+              <div className="loading">
+                {isLoading ? (
+                  <l-newtons-cradle
+                    className="button"
+                    color="aqua"
+                  ></l-newtons-cradle>
+                ) : (
+                  <button
+                    className="button"
+                    onClick={async () => {
+                      await updateUser();
+                      close();
+                    }}
+                  >
+                    Save Info?
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         )}

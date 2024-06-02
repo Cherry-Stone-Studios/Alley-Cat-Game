@@ -1,7 +1,9 @@
-import "../CSS/form.css";
+import "../CSS/login.css";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Nav } from "./Nav";
 import BackButton from "./BackButton";
+import "ldrs/newtonsCradle";
 
 const API_URL = "https://cherry-stone-studios.onrender.com";
 
@@ -17,11 +19,13 @@ export function Login({
   showPassword,
   setShowPassword,
 }) {
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   // Handles the login form submission
   async function handleLogin(event) {
     event.preventDefault();
+    setIsLoading(true);
     try {
       const loginPackage = {
         method: "POST",
@@ -45,8 +49,10 @@ export function Login({
       setUserID(unpackedKey.id);
       localStorage.setItem("token", unpackedKey.token);
       alert(unpackedKey.message);
+      setIsLoading(false);
       navigate("/");
     } catch (error) {
+      setIsLoading(false);
       console.log(error);
       alert("Oops! You've encountered an error, try again.");
     }
@@ -59,34 +65,45 @@ export function Login({
       <br />
       <h2 className="textHeader">Login</h2>
       <h3 className="loginh3">Please play safely!</h3>
-      <form id="login" className="form" onSubmit={handleLogin}>
-        <label className="formLabel">
-          Username:
-          <input type="text" onChange={(e) => setUsername(e.target.value)} />
-        </label>
+      <form id="login" className="loginform" onSubmit={handleLogin}>
+        <div className="logininputArea">
+          <label className="loginformLabel">
+            <p className="loginlabelText">{" Username"}</p>
+            <input type="text" onChange={(e) => setUsername(e.target.value)} />
+          </label>
 
-        <label className="formLabel">
-          Password:
-          <input
-            type={showPassword ? "text" : "password"}
-            placeholder="Enter your password!"
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </label>
+          <label className="loginformLabel">
+            <p className="loginlabelText">{" Password"}</p>
+            <input
+              type={showPassword ? "text" : "password"}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </label>
 
-        <label className="formCheckbox">
-          <input
-            className="checkbox"
-            type="checkbox"
-            value={showPassword}
-            onChange={() => setShowPassword((prev) => !prev)}
-          />
-          Show Password
-        </label>
+          <label className="loginformCheckbox">
+            <div>
+              <input
+                type="checkbox"
+                value={showPassword}
+                onChange={() => setShowPassword((prev) => !prev)}
+              />
+              {" See Password"}
+            </div>
+          </label>
+        </div>
 
-        <button form="login" type="submit" className="button">
-          Submit
-        </button>
+        <div className="loading">
+          {isLoading ? (
+            <l-newtons-cradle
+              className="button"
+              color="aqua"
+            ></l-newtons-cradle>
+          ) : (
+            <button form="login" type="submit" className="button">
+              Submit
+            </button>
+          )}
+        </div>
       </form>
       <BackButton />
       {/* {error && <alert>{error}</alert>} */}

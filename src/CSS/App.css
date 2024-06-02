@@ -61,23 +61,26 @@ textarea {
 input[type=checkbox] {
   position: relative;
   cursor: pointer;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
 }
 input[type=checkbox]:before {
   content: "";
-  display: block;
   position: absolute;
+  display: inline-block;
   width: 20px;
   height: 20px;
-  border: 2px solid teal;
+  border: 1px solid teal;
   border-radius: 3px;
-  background-color: rgba(189, 255, 255, 0.572);
+  background-color: rgba(255, 255, 255, 0.191);
   top: 0;
   left: 0;
 }
 
 input[type=checkbox]:checked:after {
   content: "";
-  display: block;
+  display: inline-block;
   width: 20px;
   height:20px;
   border: solid rgb(0, 0, 0);
@@ -118,6 +121,12 @@ h6 {
   text-shadow: 4px 4px rgba(0, 88, 88, 0.788), -.25em 0 1em rgb(196, 251, 255);
 }
 
+.loading {
+  width: 40%;
+  margin: 0 auto;
+  padding-top: 2rem;
+}
+
 .invisible {
   color:transparent;
   font-size: x-small;
@@ -131,9 +140,11 @@ h6 {
 }
 
 .checkbox {
-  width: 20px;
   display: inline-block;
-  font-size: large;
+}
+
+.footer {
+  padding-top: 5px;
 }
 
 /* global css for global IDs */

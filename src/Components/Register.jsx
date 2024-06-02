@@ -1,8 +1,9 @@
-import "../CSS/form.css";
+import "../CSS/register.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Nav } from "./Nav";
 import BackButton from "./BackButton";
+import "ldrs/newtonsCradle";
 
 const API_URL = "https://cherry-stone-studios.onrender.com";
 
@@ -26,6 +27,7 @@ const Register = ({
 }) => {
   // States for just the registration page
   const [confirm, setConfirm] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   // States for checking the errors
@@ -70,6 +72,7 @@ const Register = ({
   // Handles the register form submission
   const handleRegister = async (event) => {
     event.preventDefault();
+    setIsLoading(true);
     try {
       const response = await fetch(`${API_URL}/api/users/register`, {
         method: "POST",
@@ -91,9 +94,11 @@ const Register = ({
         setUserID(data.id);
         localStorage.setItem("token", data.token);
         alert(data.message);
+        setIsLoading(false);
         navigate("/");
       }
     } catch (error) {
+      setIsLoading(false);
       console.log(error);
       alert("Oops! You've encountered an error, try again.");
     }
@@ -104,92 +109,97 @@ const Register = ({
       {<Nav userToken={userToken} userID={userID} />}
       <br />
       <h2 className="textHeader">Create an Account!</h2>
-      <h3 className="loginh3">⮞ Compete for the best score!</h3>
-      <h3 className="loginh3">⮞ Instantly Save Your High Score</h3>
-      <h3 className="loginh3">⮞ See Your Personal Top Scores</h3>
-      <h3 className="loginh3">⮞ Connect With Other Cool Cats</h3>
-      <form id="register" onSubmit={handleRegister} className="form">
-        <label className="formLabel">
-          Name:
-          <input
-            type="text"
-            id="name"
-            placeholder="Name"
-            onChange={handleName}
-            required
-          />
-        </label>
-
-        <label className="formLabel">
-          Username:
-          <input
-            type="text"
-            id="username"
-            placeholder="Username"
-            onChange={handleUsername}
-            required
-          />
-        </label>
-
-        <label className="formLabel">
-          Email Address:
-          <input
-            id="email"
-            type="email"
-            placeholder="Email"
-            onChange={handleEmail}
-            required
-          />
-        </label>
-
-        <label className="formLabel">
-          Password:
-          <input
-            type={showPassword ? "text" : "password"}
-            placeholder="Password"
-            onChange={handlePassword}
-            id="password"
-            required
-          />
-        </label>
-
-        <label className="formCheckbox">
-          <input
-            className="checkbox"
-            type="checkbox"
-            value={showPassword}
-            onChange={() => setShowPassword((prev) => !prev)}
-          />
-          Show Password
-        </label>
-
-        <label className="formLabel">
-          Date of Birth:
-          <input
-            type="date"
-            id="date_of_birth"
-            onChange={handleDate_of_birth}
-            required
-          />
-        </label>
-        <legend>
-          Do you agree to the terms?
-          <label className="formLabel" htmlFor="agreeterms">
-            I agree to the <Link to={"/terms"}>Terms of Use</Link> and
-            <Link to={"/privacy"}>Privacy Policy</Link>
+      <h3 className="registerh3">⮞ Compete for the best score!</h3>
+      <h3 className="registerh3">⮞ Instantly Save Your High Score</h3>
+      <h3 className="registerh3">⮞ See Your Personal Top Scores</h3>
+      <h3 className="registerh3">⮞ Connect With Other Cool Cats</h3>
+      <form id="register" className="form" onSubmit={handleRegister}>
+        <div className="inputArea">
+          <label className="formLabel">
+            <p className="labelText">{" Name "}</p>
+            <input type="text" id="name" onChange={handleName} required />
           </label>
-          <input
-            className="checkbox"
-            type="checkbox"
-            id="agreeterms"
-            name="terms"
-            value="Agree to Terms"
-            required="required"
-          />
-        </legend>
-        <button form="register" type="submit" className="button">
-          Create Cat!
-        </button>
+
+          <label className="formLabel">
+            <p className="labelText">{" Username "}</p>
+            <input
+              type="text"
+              id="username"
+              onChange={handleUsername}
+              required
+            />
+          </label>
+
+          <label className="formLabel">
+            <p className="labelText">Email</p>
+            <input id="email" type="email" onChange={handleEmail} required />
+          </label>
+
+          <label className="formDOB">
+            <p className="labelText">Birthdate</p>
+            <input
+              type="date"
+              id="date_of_birth"
+              onChange={handleDate_of_birth}
+              required
+            />
+          </label>
+
+          <label className="formLabel">
+            <p className="labelText">Password</p>
+            <input
+              type={showPassword ? "text" : "password"}
+              onChange={handlePassword}
+              id="password"
+              required
+            />
+          </label>
+
+          <label className="formCheckbox">
+            <div className="checkbox">
+              <input
+                type="checkbox"
+                value={showPassword}
+                onChange={() => setShowPassword((prev) => !prev)}
+              />
+              {" See Password"}
+            </div>
+          </label>
+
+          <legend>
+            I Agree to the
+            <Link className="registerlinks" to={"/terms"}>
+              Terms of Use
+            </Link>
+            and
+            <Link className="registerlinks" to={"/privacy"}>
+              Privacy Policy
+            </Link>
+          </legend>
+          <div>
+            <input
+              className="checkbox"
+              type="checkbox"
+              id="agreeterms"
+              name="terms"
+              value="Agree to Terms"
+              required="required"
+            />
+            {" Yes! I have read and agree to the terms"}
+          </div>
+        </div>
+        <div className="loading">
+          {isLoading ? (
+            <l-newtons-cradle
+              className="button"
+              color="aqua"
+            ></l-newtons-cradle>
+          ) : (
+            <button form="register" type="submit" className="button">
+              Let's Go!
+            </button>
+          )}
+        </div>
       </form>
       <BackButton />
       {/* {errorMessage && <h2>{errorMessage}</h2>} */}

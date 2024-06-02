@@ -1,33 +1,38 @@
-.form {
+.loginform {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    justify-content: center;
     text-align: center;
     margin: 0 auto;
     padding: 1.5rem;
     margin-top: 2rem;
-    width: 320px;
+    width: 50%;
     backdrop-filter: blur(1rem);
     background-color: rgba(53, 53, 53, 0.192);
     font-size: large;
 }
 
-.formLabel {
+.loginformLabel {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     flex-wrap: wrap;
-    justify-content: center;
-    width: 300px;
+    justify-content: left;
     padding: 8px;
     font-size: large;
   }
   
-.formCheckbox {
-    margin: 0 auto;
-    padding: 3px;
-    margin: 3px;
+.loginformCheckbox {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
     font-size: large;
+    padding: 2px;
+    padding-right: 3.5rem;
+}
+
+.logininputArea {
+    padding-left: 50px;
 }
 
 .loginh3 {
@@ -35,4 +40,9 @@
     color: aqua;
     text-shadow: 4px 4px rgba(0, 88, 88, 0.788), -.25em 0 1em rgb(0, 0, 0);
     margin: 4px;
+    width: 100%;
+}
+
+.loginlabelText {
+    padding: 1px;
 }

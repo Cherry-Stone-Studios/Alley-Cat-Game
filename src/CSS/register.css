@@ -1,0 +1,88 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    text-align: center;
+    margin: 0 auto;
+    padding: 1.5rem;
+    margin-top: 2rem;
+    width: 60%;
+    backdrop-filter: blur(1rem);
+    background-color: rgba(53, 53, 53, 0.192);
+    font-size: large;
+}
+
+.inputArea {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: left;
+    margin: 0 auto;
+}
+
+.formLabel {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: left;
+    padding: 8px;
+    font-size: large;
+}
+
+.formCheckbox {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    font-size: large;
+    padding: 2px;
+    padding-right: 3.5rem;
+}
+
+.formDOB {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    font-size: large;
+    height: 2rem;
+    padding: 2px;
+    padding-right: 3.5rem;
+}
+
+.labelText {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    font-size: large;
+    padding: 1px;
+}
+
+.registerh3 {
+    font-size: 2.5rem;
+    color: aqua;
+    text-shadow: 4px 4px rgba(0, 88, 88, 0.788), -.25em 0 1em rgb(0, 0, 0);
+    margin: 4px;
+    width: 100%;
+}
+
+.registerlinks {
+    font-size: 2rem;
+    color: aqua;
+    text-shadow: 4px 4px rgba(0, 88, 88, 0.788), -.25em 0 1em rgb(0, 0, 0);
+    margin: 4px;
+    width: 100%;
+}
+
+.eula {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+}
+
+.checkbox {
+    padding-bottom: 1rem;
+    ;
+}

@@ -26,6 +26,7 @@ import gameoverMeow from "./assets/music/angrycatmeow.mp3";
 const Game = ({ submitHighScore, username }) => {
   useEffect(() => {
     const canvas = document.getElementById("canvas1");
+    // canvas.focus(); // forces the browser to focus on the game
     const ctx = canvas.getContext("2d");
     canvas.width = 800;
     canvas.height = 720;
@@ -179,10 +180,10 @@ const Game = ({ submitHighScore, username }) => {
         if (input.keys.indexOf("ArrowRight") > -1) {
           if (this.onGround()) {
             this.speed = 5; // Normal speed on ground
-            //score++;
+            score++;
           } else {
             this.speed = 9; // Increased speed during jump
-            //score++;
+            score++;
           }
           this.currAction = "walk";
         } else if (input.keys.indexOf("ArrowLeft") > -1) {
@@ -203,7 +204,7 @@ const Game = ({ submitHighScore, username }) => {
             this.vy = -32; // Initial jump velocity
             this.jumpCount = 1;
             this.jumpPressed = true;
-            //score++;
+            score++;
           } else if (this.jumpCount === 1) {
             this.vy = -32; // Double jump velocity
             this.jumpCount = 2;
@@ -298,7 +299,7 @@ const Game = ({ submitHighScore, username }) => {
         flyingFoodArray.forEach((flyingfood) => {
           const flyingfoodHitbox = {
             x: flyingfood.x + flyingfood.width * 0.8,
-            y: flyingfood.y + flyingfood.height /2,
+            y: flyingfood.y + flyingfood.height / 2,
             radius: Math.min(flyingfood.width, flyingfood.height) / 2.75,
           };
 
@@ -594,7 +595,7 @@ const Game = ({ submitHighScore, username }) => {
           this.y,
           this.width,
           this.height
-        )
+        );
       }
     }
 
@@ -688,14 +689,16 @@ const Game = ({ submitHighScore, username }) => {
         randomFlyingFoodInterval = Math.random() * 1000 + 500;
         flyingFoodTimer = 0;
       } else {
-        flyingFoodTimer += deltaTime
+        flyingFoodTimer += deltaTime;
       }
       flyingFoodArray.forEach((food) => {
         food.update();
         food.draw(ctx);
       });
       // player.handleCollisions([], [], [], flyingFoodArray);
-      flyingFoodArray = flyingFoodArray.filter((food) => !food.markedForDeletion);
+      flyingFoodArray = flyingFoodArray.filter(
+        (food) => !food.markedForDeletion
+      );
     }
 
     // const highScore = score + chonMeter * 2;
@@ -798,12 +801,14 @@ const Game = ({ submitHighScore, username }) => {
   }, []);
 
   return (
-    <div className="arcadeBox">
-      <div className="gameBox"></div>
-      <div className="shiftDown">
-        <canvas id="canvas1"></canvas>
+    <>
+      <div className="arcadeBox">
+        <div className="gameBox"></div>
+        <div className="shiftDown">
+          <canvas id="canvas1"></canvas>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
