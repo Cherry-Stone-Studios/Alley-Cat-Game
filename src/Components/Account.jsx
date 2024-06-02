@@ -2,10 +2,13 @@ import "../CSS/home.css";
 import { useState, useEffect, useRef } from "react";
 import React from "react";
 import backgroundMusic from "../assets/music/menu.mp3";
+import { useNavigate } from "react-router-dom";
 import { Nav } from "./Nav.jsx";
 import EditInfo from "./EditInfo.jsx";
-
+import GlobalScores from "./GlobalScores";
+import PersonalScores from "./PersonalScores";
 import TheChonkImage from "../assets/ChonkCat/gatito_parada_espera.png";
+import Popup from "reactjs-popup";
 
 const API_URL = "https://cherry-stone-studios.onrender.com";
 
@@ -37,10 +40,15 @@ export function Account({
   const frameCounterRef = useRef(0); // Counter for frame delay
   const frameDelay = 8; // Number of frames to delay animation update
 
+  const navigate = useNavigate();
+
+  // get the info of this user interacting with the account page
   useEffect(() => {
     async function getUser() {
       try {
-        let fetchAPI = await fetch(`${API_URL}/api/users/username/${username}`);
+        let fetchAPI = await fetch(
+          `${API_URL}/api/users/username/${thisUser.id}`
+        );
         let jsonCatch = await fetchAPI.json();
         setThisUser(jsonCatch);
       } catch (err) {
@@ -50,28 +58,30 @@ export function Account({
     getUser();
   }, []);
 
-  const theupdatedUser = async () => {
-    try {
-      const response = await fetch(`${API_URL}/api/users/${thisUser.id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: currName,
-          username: currUsername,
-          email: currEmail,
-          password: currPassword,
-        }),
-      });
-      const result = await response.json();
-
-      setUpdatedUser(result);
-    } catch (err) {
-      console.error(err);
+  const deleteAccount = async () => {
+    const confirmation = confirm(
+      "Oh no! We're sorry that you want to delete your account.\n\nPlease note: there is no undoing this action!\n\nYour high scores will be converted to guest scores with your current username.\n\nAre you really sure you want to delete your account?"
+    );
+    if (confirmation === true) {
+      try {
+        const response = await fetch(`${API_URL}/api/users/${userID}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${userToken}`,
+          },
+        });
+        const result = await response.json();
+        console.log(result);
+        alert("Lucky for you, you can always play as a guest!");
+        navigate("/");
+      } catch (err) {
+        console.error(err);
+      }
     }
   };
 
+  // music start
   const playMusic = async () => {
     const confirmation = confirm(
       "Hurry home, Alley Cat!\n\n (Cancel to stop music.)"
@@ -94,6 +104,7 @@ export function Account({
     }
   };
 
+  // music stop
   const stopMusic = async () => {
     try {
       bgMusic.loop = false;
@@ -103,35 +114,7 @@ export function Account({
     }
   };
 
-  // put function to json with new user data
-
-  // use new data from new useStates in json,
-  // use new json data to set original props
-
-  const updateInfo = async () => {
-    // if data is not the same, trigger the api PUT call
-    try {
-      const updatedUser = await fetch(`${API_URL}/api/scores/`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username: newUsername,
-          name: newName,
-          password: newPassword,
-          email: newEmail,
-        }),
-      });
-      const data = await createScore.json();
-
-      setScore(data.value);
-    } catch (error) {
-      console.log(error);
-    }
-    // else, just close module
-  };
-
+  // cat sprite
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
@@ -225,16 +208,8 @@ export function Account({
       <div onClick={() => stopMusic()}>
         <Nav userToken={userToken} userID={userID} />
       </div>
-      {/* <img src={"/src/curiouscat.gif"} onClick={() => playMusic()} /> */}
       <canvas ref={canvasRef} id="canvas2" onClick={() => playMusic()}></canvas>
-      <div>
-        <h2 className="alleyHome">Global Leaderboard</h2>
-        {/* PLACE LEADERBOARD COMPONENT */}
-        {/* <Leaderboard /> */}
-        {/* PLACE USER LEADERBOARD COMPONENT */}
-        <h2 className="alleyHome">{`${thisUser.username}'s Leaderboard`}</h2>
-        {/* <UserLeaderboard/> */}
-      </div>
+
       <EditInfo
         currName={currName}
         setCurrName={setCurrName}
@@ -247,6 +222,48 @@ export function Account({
         thisUser={thisUser}
         setThisUser={setThisUser}
       />
+
+      <div className="accountButtonBox">
+        <div className="accountScoresBox">
+          <div className="scoresBox">
+            <h2 className="accounth2">Global Leaderboard</h2>
+            <GlobalScores />
+          </div>
+          <div className="scoresBox">
+            <h2 className="accounth2">{`${thisUser.username}'s Leaderboard`}</h2>{" "}
+            <PersonalScores />
+          </div>
+        </div>
+      </div>
+
+      <Popup
+        trigger={<button className="button"> Delete Account </button>}
+        modal
+        nested
+      >
+        {(close) => (
+          <div className="modal">
+            <button className="close" onClick={close}>
+              &times;
+            </button>
+            <div className="header">
+              {" "}
+              Are you sure you want to delete your account {`${username}`}?{" "}
+            </div>
+            <div className="actions">
+              <button
+                className="button"
+                onClick={async () => {
+                  await deleteAccount();
+                  close();
+                }}
+              >
+                Delete Account
+              </button>
+            </div>
+          </div>
+        )}
+      </Popup>
     </>
   );
 }

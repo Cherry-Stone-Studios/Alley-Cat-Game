@@ -156,8 +156,6 @@ router.put("/:id", requireUser, async (req, res, next) => {
     //else, they're not the right user
   } else {
     res.status(401).send({ message: `Unathorized access detected!` });
-
-    // update the user with given username from req.params
   }
 });
 
@@ -174,18 +172,20 @@ router.delete("/:id", requireUser, async (req, res, next) => {
   const matchedId = id === currId;
 
   // if they are not a match, send back an unauthorized message
-  if (!matchedId) {
-    res.status(401).send({ message: `Unathorized access detected!` });
+  if (matchedId === true) {
     // if they are a match, run deleteUser with the ID of current user
-  } else
     try {
       const deletedUser = await deleteUser(id);
       res.status(200).send({
         message: `You have successfully deleted your account. An alley can be a dangerous place for a stay, stay safe!`,
       });
+      console.log("Goodbye, we're gonna miss you!", deletedUser);
     } catch (err) {
       next(err);
     }
+  } else {
+    res.status(401).send({ message: `Unathorized access detected!` });
+  }
 });
 
 module.exports = router;
