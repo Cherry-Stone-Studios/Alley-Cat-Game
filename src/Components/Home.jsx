@@ -1,9 +1,10 @@
-import "../CSS/home.css";
+import "../CSS/account.css";
 import React, { useEffect, useRef } from "react";
 import backgroundMusic from "../assets/music/menu.mp3";
 import { Nav } from "./Nav.jsx";
 import GameInfo from "./GameInfo.jsx";
 import TheChonkImage from "../assets/ChonkCat/gatito_parada_espera.png";
+import GlobalScores from "./GlobalScores";
 
 export function Home({ userToken, userID }) {
   const bgMusic = new Audio(backgroundMusic);
@@ -138,9 +139,23 @@ export function Home({ userToken, userID }) {
         <GameInfo />
       </div>
       {/* <img src={TheChonkImage} onClick={() => playMusic()} /> */}
-      <canvas ref={canvasRef} id="canvas2" onClick={() => playMusic()}></canvas>
-      <br></br>
-      <br></br>
+
+      <div className="spacer"></div>
+      <div className="accountButtonBox">
+        <div className="accountScoresBox">
+          <div className="catBox">
+            <canvas
+              ref={canvasRef}
+              id="canvas2"
+              onClick={() => playMusic()}
+            ></canvas>
+          </div>
+          <div className="scoresBox1">
+            <h2 className="accounth2">Global Leaderboard</h2>
+            <GlobalScores limit={20} />
+          </div>
+        </div>
+      </div>
     </>
   );
 }

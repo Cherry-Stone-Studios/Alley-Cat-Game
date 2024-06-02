@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 const API_URL = "https://cherry-stone-studios.onrender.com";
 
-const GlobalScores = () => {
+const GlobalScores = ({ limit }) => {
   const [globalScores, setGlobalScores] = useState([]);
 
   useEffect(() => {
@@ -19,7 +19,7 @@ const GlobalScores = () => {
     getScores();
   }, []);
 
-  const sortedScores = globalScores.sort((score1, score2) => {
+  let sortedScores = globalScores.sort((score1, score2) => {
     if (score2.value > score1.value) {
       return 1;
     } else if (score2.value < score1.value) {
@@ -27,6 +27,10 @@ const GlobalScores = () => {
     }
     return 0;
   });
+
+  if (limit) {
+    sortedScores = sortedScores.slice(0, limit);
+  }
 
   return (
     <>
