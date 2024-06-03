@@ -21,15 +21,25 @@ const GlobalScores = ({ limit }) => {
     getScores();
   }, []);
 
-  let sortedScores = globalScores.sort((score1, score2) => {
-    if (score2.value > score1.value) {
-      return 1;
-    } else if (score2.value < score1.value) {
-      return -1;
+  // Create a map to store the highest score for each player
+  const highestScoresMap = {};
+
+  globalScores.forEach((score) => {
+    const playerName = score.name ? score.name : score.guestname;
+    if (!highestScoresMap[playerName] || highestScoresMap[playerName].value < score.value) {
+      highestScoresMap[playerName] = score;
     }
-    return 0;
   });
 
+  // Convert the map back into an array
+  let highestScores = Object.values(highestScoresMap);
+
+  // Sort the array
+  let sortedScores = highestScores.sort((score1, score2) => {
+    return score2.value - score1.value;
+  });
+
+  // Apply limit if necessary
   if (limit) {
     sortedScores = sortedScores.slice(0, limit);
   }
@@ -42,11 +52,9 @@ const GlobalScores = ({ limit }) => {
             <div key={score.id} className="oneScore">
               <div className="scoreCard">
                 <div className="scoreDetails">
-                  Name:
-                  {score.name ? score.name : score.guestname}
+                  Name: {score.name ? score.name : score.guestname}
                 </div>
                 <div className="scoreDetails">Score: {score.value}</div>
-
                 <div className="scoreDetails">
                   {score.name ? "User" : "Guest"}
                 </div>
