@@ -55,7 +55,13 @@ export function GamePage({
   };
 
   const guestHighScore = async () => {
+    event.preventDefault();
     setIsLoading(true);
+
+    document.getElementById("scoreSubmit").addEventListener("click", () => {
+      document.getElementById("scoreButton").focus({ preventScroll: true }); // default: {preventScroll:false}
+    });
+
     if (guestScore > 0) {
       try {
         setIsSending(true);
@@ -98,7 +104,7 @@ export function GamePage({
       <Game submitHighScore={submitHighScore} />
 
       {
-        <Popup open={guestScore > 0} modal nested>
+        <Popup id="scoreSubmit" open={guestScore > 0} modal nested>
           {(close) => (
             <div className="modal">
               <button className="close" onClick={close}>
@@ -129,6 +135,14 @@ export function GamePage({
                   ) : (
                     <button
                       className="button"
+                      id="scoreButton"
+                      onKeyDown={async (e) => {
+                        if (e.key === "Enter") {
+                          noDefault(e);
+                          await guestHighScore();
+                          close();
+                        }
+                      }}
                       onClick={async () => {
                         await guestHighScore();
                         close();
