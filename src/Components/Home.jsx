@@ -17,7 +17,7 @@ export function Home({ userToken, userID }) {
 
   const playMusic = async () => {
     const confirmation = confirm(
-      "Hurry home, Alley Cat!\n\n (Cancel to stop music.)"
+      "Enjoy this secret treato!\n\n (Cancel to stop music.)"
     );
     if (confirmation === true) {
       try {
@@ -145,7 +145,7 @@ export function Home({ userToken, userID }) {
       {/* <img src={TheChonkImage} onClick={() => playMusic()} /> */}
 
       <div className="spacer"></div>
-      <div className="accountButtonBox">
+      <div>
         <div className="accountScoresBox">
           <div className="catBox">
             <canvas
@@ -154,7 +154,7 @@ export function Home({ userToken, userID }) {
               onClick={() => playMusic()}
             ></canvas>
           </div>
-          <div className="scoresBox1">
+          <div>
             <h2 className="accounth2">Global Leaderboard</h2>
             <GlobalScores limit={20} />
           </div>

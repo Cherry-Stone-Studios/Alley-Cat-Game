@@ -146,7 +146,7 @@ h6 {
 .footer {
   padding-top: 5px;
   color: aqua;
-  text-shadow: 4px 4px rgba(0, 88, 88, 0.788), -.25em 0 1em rgb(0, 0, 0);
+  text-shadow: 2px 2px rgb(0, 0, 0), -.25em 0 1em rgb(0, 0, 0);
 }
 
 /* global css for global IDs */

@@ -8,9 +8,9 @@
     width: 600px;
     margin: 0 auto;
     font-size: x-large;
-    color: aqua;
-    text-shadow: 4px 4px rgba(0, 88, 88, 0.788), -.25em 0 1em rgb(0, 0, 0);
-}
+    color: rgb(0, 255, 255);
+    text-shadow: 2px 2px rgb(0, 0, 0), -.25em 0 1em rgb(0, 0, 0);
+  }
 
 .eachScore {
     display: flex;
@@ -19,6 +19,7 @@
     justify-content: center;
     padding: 1px;
     margin: 1px; 
+
   }
 
 .oneScore {
@@ -28,6 +29,8 @@
     justify-content: center;
     padding: 2px;
     margin: 2px; 
+    backdrop-filter: blur(50px);
+
 }
 
 .scoreCard {
@@ -47,5 +50,4 @@
     justify-content: center;
     padding: 4px;
     margin: 4px; 
-    backdrop-filter: blur(10px);
   }
