@@ -49,8 +49,8 @@ const Game = ({ submitHighScore, username }) => {
     let randomFoodInterval = Math.random() * 1000 + 500;
     let flyingFoodArray = [];
     let flyingFoodTimer = 0;
-    const flyingFoodInterval = 6000;
-    let randomFlyingFoodInterval = Math.random() * 1000 + 500;
+    const flyingFoodInterval = 10000;
+    let randomFlyingFoodInterval = Math.random() * 1000 + 999;
 
     const bgMusic = new Audio(backgroundMusic);
     bgMusic.loop = true;
@@ -565,18 +565,18 @@ const Game = ({ submitHighScore, username }) => {
       constructor(gameWidth, gameHeight) {
         this.gameWidth = gameWidth;
         this.gameHeight = gameHeight;
-        this.spriteWidth = 33;
-        this.spriteHeight = 15;
-        this.width = 55;
-        this.height = 55;
+        this.spriteWidth = 20; // size of food
+        this.spriteHeight = 20;
+        this.width = 45;
+        this.height = 45;
         this.x = gameWidth;
         this.y = Math.random() * (gameHeight / 4) + gameHeight / 4;
         this.image = new Image();
         this.image.src = food2;
-        this.speed = 4;
+        this.speed = 4.5;
         this.markedForDeletion = false;
-        this.frameX = 0;
-        this.frameY = 0;
+        this.frameX = 0.1999999999;
+        this.frameY = 0.1999999999;
       }
       update() {
         this.x -= this.speed;

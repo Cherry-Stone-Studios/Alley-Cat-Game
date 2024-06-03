@@ -156,7 +156,7 @@ export function Home({ userToken, userID }) {
           </div>
           <div>
             <h2 className="accounth2">Global Leaderboard</h2>
-            <GlobalScores limit={20} />
+            <GlobalScores limit={10} />
           </div>
         </div>
       </div>

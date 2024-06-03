@@ -229,7 +229,7 @@ export function Account({ userToken, setUserToken, userID, username }) {
                 color="aqua"
               ></l-newtons-cradle>
             ) : (
-              <GlobalScores limit={10} />
+              <GlobalScores limit={20} />
             )}
           </div>
           <div className="spacer"></div>
@@ -242,7 +242,7 @@ export function Account({ userToken, setUserToken, userID, username }) {
                 color="aqua"
               ></l-newtons-cradle>
             ) : (
-              <PersonalScores username={username} limit={10} />
+              <PersonalScores username={username} limit={20} />
             )}
           </div>
         </div>
