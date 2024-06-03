@@ -180,7 +180,7 @@ router.delete("/:id", requireUser, async (req, res, next) => {
     try {
       const deletedUser = await deleteUser(id);
       res.status(200).send({
-        message: `You have successfully deleted your account. An alley can be a dangerous place for a stay, stay safe!`,
+        message: `You have successfully deleted your account. An alley can be a dangerous place for a stray - stay safe!`,
       });
     } catch (err) {
       next(err);
