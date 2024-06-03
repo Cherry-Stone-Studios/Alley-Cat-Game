@@ -62,4 +62,5 @@
 >- [LinkedIn](https://www.linkedin.com/public-profile/settings?trk=d_flagship3_profile_self_view_public_profile)
 >- [Github](https://github.com/Vramiro7)
 
-  
+  ![image](https://github.com/Cherry-Stone-Studios/Cherry-Stone-Studios/assets/153331263/662640e1-15a1-4d5f-9873-7efa4297fa81)
+
