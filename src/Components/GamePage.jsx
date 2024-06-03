@@ -55,12 +55,7 @@ export function GamePage({
   };
 
   const guestHighScore = async () => {
-    event.preventDefault();
     setIsLoading(true);
-
-    document.getElementById("scoreSubmit").addEventListener("click", () => {
-      document.getElementById("scoreButton").focus({ preventScroll: true }); // default: {preventScroll:false}
-    });
 
     if (guestScore > 0) {
       try {
@@ -121,6 +116,14 @@ export function GamePage({
                     <input
                       type="text"
                       onChange={(e) => setGuestname(e.target.value)}
+                      onKeyDown={async (e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault();
+                          setIsSending(true);
+                          await guestHighScore();
+                          close();
+                        }
+                      }}
                     />
                   </label>
                 </form>
@@ -136,13 +139,6 @@ export function GamePage({
                     <button
                       className="button"
                       id="scoreButton"
-                      onKeyDown={async (e) => {
-                        if (e.key === "Enter") {
-                          noDefault(e);
-                          await guestHighScore();
-                          close();
-                        }
-                      }}
                       onClick={async () => {
                         await guestHighScore();
                         close();
