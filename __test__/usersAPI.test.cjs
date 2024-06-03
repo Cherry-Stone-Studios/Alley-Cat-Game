@@ -263,7 +263,7 @@ describe("DELETE /api/users/:id", () => {
 
     expect(response.body).toMatchObject({
       message:
-        "You have successfully deleted your account. An alley can be a dangerous place for a stay, stay safe!",
+        "You have successfully deleted your account. An alley can be a dangerous place for a stray, stay safe!",
     });
   });
 });
