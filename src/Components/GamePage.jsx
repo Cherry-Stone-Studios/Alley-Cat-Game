@@ -20,6 +20,7 @@ export function GamePage({
   guestScore,
 }) {
   const [isLoading, setIsLoading] = useState(false);
+  const [isSending, setIsSending] = useState(false);
   const [inGame, setInGame] = useState(false);
 
   const submitHighScore = async (score) => {
@@ -57,6 +58,8 @@ export function GamePage({
     setIsLoading(true);
     if (guestScore > 0) {
       try {
+        setIsSending(true);
+
         const createScore = await fetch(`${API_URL}/api/scores/`, {
           method: "POST",
           headers: {
@@ -77,8 +80,10 @@ export function GamePage({
         setScore({ data });
         setGuestScore(0);
         setIsLoading(false);
+        setIsSending(false);
       } catch (error) {
         setIsLoading(false);
+        setIsSending(false);
         console.log(error);
       }
     }
@@ -96,12 +101,15 @@ export function GamePage({
         <Popup open={guestScore > 0} modal nested>
           {(close) => (
             <div className="modal">
-              <button className="close" onClick={close}></button>
+              <button className="close" onClick={close}>
+                ･.･
+              </button>
               <div className="header">
-                Register to Automatically Save Scores{" "}
+                Register to Automatically Save Scores
               </div>
               <div className="content">
                 <form>
+                  <p>Enter Name and Restart!</p>
                   <label className="formLabel">
                     Username:
                     <input
@@ -113,7 +121,7 @@ export function GamePage({
               </div>
               <div className="actions">
                 <div className="loading">
-                  {isLoading ? (
+                  {isSending ? (
                     <l-newtons-cradle
                       className="button"
                       color="aqua"

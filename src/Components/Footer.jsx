@@ -8,13 +8,15 @@ export function Footer() {
           all rights reserved. all laws applicable. for entertainment purposes
           only. copyright Cherry Stone Studios 2024.
         </p>
-        <Link className="registerlinks" to={"/terms"}>
-          Terms of Use
-        </Link>
-        and
-        <Link className="registerlinks" to={"/privacy"}>
-          Privacy Policy
-        </Link>
+        <div className="footer">
+          <Link className="registerlinks" to={"/terms"}>
+            Terms of Use
+          </Link>
+          &&
+          <Link className="registerlinks" to={"/privacy"}>
+            Privacy Policy
+          </Link>
+        </div>
       </section>
     </>
   );
