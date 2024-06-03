@@ -40,11 +40,13 @@
 ## Credits 
 - Sprites :
 >- [Home Sprite](https://mariaparragames.itch.io/fat-cat-set/devlog/276711/fat-cat-set-pixel-art-spritesheets)
->- [Fish Sprite]()
+>- [Fish Sprite](www.linkedin.com/in/nakayla-hart-794aa6261)
 >- [Playable Cat Sprite](https://craftpix.net/freebies/free-street-animal-pixel-art-asset-pack/?num=1&count=511&sq=cat%20sprite&pos=4)
 >- [Dog Sprite](https://craftpix.net/freebies/free-street-animal-pixel-art-asset-pack/?num=1&count=511&sq=cat%20sprite&pos=4)
 >- [Bird Sprite](https://craftpix.net/freebies/free-street-animal-pixel-art-asset-pack/?num=1&count=511&sq=cat%20sprite&pos=4)
 >- [Cityscape Background](https://free-game-assets.itch.io/free-city-backgrounds-pixel-art)
+>- [Game Music](https://www.youtube.com/watch?v=WdrbxCRLNgA&start=17)
+>- [Website Music](https://www.youtube.com/channel/UCsLlqLIE-TqDq3lh5kU2PeA)
 
 ## Devs
 - Christopher Garcia:
