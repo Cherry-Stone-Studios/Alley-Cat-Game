@@ -22,6 +22,9 @@ export function GamePage({
   const [isLoading, setIsLoading] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const [inGame, setInGame] = useState(false);
+  // isMobile
+  // detects from browser in a useEffect if the user is on a mobile device
+  // if on mobile, then we show the mobile control canvas over the game
 
   const submitHighScore = async (score) => {
     setIsLoading(true);
@@ -94,6 +97,16 @@ export function GamePage({
     <>
       <h2 className="goodLuck">Good luck! Eat lots of fish!</h2>
       {<Nav userToken={userToken} userID={userID} />}
+
+      {/* this is where the canvas for the mobile stuff will render if the user is on mobile */}
+
+      {/* <div className="catBox">
+            <canvas
+              ref={canvasRef}
+              id="canvas2"
+              onClick={() => playMusic()}
+            ></canvas>
+          </div> */}
 
       {/* find a way to get the game to only play when on this page  */}
       <Game submitHighScore={submitHighScore} />
