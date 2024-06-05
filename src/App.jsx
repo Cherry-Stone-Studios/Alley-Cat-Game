@@ -122,6 +122,7 @@ function App() {
               setUserToken={setUserToken}
               userID={userID}
               username={username}
+              setUsername={setUsername}
             />
           }
         />

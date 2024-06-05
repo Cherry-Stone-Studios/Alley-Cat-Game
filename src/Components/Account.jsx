@@ -14,7 +14,13 @@ import "ldrs/newtonsCradle";
 
 const API_URL = "https://cherry-stone-studios.onrender.com";
 
-export function Account({ userToken, setUserToken, userID, username }) {
+export function Account({
+  userToken,
+  setUserToken,
+  userID,
+  username,
+  setUsername,
+}) {
   // contruct new useState for new data, pass into editInfo component
   const [currName, setCurrName] = useState("");
   const [currUsername, setCurrUsername] = useState("");
@@ -64,6 +70,7 @@ export function Account({ userToken, setUserToken, userID, username }) {
         alert(result.message);
         alert("Lucky for you, you can always play as a guest!");
         setUserToken(null);
+        setUsername("");
         setIsLoading(false);
         navigate("/");
       } catch (err) {
