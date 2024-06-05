@@ -295,7 +295,6 @@ export function Account({
                   </button>
                 )}
               </div>
-              <BackButton />
             </div>
           </div>
         )}
