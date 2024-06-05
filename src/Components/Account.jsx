@@ -231,10 +231,7 @@ export function Account({
             <h2 className="accounth2">Global Leaderboard</h2>
 
             {isLoading ? (
-              <l-newtons-cradle
-                className="button"
-                color="aqua"
-              ></l-newtons-cradle>
+              <l-newtons-cradle color="aqua"></l-newtons-cradle>
             ) : (
               <GlobalScores limit={20} />
             )}
@@ -244,10 +241,7 @@ export function Account({
             <h2 className="accounth2">{` ${thisUser.username}'s Leaderboard`}</h2>
 
             {isLoading ? (
-              <l-newtons-cradle
-                className="button"
-                color="aqua"
-              ></l-newtons-cradle>
+              <l-newtons-cradle color="aqua"></l-newtons-cradle>
             ) : (
               <PersonalScores username={username} limit={20} />
             )}
@@ -278,22 +272,15 @@ export function Account({
             </div>
             <div className="actions">
               <div className="loading">
-                {isLoading ? (
-                  <l-newtons-cradle
-                    className="button"
-                    color="aqua"
-                  ></l-newtons-cradle>
-                ) : (
-                  <button
-                    className="button"
-                    onClick={async () => {
-                      await deleteAccount();
-                      close();
-                    }}
-                  >
-                    Delete Account
-                  </button>
-                )}
+                <button
+                  className="button"
+                  onClick={async () => {
+                    await deleteAccount();
+                    close();
+                  }}
+                >
+                  Delete Account
+                </button>
               </div>
             </div>
           </div>

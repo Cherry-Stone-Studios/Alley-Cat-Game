@@ -81,13 +81,22 @@ function App() {
               setPassword={setPassword}
               showPassword={showPassword}
               setShowPassword={setShowPassword}
+              setGuestname={setGuestname}
+              setGuestScore={setGuestScore}
             />
           }
         />
 
         <Route
           path="/logout"
-          element={<Logout setUserToken={setUserToken} />}
+          element={
+            <Logout
+              setUserToken={setUserToken}
+              setUsername={setUsername}
+              setGuestname={setGuestname}
+              setGuestScore={setGuestScore}
+            />
+          }
         />
 
         <Route

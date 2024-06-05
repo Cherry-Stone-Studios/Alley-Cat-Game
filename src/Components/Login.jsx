@@ -18,6 +18,8 @@ export function Login({
   setPassword,
   showPassword,
   setShowPassword,
+  setGuestname,
+  setGuestScore,
 }) {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
@@ -26,6 +28,9 @@ export function Login({
   async function handleLogin(event) {
     event.preventDefault();
     setIsLoading(true);
+    setGuestname("");
+    setGuestScore(0);
+    setShowPassword(false);
     try {
       const loginPackage = {
         method: "POST",
@@ -94,10 +99,7 @@ export function Login({
 
         <div className="loading">
           {isLoading ? (
-            <l-newtons-cradle
-              className="button"
-              color="aqua"
-            ></l-newtons-cradle>
+            <l-newtons-cradle color="aqua"></l-newtons-cradle>
           ) : (
             <button form="login" type="submit" className="button">
               Submit

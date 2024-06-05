@@ -73,6 +73,7 @@ const Register = ({
   const handleRegister = async (event) => {
     event.preventDefault();
     setIsLoading(true);
+    setShowPassword(false);
     try {
       const response = await fetch(`${API_URL}/api/users/register`, {
         method: "POST",
@@ -190,10 +191,7 @@ const Register = ({
         </div>
         <div className="loading">
           {isLoading ? (
-            <l-newtons-cradle
-              className="button"
-              color="aqua"
-            ></l-newtons-cradle>
+            <l-newtons-cradle color="aqua"></l-newtons-cradle>
           ) : (
             <button form="register" type="submit" className="button">
               Let's Go!
