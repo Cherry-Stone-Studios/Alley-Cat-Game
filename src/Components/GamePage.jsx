@@ -144,10 +144,7 @@ export function GamePage({
               <div className="actions">
                 <div className="loading">
                   {isSending ? (
-                    <l-newtons-cradle
-                      className="button"
-                      color="aqua"
-                    ></l-newtons-cradle>
+                    <l-newtons-cradle color="aqua"></l-newtons-cradle>
                   ) : (
                     <button
                       className="button"

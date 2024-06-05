@@ -24,6 +24,7 @@ const EditInfo = ({
 
   const updateUser = async () => {
     setIsLoading(true);
+    setShowPassword(false);
     const confirmation = confirm(
       "Are you sure you want to update your account information?\n\nContact us at cherry.stone.studios.games@gmail.com if you have any issues!"
     );
@@ -132,10 +133,7 @@ const EditInfo = ({
             <div className="actions">
               <div className="loading">
                 {isLoading ? (
-                  <l-newtons-cradle
-                    className="button"
-                    color="aqua"
-                  ></l-newtons-cradle>
+                  <l-newtons-cradle color="aqua"></l-newtons-cradle>
                 ) : (
                   <button
                     className="button"
