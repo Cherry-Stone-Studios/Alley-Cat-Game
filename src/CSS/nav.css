@@ -3,8 +3,8 @@
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
-    padding: 5px;
-    margin: 5px; 
+    padding: .5rem;
+    margin: .5rem; 
   }
   
 .navRow {
@@ -12,8 +12,8 @@
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
-    padding: 8px;
-    margin: 8px; 
+    padding: .8rem;
+    margin: .8rem; 
   }
   
 .navItem {
@@ -21,13 +21,61 @@
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
-    padding: 5px;
-    margin: 5px; 
-    border: 1.5px dotted rgba(0, 255, 255, 0.219);
-    border-radius: 200px;
+    padding: .5rem;
+    margin: .5rem; 
+    border: 1..5rem dotted rgba(0, 255, 255, 0.219);
+    border-radius: 20rem;
     background-color: rgba(0, 88, 88, 0.35);
-    backdrop-filter: blur(5px);
-    font-size: 30px;
+    backdrop-filter: blur(.5rem);
+    font-size: 3rem;
     color: aqua;
     text-shadow: 4px 4px rgba(0, 88, 88, 0.788), -.25em 0 1em rgb(196, 251, 255);
   }
+
+/* smartphones, iPhone, portrait 480x320 phones */
+@media (max-width:32rem) {
+  body
+  {
+     margin: 0 auto;
+   }
+}
+
+/* portrait e-readers (Nook/Kindle), smaller tablets @ 600 or @ 640 wide. */
+@media (max-width:481px)  {
+  body
+ {
+    margin: 0 auto;
+  }
+}
+
+/* portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */
+@media (max-width:641px) {
+  body
+ {
+    margin: 0 auto;
+  }
+}
+
+/* tablet, landscape iPad, lo-res laptops ands desktops */
+@media (max-width:961px) {
+  body
+ {
+    margin: 0 auto;
+  }
+}
+
+/* big landscape tablets, laptops, and desktops */
+@media (max-width:1025px) {
+  body
+ {
+    margin: 0 auto;
+  }
+}
+
+/* hi-res laptops and desktops */
+@media (max-width:1281px) {
+  body
+ {
+    margin: 0 auto;
+  }
+}

@@ -4,25 +4,18 @@ import { Home } from "./Components/Home.jsx";
 import { Nav } from "./Components/Nav.jsx";
 import { Login } from "./Components/Login.jsx";
 import { Logout } from "./Components/Logout.jsx";
-import Register from "./Components/Register.jsx";
 import { Account } from "./Components/Account.jsx";
 import { GamePage } from "./Components/GamePage.jsx";
-import EditInfo from "./Components/EditInfo.jsx";
 import { Scores } from "./Components/Scores.jsx";
 import { Terms } from "./Components/Terms.jsx";
 import { Privacy } from "./Components/Privacy.jsx";
 import { Admin } from "./Components/Admin.jsx";
 import { Footer } from "./Components/Footer.jsx";
-
-import Player from "./SpriteAnimation.jsx";
+import Register from "./Components/Register.jsx";
 
 import { Route, Routes } from "react-router-dom";
 
 const API_URL = "https://cherry-stone-studios.onrender.com";
-const USER_API = `https://cherry-stone-studios.onrender.com/api/users/`;
-const SCORE_API = `https://cherry-stone-studios.onrender.com/api/scores/`;
-const ADMIN_API = `https://cherry-stone-studios.onrender.com/api/admin/`;
-const FRIENDS_API = `https://cherry-stone-studios.onrender.com/api/users/friends/`;
 
 function App() {
   const [userToken, setUserToken] = useState(null);
@@ -56,7 +49,6 @@ function App() {
   return (
     <>
       <Routes>
-        {/* home, nav, login, logout, register, account, game, scores, terms, privacy, admin */}
         <Route
           path="/"
           element={<Home userToken={userToken} userID={userID} />}
@@ -92,7 +84,13 @@ function App() {
           element={
             <Logout
               setUserToken={setUserToken}
+              setUserID={setUserID}
               setUsername={setUsername}
+              setName={setName}
+              setEmail={setEmail}
+              setPassword={setPassword}
+              setDate_of_birth={setDate_of_birth}
+              setShowPassword={setShowPassword}
               setGuestname={setGuestname}
               setGuestScore={setGuestScore}
             />
@@ -132,6 +130,14 @@ function App() {
               userID={userID}
               username={username}
               setUsername={setUsername}
+              setUserID={setUserID}
+              setName={setName}
+              setEmail={setEmail}
+              setPassword={setPassword}
+              setDate_of_birth={setDate_of_birth}
+              setShowPassword={setShowPassword}
+              setGuestname={setGuestname}
+              setGuestScore={setGuestScore}
             />
           }
         />

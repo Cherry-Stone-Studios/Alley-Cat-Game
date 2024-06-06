@@ -9,8 +9,8 @@ import GlobalScores from "./GlobalScores";
 import PersonalScores from "./PersonalScores";
 import TheChonkImage from "../assets/ChonkCat/gatito_parada_espera.png";
 import Popup from "reactjs-popup";
-import BackButton from "./BackButton";
-import "ldrs/newtonsCradle";
+import { newtonsCradle } from "ldrs";
+newtonsCradle.register();
 
 const API_URL = "https://cherry-stone-studios.onrender.com";
 
@@ -18,8 +18,16 @@ export function Account({
   userToken,
   setUserToken,
   userID,
+  setUserID,
   username,
   setUsername,
+  setName,
+  setEmail,
+  setPassword,
+  setDate_of_birth,
+  setShowPassword,
+  setGuestname,
+  setGuestScore,
 }) {
   // contruct new useState for new data, pass into editInfo component
   const [currName, setCurrName] = useState("");
@@ -70,7 +78,15 @@ export function Account({
         alert(result.message);
         alert("Lucky for you, you can always play as a guest!");
         setUserToken(null);
+        setUserID(0);
         setUsername("");
+        setName("");
+        setEmail("");
+        setPassword("");
+        setDate_of_birth("");
+        setShowPassword(false);
+        setGuestname("");
+        setGuestScore(0);
         setIsLoading(false);
         navigate("/");
       } catch (err) {
@@ -118,8 +134,8 @@ export function Account({
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
 
-    canvas.width = 800;
-    canvas.height = 720;
+    canvas.width = 525;
+    canvas.height = 400;
 
     ctx.imageSmoothingEnabled = false;
 
@@ -127,8 +143,8 @@ export function Account({
       constructor(gameWidth, gameHeight) {
         this.gameWidth = gameWidth;
         this.gameHeight = gameHeight;
-        this.width = 500; // size of cats
-        this.height = 420;
+        this.width = 400; // size of cats
+        this.height = 400;
         this.spriteWidth = 128;
         this.spriteHeight = 128;
         this.image = new Image();
@@ -209,7 +225,14 @@ export function Account({
       <div onClick={() => stopMusic()}>
         <Nav userToken={userToken} userID={userID} />
       </div>
-      <canvas ref={canvasRef} id="canvas2" onClick={() => playMusic()}></canvas>
+      <div className="catBox">
+        {" "}
+        <canvas
+          ref={canvasRef}
+          id="canvas2"
+          onClick={() => playMusic()}
+        ></canvas>
+      </div>
 
       <EditInfo
         userToken={userToken}
@@ -230,21 +253,25 @@ export function Account({
           <div className="scoresBox1">
             <h2 className="accounth2">Global Leaderboard</h2>
 
-            {isLoading ? (
-              <l-newtons-cradle color="aqua"></l-newtons-cradle>
-            ) : (
-              <GlobalScores limit={20} />
-            )}
+            <div className="loading">
+              {isLoading ? (
+                <l-newtons-cradle color="aqua"></l-newtons-cradle>
+              ) : (
+                <GlobalScores limit={20} />
+              )}
+            </div>
           </div>
           <div className="spacer"></div>
           <div className="scoresBox2">
             <h2 className="accounth2">{` ${thisUser.username}'s Leaderboard`}</h2>
 
-            {isLoading ? (
-              <l-newtons-cradle color="aqua"></l-newtons-cradle>
-            ) : (
-              <PersonalScores username={username} limit={20} />
-            )}
+            <div className="loading">
+              {isLoading ? (
+                <l-newtons-cradle color="aqua"></l-newtons-cradle>
+              ) : (
+                <PersonalScores username={username} limit={20} />
+              )}
+            </div>
           </div>
         </div>
       </div>

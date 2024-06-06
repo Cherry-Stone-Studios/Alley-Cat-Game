@@ -9,10 +9,7 @@ export function Terms() {
           <h1>End User License Agreement</h1>
         </div>
         <div className="eulaP">
-          <p>
-            <b>Last updated</b> May 30, 2024
-          </p>
-          <br />
+          <p>Last updated on May 30, 2024</p>
         </div>
         <div className="eulaP">
           <p>
@@ -135,7 +132,7 @@ export function Terms() {
             </li>
             <br />
           </ol>
-          <h2>
+          <h2 className="eulaH2">
             <a id="#application">1. THE APPLICATION</a>
           </h2>
         </div>
@@ -165,11 +162,11 @@ export function Terms() {
           </p>
           <br />
         </div>
-        <div className="eulaH2">
-          <h2>
-            <a id="#scope">2. SCOPE OF LICENSE</a>
-          </h2>
-        </div>
+
+        <h2 className="eulaH2">
+          <a id="#scope">2. SCOPE OF LICENSE</a>
+        </h2>
+
         <div className="eulaP">
           <p>
             2.1 You are given a non-transferable, non-exclusive,
@@ -236,11 +233,9 @@ export function Terms() {
           </p>
           <br />
         </div>
-        <div className="eulaH2">
-          <h2>
-            <a id="#requirements">3. TECHNICAL REQUIREMENTS</a>
-          </h2>
-        </div>
+        <h2 className="eulaH2">
+          <a id="#requirements">3. TECHNICAL REQUIREMENTS</a>
+        </h2>
         <div className="eulaP">
           <p>
             3.1 The Licensed Application requires a firmware version 1.0 or
@@ -267,11 +262,9 @@ export function Terms() {
           </p>
           <br />
         </div>
-        <div className="eulaH2">
-          <h2>
-            <a id="#nosupport">4. NO MAINTENANCE OR SUPPORT</a>
-          </h2>
-        </div>
+        <h2 className="eulaH2">
+          <a id="#nosupport">4. NO MAINTENANCE OR SUPPORT</a>
+        </h2>
         <div className="eulaP">
           <p>
             4.1 Cherry Stone Studios is not obligated, expressed or implied, to
@@ -286,11 +279,9 @@ export function Terms() {
           </p>
           <br />
         </div>
-        <div className="eulaH2">
-          <h2>
-            <a id="#datause">5. USE OF DATA</a>
-          </h2>
-        </div>
+        <h2 className="eulaH2">
+          <a id="#datause">5. USE OF DATA</a>
+        </h2>
         <div className="eulaP">
           <p>
             You acknowledge that Licensor will be able to access and adjust Your
@@ -313,11 +304,9 @@ export function Terms() {
           </p>
           <br />
         </div>
-        <div className="eulaH2">
-          <h2>
-            <a id="#ugc">6. USER-GENERATED CONTRIBUTIONS</a>
-          </h2>
-        </div>
+        <h2 className="eulaH2">
+          <a id="#ugc">6. USER-GENERATED CONTRIBUTIONS</a>
+        </h2>
         <div className="eulaP">
           <p>
             The Licensed Application does not offer users to submit or post
@@ -426,11 +415,9 @@ export function Terms() {
           </p>
           <br />
         </div>
-        <div className="eulaH2">
-          <h2>
-            <a id="#contribution">7. CONTRIBUTION LICENSE</a>
-          </h2>
-        </div>
+        <h2 className="eulaH2">
+          <a id="#contribution">7. CONTRIBUTION LICENSE</a>
+        </h2>
         <div className="eulaP">
           <p>
             You agree that we may access, store, process, and use any
@@ -457,11 +444,9 @@ export function Terms() {
           </p>
           <br />
         </div>
-        <div className="eulaH2">
-          <h2>
-            <a id="#liability">8. LIABILITY</a>
-          </h2>
-        </div>
+        <h2 className="eulaH2">
+          <a id="#liability">8. LIABILITY</a>
+        </h2>
         <div className="eulaP">
           <p>
             8.1 Licensor takes no accountability or responsibility for any
@@ -475,11 +460,9 @@ export function Terms() {
           </p>
           <br />
         </div>
-        <div className="eulaH2">
-          <h2>
-            <a id="#warranty">9. WARRANTY</a>
-          </h2>
-        </div>
+        <h2 className="eulaH2">
+          <a id="#warranty">9. WARRANTY</a>
+        </h2>
         <div className="eulaP">
           <p>
             9.1 Licensor warrants that the Licensed Application is free of
@@ -534,11 +517,9 @@ export function Terms() {
           </p>
           <br />
         </div>
-        <div className="eulaH2">
-          <h2>
-            <a id="#productclaims">10. PRODUCT CLAIMS</a>
-          </h2>
-        </div>
+        <h2 className="eulaH2">
+          <a id="#productclaims">10. PRODUCT CLAIMS</a>
+        </h2>
         <div className="eulaP">
           <p>
             Cherry Stone Studios and the End-User acknowledge that Cherry Stone
@@ -560,11 +541,9 @@ export function Terms() {
           </p>
           <br />
         </div>
-        <div className="eulaH2">
-          <h2>
-            <a id="#compliance">11. LEGAL COMPLIANCE</a>
-          </h2>
-        </div>
+        <h2 className="eulaH2">
+          <a id="#compliance">11. LEGAL COMPLIANCE</a>
+        </h2>
         <div className="eulaP">
           <p>
             You represent and warrant that You are not located in a country that
@@ -575,11 +554,9 @@ export function Terms() {
           </p>
           <br />
         </div>
-        <div className="eulaH2">
-          <h2>
-            <a id="#contact">12. CONTACT INFORMATION</a>
-          </h2>
-        </div>
+        <h2 className="eulaH2">
+          <a id="#contact">12. CONTACT INFORMATION</a>
+        </h2>
         <div className="eulaP">
           <p>
             For general inquiries, complaints, questions or claims concerning
@@ -589,11 +566,9 @@ export function Terms() {
           </p>
           <br />
         </div>
-        <div className="eulaH2">
-          <h2>
-            <a id="#termination">13. TERMINATION</a>
-          </h2>
-        </div>
+        <h2 className="eulaH2">
+          <a id="#termination">13. TERMINATION</a>
+        </h2>
         <div className="eulaP">
           <p>
             The license is valid until terminated by Cherry Stone Studios or by
@@ -605,13 +580,11 @@ export function Terms() {
           </p>
           <br />
         </div>
-        <div className="eulaH2">
-          <h2>
-            <a id="#thirdparty">
-              14. THIRD-PARTY TERMS OF AGREEMENTS AND BENEFICIARY
-            </a>
-          </h2>
-        </div>
+        <h2 className="eulaH2">
+          <a id="#thirdparty">
+            14. THIRD-PARTY TERMS OF AGREEMENTS AND BENEFICIARY
+          </a>
+        </h2>
         <div className="eulaP">
           <p>
             Cherry Stone Studios represents and warrants that Cherry Stone
@@ -630,11 +603,9 @@ export function Terms() {
           </p>
           <br />
         </div>
-        <div className="eulaH2">
-          <h2>
-            <a id="#ipr">15. INTELLECTUAL PROPERTY RIGHTS</a>
-          </h2>
-        </div>
+        <h2 className="eulaH2">
+          <a id="#ipr">15. INTELLECTUAL PROPERTY RIGHTS</a>
+        </h2>
         <div className="eulaP">
           <p>
             Cherry Stone Studios and the End-User acknowledge that, in the event
@@ -647,11 +618,9 @@ export function Terms() {
           </p>
           <br />
         </div>
-        <div className="eulaH2">
-          <h2>
-            <a id="#law">16. APPLICABLE LAW</a>
-          </h2>
-        </div>
+        <h2 className="eulaH2">
+          <a id="#law">16. APPLICABLE LAW</a>
+        </h2>
         <div className="eulaP">
           <p>
             This License Agreement is governed by the laws of the State of
@@ -659,11 +628,9 @@ export function Terms() {
           </p>
           <br />
         </div>
-        <div className="eulaH2">
-          <h2>
-            <a id="#misc">17. MISCELLANEOUS</a>
-          </h2>
-        </div>
+        <h2 className="eulaH2">
+          <a id="#misc">17. MISCELLANEOUS</a>
+        </h2>
         <div className="eulaP">
           <p>
             17.1 If any of the terms of this agreement should be or become

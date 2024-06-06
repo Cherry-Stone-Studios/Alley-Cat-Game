@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "ldrs/newtonsCradle";
+import { newtonsCradle } from "ldrs";
+newtonsCradle.register();
 
 export function Admin({ userToken }) {
   const [updatedUser, setUpdatedUser] = useState([]);

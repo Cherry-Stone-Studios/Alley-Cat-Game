@@ -1,5 +1,5 @@
-    /* this is the box around the whole popup */
-    .modal {
+/* this is the box around the whole popup */
+.modal {
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
@@ -11,52 +11,145 @@
     backdrop-filter: blur(50px);
     font-size: xx-large;
     color: aqua;
-    text-shadow: 4px 4px rgba(0, 88, 88, 0.788), -.25em 0 1em rgb(0, 0, 0);
-  }
+    text-shadow: .4rem .4rem rgba(0, 88, 88, 0.788), -.25em 0 1em rgb(0, 0, 0);
+}
 
-    /* this is the box around the form */
-  .modal > .content {
+/* this is the box around the form */
+.modal > .content {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
     width: 100%;
-    padding: 5px 5px; 
-  }
+    padding: .5rem .5rem; 
+}
 
-  .input {
+.input {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
     margin: 0 auto;
-    padding: 2px;
+    padding: .2rem;
     width: 100%;
-  }
+}
 
-  input {
+input {
     width: 80%;
-  }
+}
 
-  /* this is the button */
-  .modal > .actions {
+/* this is the button */
+.modal > .actions {
     width: 100%;
-    padding: 10px 5px;
+    padding: 1rem .5rem;
     margin: auto;
     text-align: center;
   }
 
-  .modal > .close {
+.modal > .close {
     cursor: pointer;
     position: absolute;
     display: block;
-    padding: 2px 5px;
+    padding: .2rem .5rem;
     line-height: 20px;
-    right: -10px;
-    top: -10px;
-    font-size: 24px;
+    right: -1rem;
+    top: -1rem;
+    font-size: 2.4rem;
     background: #ffffff;
     border-radius: 18px;
-    border: 1px solid #cfcece;
+    border: .1rem solid #cfcece;
+}
+
+.loading > button {
+  width: 50%;
+}
+
+/* smartphones, iPhone, portrait 480x320 phones */
+@media (max-width:32rem) {
+/* this is the box around the whole popup */
+.modal {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  text-align: center;
+}
+
+/* this is the box around the form */
+.modal > .content {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+
+}
+
+.input {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.loading > button {
+  display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+  width: 120%;
+}
+
+/* this is the button */
+.modal > .actions {
+  width: 80%;
+}
+
+.modal > .close {
+  cursor: pointer;
+  position: sticky;
+  width: 3rem;
+}
+}
+
+/* portrait e-readers (Nook/Kindle), smaller tablets @ 600 or @ 640 wide. */
+@media (max-width:481px)  {
+  body
+ {
+    margin: 0 auto;
   }
+}
+
+/* portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */
+@media (max-width:641px) {
+  body
+ {
+    margin: 0 auto;
+  }
+}
+
+/* tablet, landscape iPad, lo-res laptops ands desktops */
+@media (max-width:961px) {
+  body
+ {
+    margin: 0 auto;
+  }
+}
+
+/* big landscape tablets, laptops, and desktops */
+@media (max-width:1025px) {
+  body
+ {
+    margin: 0 auto;
+  }
+}
+
+/* hi-res laptops and desktops */
+@media (max-width:1281px) {
+  body
+ {
+    margin: 0 auto;
+  }
+}
   

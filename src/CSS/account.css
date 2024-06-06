@@ -1,19 +1,19 @@
 .alleyHome {
     font-size: 3rem;
     color: aqua;
-    text-shadow: 4px 4px rgba(0, 88, 88, 0.788), -0.25em 0 1em rgb(0, 0, 0);
+    text-shadow: .4rem .4rem rgba(0, 88, 88, 0.788), -0.25em 0 1em rgb(0, 0, 0);
 }
   
 .accountHello {
     font-size: 2.75rem;
     color: aqua;
-    text-shadow: 4px 4px rgba(0, 88, 88, 0.788), -.25em 0 1em rgb(0, 0, 0);
+    text-shadow: .4rem .4rem rgba(0, 88, 88, 0.788), -.25em 0 1em rgb(0, 0, 0);
 }
 
 .accounth2 {
     font-size: 4rem;
     color: aqua;
-    text-shadow: 4px 4px rgba(0, 88, 88, 0.788), -.25em 0 1em rgb(0, 0, 0);
+    text-shadow: .4rem .4rem rgba(0, 88, 88, 0.788), -.25em 0 1em rgb(0, 0, 0);
 }
 
 .accountButtonBox {
@@ -24,7 +24,7 @@
     width: 100%;
     margin: 0 auto;
     color: aqua;
-    text-shadow: 4px 4px rgba(0, 88, 88, 0.788), -.25em 0 1em rgb(0, 0, 0);
+    text-shadow: .4rem .4rem rgba(0, 88, 88, 0.788), -.25em 0 1em rgb(0, 0, 0);
 }
 
 .accountScoresBox {
@@ -43,7 +43,7 @@
     flex-wrap: wrap;
     justify-content: top;
     font-size: large;
-    border: 2px solid rgba(189, 255, 255, 0.219);
+    border: .2rem solid rgba(189, 255, 255, 0.219);
 }
 
 .scoresBox2 {
@@ -53,7 +53,7 @@
     flex-wrap: wrap;
     justify-content: top;
     font-size: large;
-    border: 2px solid rgba(189, 255, 255, 0.219);
+    border: .2rem solid rgba(189, 255, 255, 0.219);
 }
 
 .catBox {
@@ -65,9 +65,103 @@
 }
 
 .spacer {
-    padding: 10px;
+    padding: 1rem;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     justify-content: center;
 }
+
+/* smartphones, iPhone, portrait 480x320 phones */
+@media (max-width:32rem) {
+
+    .accountButtonBox {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: left;
+    }
+    
+    .accountScoresBox {
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: left;
+    }
+    
+    .leaderboardDiv{
+      display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: left;
+    }
+    
+    .scoresBox1 {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: left;
+    }
+    
+    .scoresBox2 {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: left;
+    }
+    
+    .catBox {
+        width: 32rem;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: left;
+    }
+    
+    .spacer {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: left;
+    }
+}
+
+
+/* portrait e-readers (Nook/Kindle), smaller tablets @ 600 or @ 640 wide. */
+@media (max-width:481px)  {
+    body
+   {
+      margin: 0 auto;
+    }
+  }
+  
+  /* portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */
+  @media (max-width:641px) {
+    body
+   {
+      margin: 0 auto;
+    }
+  }
+  
+  /* tablet, landscape iPad, lo-res laptops ands desktops */
+  @media (max-width:961px) {
+    body
+   {
+      margin: 0 auto;
+    }
+  }
+  
+  /* big landscape tablets, laptops, and desktops */
+  @media (max-width:1025px) {
+    body
+   {
+      margin: 0 auto;
+    }
+  }
+  
+  /* hi-res laptops and desktops */
+  @media (max-width:1281px) {
+    body
+   {
+      margin: 0 auto;
+    }
+  }
