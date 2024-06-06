@@ -5,7 +5,8 @@ import { Nav } from "./Nav.jsx";
 import GameInfo from "./GameInfo.jsx";
 import TheChonkImage from "../assets/ChonkCat/gatito_parada_espera.png";
 import GlobalScores from "./GlobalScores";
-import "ldrs/newtonsCradle";
+import { newtonsCradle } from "ldrs";
+newtonsCradle.register();
 
 export function Home({ userToken, userID }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -50,8 +51,8 @@ export function Home({ userToken, userID }) {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
 
-    canvas.width = 800;
-    canvas.height = 720;
+    canvas.width = 525;
+    canvas.height = 400;
 
     ctx.imageSmoothingEnabled = false;
 
@@ -59,8 +60,8 @@ export function Home({ userToken, userID }) {
       constructor(gameWidth, gameHeight) {
         this.gameWidth = gameWidth;
         this.gameHeight = gameHeight;
-        this.width = 500; // size of cats
-        this.height = 420;
+        this.width = 400; // size of cats
+        this.height = 400;
         this.spriteWidth = 128;
         this.spriteHeight = 128;
         this.image = new Image();
@@ -142,7 +143,6 @@ export function Home({ userToken, userID }) {
         <Nav userToken={userToken} userID={userID} />
         <GameInfo />
       </div>
-      {/* <img src={TheChonkImage} onClick={() => playMusic()} /> */}
 
       <div className="spacer"></div>
       <div>
@@ -154,7 +154,7 @@ export function Home({ userToken, userID }) {
               onClick={() => playMusic()}
             ></canvas>
           </div>
-          <div>
+          <div className="leaderboardDiv">
             <h2 className="accounth2">Global Leaderboard</h2>
             <GlobalScores limit={10} />
           </div>

@@ -1,24 +1,24 @@
 .infomodal {
-  font-size: 16px;
+  font-size: 1.6rem;
   color: rgb(0, 0, 0);
-  background-color: rgba(0, 41, 41, 0.35);
-  backdrop-filter: blur(100px);
-
+  background-color: rgba(165, 224, 224, 0.35);
+  backdrop-filter: blur(10rem);
+  position: sticky;
 }
 .infomodal > .infoheader {
   width: 100%;
-  border-bottom: 1px solid gray;
-  font-size: 18px;
+  border-bottom: .1rem solid gray;
+  font-size: 1.8rem;
   text-align: center;
-  padding: 5px;
+  padding: .5rem;
 }
 .infomodal > .infocontent {
   width: 100%;
-  padding: 10px 5px;
+  padding: 1rem .5rem;
 }
 .infomodal > .infoactions {
   width: 100%;
-  padding: 10px 5px;
+  padding: 1rem .5rem;
   margin: auto;
   text-align: center;
 }
@@ -26,12 +26,123 @@
   cursor: pointer;
   position: absolute;
   display: block;
-  padding: 2px 5px;
-  line-height: 20px;
-  right: -10px;
-  top: -10px;
-  font-size: 24px;
+  padding: .2rem .5rem;
+  line-height: 2rem;
+  right: -1rem;
+  top: -1rem;
+  font-size: 2.4rem;
   background: #ffffff;
-  border-radius: 18px;
-  border: 1px solid #cfcece;
+  border-radius: 1.8rem;
+  border: .1rem solid #cfcece;
+}
+
+.scoremodal {
+  margin: 0 auto;
+  background-color: rgba(53, 53, 53, 0.192);
+  backdrop-filter: blur(10rem);
+  font-size: x-large;
+  text-align: center;
+  width: 100%;
+  color: aqua;
+  text-shadow: .4rem .4rem rgba(0, 88, 88, 0.788), -.25em 0 1em rgb(0, 0, 0);
+  padding: 1rem .5rem;
+  background-size: cover; 
+  left: -1rem;
+  position: sticky;
+}
+
+.scoremodal > .scoreheader {
+  width: 100%;
+  border-bottom: .1rem solid gray;
+  font-size: 2.5rem;
+  margin: .4rem;
+  position: relative;
+}
+
+.scoremodal > .scorecontent {
+  width: 100%;
+}
+
+.scoremodal > .scoreactions {
+  width: 100%;
+  margin: auto;
+  text-align: center;
+  position: relative;
+}
+
+.scoremodal > .scoreclose {
+  cursor: pointer;
+  position: absolute;
+  display: block;
+  line-height: 2rem;
+  right: -1rem;
+  top: -1rem;
+  background: #ffffff;
+  border-radius: 1.8rem;
+  border: .1rem solid #cfcece;
+}
+
+.scorelabel {
+  border-bottom: .1rem solid gray;
+  position: relative;
+}
+
+.arrow {
+  width: 1.75rem;
+}
+
+#scoreButton {
+  width: 90%
+}
+
+/* smartphones, iPhone, portrait 480x320 phones */
+@media (max-width:32rem) {
+  .scoremodal {
+    width: 65%;
+  }
+
+  #scoreButton {
+    width: 60%;
+    margin: 0 auto;
+  }
+}
+
+/* portrait e-readers (Nook/Kindle), smaller tablets @ 600 or @ 640 wide. */
+@media (max-width:481px)  {
+  body
+ {
+    margin: 0 auto;
+  }
+}
+
+/* portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */
+@media (max-width:641px) {
+  body
+ {
+    margin: 0 auto;
+  }
+}
+
+/* tablet, landscape iPad, lo-res laptops ands desktops */
+@media (max-width:961px) {
+  body
+ {
+    margin: 0 auto;
+  }
+}
+
+/* big landscape tablets, laptops, and desktops */
+@media (max-width:1025px) {
+  body
+ {
+    margin: 0 auto;
+  }
+}
+
+/* hi-res laptops and desktops */
+@media (max-width:1281px) {
+  body
+ {
+    margin: 0 auto;
+  }
 }

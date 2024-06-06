@@ -1,7 +1,19 @@
+.player {
+  position: absolute;
+  top: 5rem;
+  left: 5rem;
+  width: 4.8rem;
+  height: 4.8rem;
+}
+
+.game-container {
+  position: relative;
+}
+
 .arcadeBox{  
-  width: 131.5%;
   position: relative;
   background-size: cover; 
+  width: 150rem;
 }
 
 .gameBox {
@@ -9,18 +21,18 @@
   background-image: url(../assets/backgrounds/arcade.webp);
   background-position: center;
   background-size: cover; 
-  height: 1035px;
-  left: -110px;
+  height: 103.5rem;
+  left: -11rem;
 }
 
 .shiftDown {
   position: inherit;
-  top: -415px;
-  left: -115px;
+  top: -41.5rem;
+  left: -11.5rem;
 }
 
 .arcadeBox > #canvas1 {
-  border: 2px solid white; 
+  border: .2rem solid white; 
 }
 
 #playerImage, #backgroundImage {
@@ -30,5 +42,89 @@
 .goodLuck {
   font-size: 3.5rem;
   color: aqua;
-  text-shadow: 4px 4px rgba(0, 88, 88, 0.788), -.25em 0 1em rgb(0, 0, 0);
+  text-shadow: .4rem .4rem rgba(0, 88, 88, 0.788), -.25em 0 1em rgb(0, 0, 0);
+}
+
+#canvas1 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60rem;
+  width: 60rem;
+}
+
+/* smartphones, iPhone, portrait 480x320 phones */
+@media (max-width:32rem) {  
+  .arcadeBox{  
+    position: relative;
+    background-size: cover; 
+    width: 39rem;
+    left: -5rem;
+  }
+  
+  .gameBox {
+    position: relative;
+    background-image: url(../assets/backgrounds/arcade.webp);
+    background-position: center;
+    background-size: cover; 
+    height: 37.7rem;
+    left: -.1rem;
+  }
+  
+  .shiftDown {
+    position: inherit;
+    top: -15rem;
+    left: -.2rem;
+  }
+  
+  #canvas1 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 21.75rem;
+    width: 21.75rem;
+  }
+
+}
+
+/* portrait e-readers (Nook/Kindle), smaller tablets @ 600 or @ 640 wide. */
+@media (max-width:481px)  {
+  body
+ {
+    margin: 0 auto;
+  }
+}
+
+/* portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */
+@media (max-width:641px) {
+  body
+ {
+    margin: 0 auto;
+  }
+}
+
+/* tablet, landscape iPad, lo-res laptops ands desktops */
+@media (max-width:961px) {
+  body
+ {
+    margin: 0 auto;
+  }
+}
+
+/* big landscape tablets, laptops, and desktops */
+@media (max-width:1025px) {
+  body
+ {
+    margin: 0 auto;
+  }
+}
+
+/* hi-res laptops and desktops */
+@media (max-width:1281px) {
+  body
+ {
+    margin: 0 auto;
+  }
 }

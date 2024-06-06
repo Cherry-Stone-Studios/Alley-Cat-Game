@@ -2,7 +2,8 @@ import "../CSS/userinfo.css";
 import React from "react";
 import Popup from "reactjs-popup";
 import { useState } from "react";
-import "ldrs/newtonsCradle";
+import { newtonsCradle } from "ldrs";
+newtonsCradle.register();
 
 const API_URL = "https://cherry-stone-studios.onrender.com";
 

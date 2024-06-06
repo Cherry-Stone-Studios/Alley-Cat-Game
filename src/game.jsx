@@ -1,11 +1,10 @@
+import "./CSS/background.css";
 // import css and other .jsx pages
 import React, { useEffect } from "react";
-import "./CSS/background.css";
 import animatedSprite from "./SpriteAnimation.jsx";
 // import background images
 import playerImage from "./assets/orangeCat/orangeCatSprite.png";
 import backgroundImage from "./assets/backgrounds/City2.png";
-import tvBackground from "./assets/backgrounds/arcade.webp";
 // import bag guys
 import enemyImage from "./assets/dogDoberman/Dog_Black.png";
 import flyingEnemy from "./assets/birdSprites/blackCrowSprite.png";
@@ -23,13 +22,13 @@ import gameoverMeow from "./assets/music/angrycatmeow.mp3";
 // import flyingCat from "./assets/game_module/flyingcat.jpg";
 // import pixelCat from "./assets/gifs/pixel-cat.gif";
 
-const Game = ({ submitHighScore, username }) => {
+const Game = ({ submitHighScore }) => {
   useEffect(() => {
     const canvas = document.getElementById("canvas1");
     // canvas.focus(); // forces the browser to focus on the game
     const ctx = canvas.getContext("2d");
-    canvas.width = 800;
-    canvas.height = 720;
+    // canvas.width = 800;
+    // canvas.height = 720;
     let enemies = [];
     let score = 0;
     let chonkMeter = 0;
@@ -805,7 +804,7 @@ const Game = ({ submitHighScore, username }) => {
       <div className="arcadeBox">
         <div className="gameBox"></div>
         <div className="shiftDown">
-          <canvas id="canvas1"></canvas>
+          <canvas id="canvas1" width="800" height="720"></canvas>
         </div>
       </div>
     </>

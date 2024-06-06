@@ -2,10 +2,12 @@ import "../CSS/background.css";
 import "../CSS/gameinfo.css";
 import Game from "../game.jsx";
 import { Nav } from "./Nav";
+import GameInfo from "./GameInfo.jsx";
 import { useState } from "react";
 import React from "react";
 import Popup from "reactjs-popup";
-import "ldrs/newtonsCradle";
+import { newtonsCradle } from "ldrs";
+newtonsCradle.register();
 
 const API_URL = "https://cherry-stone-studios.onrender.com";
 
@@ -97,7 +99,7 @@ export function GamePage({
     <>
       <h2 className="goodLuck">Good luck! Eat lots of fish!</h2>
       {<Nav userToken={userToken} userID={userID} />}
-
+      <GameInfo />
       {/* this is where the canvas for the mobile stuff will render if the user is on mobile */}
 
       {/* <div className="catBox">
@@ -114,17 +116,17 @@ export function GamePage({
       {
         <Popup id="scoreSubmit" open={guestScore > 0} modal nested>
           {(close) => (
-            <div className="modal">
-              <button className="close" onClick={close}>
+            <div className="scoremodal">
+              <button className="scoreclose" onClick={close}>
                 ･.･
               </button>
-              <div className="header">
+              <div className="scoreheader">
                 Register to Automatically Save Scores
               </div>
-              <div className="content">
+              <div className="scorecontent">
                 <form>
                   <p>Enter Name and Restart!</p>
-                  <label className="formLabel">
+                  <label className="scorelabel">
                     Username:
                     <input
                       type="text"
@@ -141,7 +143,7 @@ export function GamePage({
                   </label>
                 </form>
               </div>
-              <div className="actions">
+              <div className="scoreactions">
                 <div className="loading">
                   {isSending ? (
                     <l-newtons-cradle color="aqua"></l-newtons-cradle>

@@ -8,8 +8,8 @@ export function Privacy() {
         <div className="eulaH1">
           <h1>Privacy Policy</h1>
         </div>
-        <div className="eulaH2">
-          <h2>Introduction</h2>
+        <div>
+          <h2 className="eulaH2">Introduction</h2>
         </div>
         <div className="eulaP">
           <p>
@@ -22,9 +22,7 @@ export function Privacy() {
           </p>
           <br />
         </div>
-        <div className="eulaH2">
-          <h2>Grounds for data collection </h2>
-        </div>
+        <h2 className="eulaH2">Grounds for data collection </h2>
         <div className="eulaP">
           <p>
             Processing of your personal information (meaning, any information
@@ -49,7 +47,7 @@ export function Privacy() {
           <br />
         </div>
         <div className="eulaH2">
-          <h2>What information do we collect?</h2>
+          <h2 className="eulaH2">What information do we collect?</h2>
         </div>
         <div className="eulaP">
           <p>We collect two types of data and information from Users. </p>
@@ -91,9 +89,7 @@ export function Privacy() {
             <br />
           </ul>
         </div>
-        <div className="eulaH2">
-          <h2>How do we receive information about you?</h2>
-        </div>
+        <h2 className="eulaH2">How do we receive information about you?</h2>
         <div className="eulaP">
           <p>We receive your Personal Information from various sources:</p>
 
@@ -115,9 +111,9 @@ export function Privacy() {
             <br />
           </ul>
         </div>
-        <div className="eulaH2">
-          <h2>What do we do with the information we collect?</h2>
-        </div>
+        <h2 className="eulaH2">
+          What do we do with the information we collect?
+        </h2>
         <div className="eulaP">
           <p>
             We do not rent, sell, or share Users’ information with third parties
@@ -205,9 +201,7 @@ export function Privacy() {
           </p>
           <br />
         </div>
-        <div className="eulaH2">
-          <h2>User Rights</h2>
-        </div>
+        <h2 className="eulaH2">User Rights</h2>
         <div className="eulaP">
           <p>You may request to: </p>
           <br />
@@ -252,9 +246,7 @@ export function Privacy() {
           </p>
           <br />
         </div>
-        <div className="eulaH2">
-          <h2>Retention</h2>
-        </div>
+        <h2 className="eulaH2">Retention</h2>
         <div className="eulaP">
           <p>
             We will retain your personal information for as long as necessary to
@@ -276,9 +268,7 @@ export function Privacy() {
           </p>
           <br />
         </div>
-        <div className="eulaH2">
-          <h2>Cookies</h2>
-        </div>
+        <h2 className="eulaH2">Cookies</h2>
         <div className="eulaP">
           <p>
             We and our trusted partners use cookies and other technologies in
@@ -355,9 +345,7 @@ export function Privacy() {
           </p>
           <br />
         </div>
-        <div className="eulaH2">
-          <h2>Third party collection of information</h2>
-        </div>
+        <h2 className="eulaH2">Third party collection of information</h2>
         <div className="eulaP">
           <p>
             Our policy only addresses the use and disclosure of information we
@@ -377,9 +365,7 @@ export function Privacy() {
           </p>
           <br />
         </div>
-        <div className="eulaH2">
-          <h2>How do we safeguard your information?</h2>
-        </div>
+        <h2 className="eulaH2">How do we safeguard your information?</h2>
         <div className="eulaP">
           <p>
             We take great care in implementing and maintaining the security of
@@ -395,9 +381,7 @@ export function Privacy() {
           </p>
           <br />
         </div>
-        <div className="eulaH2">
-          <h2>Transfer of data outside the EEA </h2>
-        </div>
+        <h2 className="eulaH2">Transfer of data outside the EEA </h2>
         <div className="eulaP">
           <p>
             Please note that some data recipients may be located outside the
@@ -408,9 +392,7 @@ export function Privacy() {
           </p>
           <br />
         </div>
-        <div className="eulaH2">
-          <h2>Advertisements</h2>
-        </div>
+        <h2 className="eulaH2">Advertisements</h2>
         <div className="eulaP">
           <p>
             We may use a third-party advertising technology to serve
@@ -438,9 +420,7 @@ export function Privacy() {
           </p>
           <br />
         </div>
-        <div className="eulaH2">
-          <h2>Marketing</h2>
-        </div>
+        <h2 className="eulaH2">Marketing</h2>
         <div className="eulaP">
           <p>
             We may use your Personal Information, such as your name, email
@@ -467,9 +447,7 @@ export function Privacy() {
           </p>
           <br />
         </div>
-        <div className="eulaH2">
-          <h2>Corporate transaction</h2>
-        </div>
+        <h2 className="eulaH2">Corporate transaction</h2>
         <div className="eulaP">
           <p>
             We may share information in the event of a corporate transaction
@@ -480,9 +458,7 @@ export function Privacy() {
           </p>
           <br />
         </div>
-        <div className="eulaH2">
-          <h2>Minors</h2>
-        </div>
+        <h2 className="eulaH2">Minors</h2>
         <div className="eulaP">
           <p>
             We understand the importance of protecting children’s privacy,
@@ -497,9 +473,7 @@ export function Privacy() {
           </p>
           <br />
         </div>
-        <div className="eulaH2">
-          <h2>Updates or amendments to this Privacy Policy</h2>
-        </div>
+        <h2 className="eulaH2">Updates or amendments to this Privacy Policy</h2>
         <div className="eulaP">
           <p>
             We reserve the right to periodically amend or revise the Privacy
@@ -513,9 +487,7 @@ export function Privacy() {
           </p>
           <br />
         </div>
-        <div className="eulaH2">
-          <h2>How to contact us</h2>
-        </div>
+        <h2 className="eulaH2">How to contact us</h2>
         <div className="eulaP">
           <p>
             If you have any general questions about the Site or the information

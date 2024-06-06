@@ -9,6 +9,9 @@ import goldieSprite from "../assets/Fish/goldieSprite.png";
 import salmonSprite from "../assets/Fish/salmonSprite.png";
 import tunaSprite from "../assets/Fish/tunaSprite.png";
 import Doberman from "../assets/dogDoberman/Doberman.png";
+import up from "../assets/up.png";
+import back from "../assets/back.png";
+import forward from "../assets/forward.png";
 
 const GameInfo = () => (
   //Creates a button that renders a pop up menu when clicked
@@ -25,11 +28,26 @@ const GameInfo = () => (
         <div className="infoheader"> HOW TO PLAY </div>
         <div className="infocontent">
           <div className="infoheader"> Controls : </div>
-          <p> ⮝ - Jump </p>
-          <p> ⮝ + ⮝ - Double Jump </p>
-          <p> (Tap) ⮜ - Step Backwards </p>
-          <p> (Tap) ⮞ - Step Forward </p>
-          <p> (Hold) ⮞ - Run Forward </p>
+          <p>
+            <img className="arrow" src={up} /> - Jump
+          </p>
+          <p>
+            {" "}
+            <img className="arrow" src={up} /> +{" "}
+            <img className="arrow" src={up} /> - Double Jump{" "}
+          </p>
+          <p>
+            {" "}
+            (Tap) <img className="arrow" src={back} /> - Step Backwards{" "}
+          </p>
+          <p>
+            {" "}
+            (Tap) <img className="arrow" src={forward} /> - Step Forward{" "}
+          </p>
+          <p>
+            {" "}
+            (Hold) <img className="arrow" src={forward} /> - Run Forward{" "}
+          </p>
           <br />
           <div className="infoheader">
             Enemies : <br />

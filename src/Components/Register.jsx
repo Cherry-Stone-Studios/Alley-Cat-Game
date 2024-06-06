@@ -3,7 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Nav } from "./Nav";
 import BackButton from "./BackButton";
-import "ldrs/newtonsCradle";
+import { newtonsCradle } from "ldrs";
+newtonsCradle.register();
 
 const API_URL = "https://cherry-stone-studios.onrender.com";
 
@@ -137,7 +138,7 @@ const Register = ({
           </label>
 
           <label className="formDOB">
-            <p className="labelText">Birthdate</p>
+            <p className="labelText">{"Birthdate "}</p>
             <input
               type="date"
               id="date_of_birth"
@@ -193,9 +194,11 @@ const Register = ({
           {isLoading ? (
             <l-newtons-cradle color="aqua"></l-newtons-cradle>
           ) : (
-            <button form="register" type="submit" className="button">
-              Let's Go!
-            </button>
+            <div className="submitButton">
+              <button form="register" type="submit" className="button">
+                Let's Go!
+              </button>
+            </div>
           )}
         </div>
       </form>

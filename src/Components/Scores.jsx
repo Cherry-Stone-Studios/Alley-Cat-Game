@@ -1,6 +1,7 @@
 import { Nav } from "./Nav";
 import GlobalScores from "./GlobalScores";
-import "ldrs/newtonsCradle";
+import { newtonsCradle } from "ldrs";
+newtonsCradle.register();
 
 export function Scores({ userToken, userID, limit }) {
   return (
